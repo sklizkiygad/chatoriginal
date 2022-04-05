@@ -1,5 +1,6 @@
 <template>
 
+
     <div>
         <div class="main_block">
             <div class="messaging">
@@ -36,6 +37,8 @@
                                                                style="cursor: pointer">Exit</h4>
                                                             <div class="stylish-input-group" v-if="clientOpen">
                                                              <input
+                                                                     v-model="searchQuery"
+
 
                                                                      type="text" class="search-bar"  placeholder="Search" >
                                                                                                     <span class="input-group-addon">
@@ -43,18 +46,33 @@
                                                                                 </span> </div>
                                                         </div>
 
+
                         </div>
+
+                        <div  v-if="clientOpen" class="status_list">
+                            <ul>
+                                <li @click.prevent="chsStatus = 1" :class="{'activeStatus':chsStatus===1}">Активные</li>
+                                <li @click.prevent="chsStatus = 2" :class="{'activeStatus':chsStatus===2}">Законченные</li>
+                                <li @click.prevent="chsStatus = 3" :class="{'activeStatus':chsStatus===3}">Бан</li>
+                            </ul>
+
+                        </div>
+
                         <div class="inbox_chat" :style="{display: (clientOpen)?db:dn}" >
-                            <div class="chat_list active_chat">
-                                <div class="chat_people">
-                                    <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                                    <div class="chat_ib">
-                                        <h5>Sunil Rajput<span class="chat_date">Dec 25</span></h5>
-                                        <p>Test, which is a new approach to have all solutions
-                                            astrology under one roof.</p>
-                                    </div>
-                                </div>
-                            </div>
+
+
+
+
+<!--                            <div class="chat_list active_chat">-->
+<!--                                <div class="chat_people">-->
+<!--                                    <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>-->
+<!--                                    <div class="chat_ib">-->
+<!--                                        <h5>Sunil Rajput<span class="chat_date">Dec 25</span></h5>-->
+<!--                                        <p>Test, which is a new approach to have all solutions-->
+<!--                                            astrology under one roof.</p>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
 <!--                            <div class="chat_list">-->
 <!--                                <div class="chat_people">-->
 <!--                                    <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>-->
@@ -65,59 +83,65 @@
 <!--                                    </div>-->
 <!--                                </div>-->
 <!--                            </div>-->
-                            <div class="chat_list" v-for="n in 10" @click="messageOpen=true">
-                                <div class="chat_people">
+
+
+<!--                            <div-->
+<!--                                    class="chat_list" v-for="n in 10"-->
+<!--                                    :class="n == chsAct ? 'active_chat':null"-->
+<!--                                    @click="setClass(n)"-->
+<!--                            >-->
+<!--                                <div class="chat_people"-->
+
+
+
+<!--                                >-->
+<!--                                    <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>-->
+<!--                                    <div class="chat_ib">-->
+<!--                                        <h5>Sunil Rajput  id:{{n}} <span class="chat_date">Dec 25</span></h5>-->
+<!--                                        <p>Test, which is a new approach to have all solutions-->
+<!--                                            astrology under one roof.</p>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                            <transition-group name="fade">
+                            <div
+                                    class="chat_list" v-for="client in searchedList" :key="client.id"
+                                    :class="client.id == chsAct ? 'active_chat':null"
+                                    @click="setClass(client.id)"
+                            >
+                                <div class="chat_people"
+
+                                >
                                     <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
                                     <div class="chat_ib">
-                                        <h5>Sunil Rajput  id:{{n}} <span class="chat_date">Dec 25</span></h5>
+                                        <h5>{{client.name}}  id:{{client.id}} <span class="chat_date">Dec 25</span></h5>
                                         <p>Test, which is a new approach to have all solutions
                                             astrology under one roof.</p>
                                     </div>
                                 </div>
+
                             </div>
 
-                            <div class="chat_list">
-                                <div class="chat_people">
-                                    <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                                    <div class="chat_ib">
-                                        <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                                        <p>Test, which is a new approach to have all solutions
-                                            astrology under one roof.</p>
-                                    </div>
-                                </div>
+                            </transition-group>
+                            <div class="pagination" v-if="searchQuery===''">
+                                <a v-if="clientPages>1">&laquo;</a>
+                                <a
+                                   v-for="n in clientPages"
+                                   :class="{'active':(currentClientPage)===n}"
+                                   @click.prevent="currentClientPage = n"
+                                >{{n}}</a>
+                                <a v-if="clientPages>1">&raquo;</a>
                             </div>
-                            <div class="chat_list">
-                                <div class="chat_people">
-                                    <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                                    <div class="chat_ib">
-                                        <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                                        <p>Test, which is a new approach to have all solutions
-                                            astrology under one roof.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="chat_list">
-                                <div class="chat_people">
-                                    <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                                    <div class="chat_ib">
-                                        <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                                        <p>Test, which is a new approach to have all solutions
-                                            astrology under one roof.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="chat_list" @click="messageOpen=true">
-                                <div class="chat_people">
-                                    <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                                    <div class="chat_ib">
-                                        <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                                        <p>Test, which is a new approach to have all solutions
-                                            astrology under one roof.</p>
-                                    </div>
-                                </div>
-                            </div>
-<!--                            <div style="width: 100%;height: 50px"></div>-->
+
+
+
+
+
+                            <div style="width: 100%;height: 50px;background-color: #333333"></div>
+
+
                         </div>
+
 
 
                     </div>
@@ -149,99 +173,140 @@
 
 
 
+<!--                        <div class="msg_history">-->
+<!--                            <div class="incoming_msg">-->
+<!--                                <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>-->
+<!--                                <div class="received_msg">-->
+<!--                                    <div class="received_withd_msg">-->
+<!--                                        <p>Test which is a new approach to have all-->
+<!--                                            solutions</p>-->
+<!--                                        <span class="time_date"> 11:01 AM    |    June 9</span></div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="outgoing_msg">-->
+<!--                                <div class="sent_msg">-->
+<!--                                    <p>Test which is a new approach to have all-->
+<!--                                        solutions</p>-->
+<!--                                    <span class="time_date"> 11:01 AM    |    June 9</span> </div>-->
+<!--                            </div>-->
+<!--                            <div class="incoming_msg">-->
+<!--                                <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>-->
+<!--                                <div class="received_msg">-->
+<!--                                    <div class="received_withd_msg">-->
+<!--                                        <p>Test, which is a new approach to have</p>-->
+<!--                                        <span class="time_date"> 11:01 AM    |    Yesterday</span></div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="outgoing_msg">-->
+<!--                                <div class="sent_msg">-->
+<!--                                    <p>Apollo University, Delhi, India Test</p>-->
+<!--                                    <span class="time_date"> 11:01 AM    |    Today</span> </div>-->
+<!--                            </div>-->
+<!--                            <div class="incoming_msg">-->
+<!--                                <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>-->
+<!--                                <div class="received_msg">-->
+<!--                                    <div class="received_withd_msg">-->
+<!--                                        <p>We work directly with our designers and suppliers,-->
+<!--                                            and sell direct to you, which means quality, exclusive-->
+<!--                                            products, at a price anyone can afford.-->
+<!--                                            We work directly with our designers and suppliers,-->
+<!--                                            and sell direct to you, which means quality, exclusive-->
+<!--                                            products, at a price anyone can afford.-->
+<!--                                            We work directly with our designers and suppliers,-->
+<!--                                            and sell direct to you, which means quality, exclusive-->
+<!--                                            products, at a price anyone can afford.-->
+<!--                                            We work directly with our designers and suppliers,-->
+<!--                                            and sell direct to you, which means quality, exclusive-->
+<!--                                            products, at a price anyone can afford.</p>-->
+<!--                                        <span class="time_date"> 11:01 AM    |    Today</span></div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="incoming_msg">-->
+<!--                                <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>-->
+<!--                                <div class="received_msg">-->
+<!--                                    <div class="received_withd_msg">-->
+<!--                                        <p>We work directly with our designers and suppliers,-->
+<!--                                            and sell direct to you, which means quality, exclusive-->
+<!--                                            products, at a price anyone can afford.-->
+<!--                                            We work directly with our designers and suppliers,-->
+<!--                                            and sell direct to you, which means quality, exclusive-->
+<!--                                            products, at a price anyone can afford.-->
+<!--                                            We work directly with our designers and suppliers,-->
+<!--                                            and sell direct to you, which means quality, exclusive-->
+<!--                                            products, at a price anyone can afford.-->
+<!--                                            We work directly with our designers and suppliers,-->
+<!--                                            and sell direct to you, which means quality, exclusive-->
+<!--                                            products, at a price anyone can afford.</p>-->
+<!--                                        <span class="time_date"> 11:01 AM    |    Today</span></div>-->
+<!--                                </div>-->
+
+<!--                            </div>-->
+<!--                            <div class="incoming_msg">-->
+<!--                                <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>-->
+<!--                                <div class="received_msg">-->
+<!--                                    <div class="received_withd_msg">-->
+<!--                                        <p>We work directly with our designers and suppliers,-->
+<!--                                            and sell direct to you, which means quality, exclusive-->
+<!--                                            products, at a price anyone can afford.-->
+<!--                                            We work directly with our designers and suppliers,-->
+<!--                                            and sell direct to you, which means quality, exclusive-->
+<!--                                            products, at a price anyone can afford.-->
+<!--                                            We work directly with our designers and suppliers,-->
+<!--                                            and sell direct to you, which means quality, exclusive-->
+<!--                                            products, at a price anyone can afford.-->
+<!--                                            We work directly with our designers and suppliers,-->
+<!--                                            and sell direct to you, which means quality, exclusive-->
+<!--                                            products, at a price anyone can afford.</p>-->
+<!--                                        <span class="time_date"> 11:01 AM    |    Today</span></div>-->
+<!--                                </div>-->
+
+<!--                            </div>-->
+<!--                        </div>-->
                         <div class="msg_history">
-                            <div class="incoming_msg">
-                                <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                                <div class="received_msg">
-                                    <div class="received_withd_msg">
-                                        <p>Test which is a new approach to have all
-                                            solutions</p>
-                                        <span class="time_date"> 11:01 AM    |    June 9</span></div>
-                                </div>
-                            </div>
-                            <div class="outgoing_msg">
-                                <div class="sent_msg">
-                                    <p>Test which is a new approach to have all
-                                        solutions</p>
-                                    <span class="time_date"> 11:01 AM    |    June 9</span> </div>
-                            </div>
-                            <div class="incoming_msg">
-                                <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                                <div class="received_msg">
-                                    <div class="received_withd_msg">
-                                        <p>Test, which is a new approach to have</p>
-                                        <span class="time_date"> 11:01 AM    |    Yesterday</span></div>
-                                </div>
-                            </div>
-                            <div class="outgoing_msg">
-                                <div class="sent_msg">
-                                    <p>Apollo University, Delhi, India Test</p>
-                                    <span class="time_date"> 11:01 AM    |    Today</span> </div>
-                            </div>
-                            <div class="incoming_msg">
-                                <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                                <div class="received_msg">
-                                    <div class="received_withd_msg">
-                                        <p>We work directly with our designers and suppliers,
-                                            and sell direct to you, which means quality, exclusive
-                                            products, at a price anyone can afford.
-                                            We work directly with our designers and suppliers,
-                                            and sell direct to you, which means quality, exclusive
-                                            products, at a price anyone can afford.
-                                            We work directly with our designers and suppliers,
-                                            and sell direct to you, which means quality, exclusive
-                                            products, at a price anyone can afford.
-                                            We work directly with our designers and suppliers,
-                                            and sell direct to you, which means quality, exclusive
-                                            products, at a price anyone can afford.</p>
-                                        <span class="time_date"> 11:01 AM    |    Today</span></div>
-                                </div>
-                            </div>
-                            <div class="incoming_msg">
-                                <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                                <div class="received_msg">
-                                    <div class="received_withd_msg">
-                                        <p>We work directly with our designers and suppliers,
-                                            and sell direct to you, which means quality, exclusive
-                                            products, at a price anyone can afford.
-                                            We work directly with our designers and suppliers,
-                                            and sell direct to you, which means quality, exclusive
-                                            products, at a price anyone can afford.
-                                            We work directly with our designers and suppliers,
-                                            and sell direct to you, which means quality, exclusive
-                                            products, at a price anyone can afford.
-                                            We work directly with our designers and suppliers,
-                                            and sell direct to you, which means quality, exclusive
-                                            products, at a price anyone can afford.</p>
-                                        <span class="time_date"> 11:01 AM    |    Today</span></div>
-                                </div>
+<!--                            <div class="incoming_msg">-->
+<!--                                <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>-->
+<!--                                <div class="received_msg">-->
+<!--                                    <div class="received_withd_msg">-->
+<!--                                        <p>Test which is a new approach to have all-->
+<!--                                            solutions</p>-->
+<!--                                        <span class="time_date"> 11:01 AM    |    June 9</span></div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="outgoing_msg">-->
+<!--                                <div class="sent_msg">-->
+<!--                                    <p>Test which is a new approach to have all-->
+<!--                                        solutions</p>-->
+<!--                                    <span class="time_date"> 11:01 AM    |    June 9</span> </div>-->
+<!--                            </div>-->
+                            <div
+                                 v-for="message in dialogMsgs"
+                                 :class="message.role === 'Admin'? 'outgoing_msg':'incoming_msg'">
+                                <div v-if="message.role === 'Admin'" class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                                <div :class="message.role === 'Admin'? 'sent_msg':'received_msg'">
 
-                            </div>
-                            <div class="incoming_msg">
-                                <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                                <div class="received_msg">
-                                    <div class="received_withd_msg">
-                                        <p>We work directly with our designers and suppliers,
-                                            and sell direct to you, which means quality, exclusive
-                                            products, at a price anyone can afford.
-                                            We work directly with our designers and suppliers,
-                                            and sell direct to you, which means quality, exclusive
-                                            products, at a price anyone can afford.
-                                            We work directly with our designers and suppliers,
-                                            and sell direct to you, which means quality, exclusive
-                                            products, at a price anyone can afford.
-                                            We work directly with our designers and suppliers,
-                                            and sell direct to you, which means quality, exclusive
-                                            products, at a price anyone can afford.</p>
-                                        <span class="time_date"> 11:01 AM    |    Today</span></div>
-                                </div>
 
+
+
+                                    <div  :class="message.role === 'Admin'? 'sent_msg':'received_withd_msg'">
+                                        <p>{{message.message}}</p>
+
+                                        <span class="time_date"> {{message.date}}</span>
+                                    </div>
+                                </div>
                             </div>
+
+
+
+
+
                         </div>
+
+
+
                         <div class="type_msg">
                             <div class="input_msg_write">
-                                <input type="text" class="write_msg" placeholder="Type a message" />
-                                <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                                <input v-on:keyup.enter="sendMessage" v-model="adminMsg" type="text" class="write_msg" placeholder="Type a message" />
+                                <button @click="sendMessage" class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
                             </div>
                         </div>
                     </div>
@@ -258,7 +323,16 @@
 
 <script>
 
+    import axios from "axios";
+    import hostMixins from "@/mixins/hostMixins";
+
     export default {
+        sockets: {
+            connect: function () {
+                console.log('socket connected');
+            }
+        },
+        mixins:[hostMixins],
         data(){
             return{
                 dn:'none',
@@ -266,24 +340,203 @@
                 clientOpen:true,
                 messageOpen:false,
                 isClose:false,
+                chsAct:null,
+                clientDataList: [],
+                chsStatus:1,
+                searchQuery:'',
+                clientPages:1,
+                currentClientPage:1,
+                maxClientsPerPage:10,
+                adminMsg:'',
+                dialogMsgs:[]
                 // searchQuery:''
             }
         },
+        // props:{
+        //     connectionSocket:{
+        //         type:Object,
+        //         required:true
+        //     }
+        //
+        // },
         methods:{
             toClose(){
-                this.isClose=true;
-                this.$emit('exit',this.isClose);
+               //this.connectionSocket.close();
+               this.$emit('close')
+               // sessionStorage.setItem('is_auth','false');
+
             },
             openClient(){
+
+                if(window.innerWidth<=640){
+
                     this.clientOpen=!this.clientOpen;
+                    this.messageOpen=false;
+                }
+                else{
+                    this.clientOpen=true;
+                }
 
             },
-            // searchQuery(){
-            //
-            // }
+            setClass(event){
+                if(window.innerWidth<=640){
+
+                    this.clientOpen=false;
+                }
+
+                this.messageOpen=true;
+                this.chsAct=event;
+            },
+            paginationOut(){
+                this.clientPages=Math.ceil(this.clientDataList.length/10);
+                //console.log(this.clientPages);
+
+            },
+
+            // subscribingAll(){
+            //     this.sockets.subscribe('admin_response', (data) => {
+            //         console.log(data);
+            //     });
+            // },
+
+             getClients(){
+                try{
+                    this.sockets.subscribe('admin_response', (data) => {
+                                 if(data.new_chat){
+                                     const newUser={
+                                         email: data.user_email,
+                                         id: data.user_id,
+                                         name: data.user_name,
+                                         role: "User",
+                                         socket: null,
+                                         status: "Actived",
+                                         date:data.date
+                                     }
+                                     this.clientDataList.push(newUser)
+                                 }
+                        this.dialogMsgs.push(data);
+                        console.log(data);
+
+
+                    });
+
+
+                    this.apiCallClients();
+                     this.paginationOut();
+                }
+                catch(e){
+                    alert('Проблемы с подключением');
+                    console.log(e);
+                }
+            },
+            async apiCallClients(){
+                switch(this.chsStatus){
+                    case 1:
+                    {
+                        this.clientDataList=[];
+                        const response=await axios.get(`${this.myProxy}/api/users/all/status?status=Actived`);
+                        for(let i=0;i<response.data.length;i++)
+                        {
+                            this.clientDataList.push(response.data[i]);
+
+                        }
+                        break;
+                    }
+
+                   case 2:
+                   {
+                       this.clientDataList=[];
+                       const response=await axios.get(`${this.myProxy}/api/users/all/status?status=Disabled`);
+                       for(let i=0;i<response.data.length;i++)
+                       {
+                           this.clientDataList.push(response.data[i]);
+
+                       }
+                       break;
+                   }
+
+                    case 3:
+                    {
+                        this.clientDataList=[];
+                        const response=await axios.get(`${this.myProxy}/api/users/all/status?status=Null`);
+                        for(let i=0;i<response.data.length;i++)
+                        {
+                            this.clientDataList.push(response.data[i]);
+                        }
+                        break;
+                    }
+
+                }
+                this.paginationOut();
+            },
+            sendMessage(){
+                if(this.adminMsg != null && this.adminMsg !='')
+                {
+                    let now = new Date(),
+                        year=now.getFullYear().toString(),
+                        month=now.getMonth().toString(),
+                        day=now.getDate().toString(),
+                        hour=now.getHours().toString(),
+                        minute=now.getMinutes().toString();
+                    const msgdate=hour+':'+minute+'    |    '+day+'-'+month+'-'+year;
+                    this.adminMsg=this.adminMsg.trim();
+                    const message={
+                        user_id:this.chsAct,
+                        message:this.adminMsg,
+                        role:"Admin",
+                        date:msgdate
+                    }
+                    this.dialogMsgs.push(message);
+                    this.$socket.emit('admin_send_message', message);
+                    this.adminMsg='';
+                    console.log('Сообщение отправлено');
+                }
+                else{
+                    alert("Введите сообщение");
+                }
+            },
         },
+        created() {
+
+            this.getClients();
 
 
+        },
+        computed:{
+
+             searchedList(){
+
+                // return [...this.clientDataList]
+                //     .filter(client=>client.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
+
+                if(this.searchQuery===''){
+
+                    // return [...this.clientDataList]
+                    //     .filter(client=>client.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
+                    //     .filter(client=>client.id<=(this.clientDataList[0].id+(this.maxClientsPerPage*this.currentClientPage)))
+                    //     .filter(client=>client.id>=(this.clientDataList[0].id-(this.maxClientsPerPage*this.currentClientPage)))
+
+                    return [...this.clientDataList].slice((this.maxClientsPerPage*(this.currentClientPage-1)),(this.maxClientsPerPage*this.currentClientPage))
+
+                }
+                else{
+
+                    return [...this.clientDataList]
+                        .filter(client=>client.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
+
+                }
+
+
+
+            },
+
+        },
+        watch:{
+            chsStatus(){
+
+                this.apiCallClients();
+            }
+        }
     }
 </script >
 
@@ -364,10 +617,18 @@
         background-color: #ebebeb;
     }
     .inbox_chat {
-        max-height:94% ;
-        overflow-y: auto;}
+        /*max-height:94% ;*/
+       height:calc(100vh - 125px);
+        overflow-y: auto;
+    }
+
 
     .active_chat{ background:#ebebeb;}
+
+
+    .active h5{
+        color: white !important;
+    }
 
     .incoming_msg_img {
         display: inline-block;
@@ -451,6 +712,72 @@
         outline: none;
 
     }
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: all 0.5s ease;
+    }
+
+    .fade-enter-from,
+    .fade-leave-to {
+        opacity: 0;
+        transform: translateX(10px);
+    }
+
+    .status_list{
+
+    }
+    .status_list ul{
+        display: flex;
+        list-style-type: none;
+        /*justify-content: space-around;*/
+
+    }
+    .status_list ul>li{
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid #c4c4c4;
+        border-left: 1px solid #c4c4c4;
+        cursor: pointer;
+
+    }
+    /*.status_list ul>li:hover{
+        background-color: #AAAAAA;
+        color: white;
+        cursor: pointer;
+    }*/
+
+    .status_list ul>li:hover:not(.activeStatus) {
+        background-color: #AAAAAA;
+        color: white;
+        }
+
+    .activeStatus{
+        background-color: #696969;
+        color: white;
+    }
+
+
+
+    .pagination {
+        display: inline-block;
+    }
+
+    .pagination a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+    }
+
+    .pagination a.active {
+        background-color: #696969;
+        color: white;
+    }
+
+    .pagination a:hover:not(.active) {background-color: #ddd;}
+
+
+
     @media(max-width: 640px){
         .inbox_msg{
             display: flex;
@@ -465,8 +792,19 @@
             overflow: visible;
             width: 100%;
         }
+        .inbox_chat{
+            height: 100%;
+            margin-top: 80px;
+
+        }
+        .headind_srch{
+            position: fixed;
+            width: 100%;
+            background-color: #f8f8f8;
+        }
 
     }
+
 
 
 </style>
