@@ -107,16 +107,16 @@
                             <div
                                     class="chat_list" v-for="client in searchedList" :key="client.id"
                                     :class="client.id == chsAct ? 'active_chat':null"
-                                    @click="setClass(client.id)"
+
+                                    @click="getMessages(client.id)"
                             >
                                 <div class="chat_people"
 
                                 >
                                     <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
                                     <div class="chat_ib">
-                                        <h5>{{client.name}}  id:{{client.id}} <span class="chat_date">Dec 25</span></h5>
-                                        <p>Test, which is a new approach to have all solutions
-                                            astrology under one roof.</p>
+                                        <h5>{{client.name}}  id:{{client.id}} <span class="chat_date">{{client.last_message.date}}</span></h5>
+                                        <p>{{client.last_message.message}}</p>
                                     </div>
                                 </div>
 
@@ -148,6 +148,7 @@
 
 
                     <div class="mesgs" :style="{display: (messageOpen)?'flex':dn}">
+                        
 
 <!--                        <div class="headind_srch"-->
 
@@ -280,14 +281,14 @@
 <!--                            </div>-->
                             <div
                                  v-for="message in dialogMsgs"
-                                 :class="message.role === 'Admin'? 'outgoing_msg':'incoming_msg'">
-                                <div v-if="message.role === 'Admin'" class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                                <div :class="message.role === 'Admin'? 'sent_msg':'received_msg'">
+                                 :class="message.status === 'Admin'? 'outgoing_msg':'incoming_msg'">
+                                <div v-if="message.status !== 'Admin'" class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                                <div :class="message.status === 'Admin'? 'sent_msg':'received_msg'">
 
 
 
 
-                                    <div  :class="message.role === 'Admin'? 'sent_msg':'received_withd_msg'">
+                                    <div  :class="message.status === 'Admin'? 'sent_msg':'received_withd_msg'">
                                         <p>{{message.message}}</p>
 
                                         <span class="time_date"> {{message.date}}</span>
@@ -402,20 +403,30 @@
              getClients(){
                 try{
                     this.sockets.subscribe('admin_response', (data) => {
-                                 if(data.new_chat){
-                                     const newUser={
-                                         email: data.user_email,
-                                         id: data.user_id,
-                                         name: data.user_name,
-                                         role: "User",
-                                         socket: null,
-                                         status: "Actived",
-                                         date:data.date
-                                     }
-                                     this.clientDataList.push(newUser)
-                                 }
-                        this.dialogMsgs.push(data);
-                        console.log(data);
+
+                        //console.log(data);
+                        if(data.new_chat){
+                                         const newUser={
+                                             id: data.user_id,
+                                             name: data.name,
+                                             status: "Actived",
+                                             role:"User",
+                                             date:data.date,
+                                             last_message:data
+                                         }
+                                         this.clientDataList.push(newUser)
+                        }
+
+                        for(let i=0;i<this.clientDataList.length;i++) {
+
+                            if (this.clientDataList[i].id == data.user_id)
+                            {
+                                this.clientDataList[i].last_message=data;
+                            }
+                        }
+                        if(this.chsAct!=null){
+                            this.getMessages(this.chsAct);
+                        }
 
 
                     });
@@ -481,10 +492,19 @@
                     const msgdate=hour+':'+minute+'    |    '+day+'-'+month+'-'+year;
                     this.adminMsg=this.adminMsg.trim();
                     const message={
+                        name:"Admin",
                         user_id:this.chsAct,
                         message:this.adminMsg,
-                        role:"Admin",
+                        status:"Admin",
                         date:msgdate
+                    }
+
+                    for(let i=0;i<this.clientDataList.length;i++) {
+                        if (this.clientDataList[i].id === message.user_id)
+                        {
+                            this.clientDataList[i].last_message=message;
+
+                        }
                     }
                     this.dialogMsgs.push(message);
                     this.$socket.emit('admin_send_message', message);
@@ -495,10 +515,33 @@
                     alert("Введите сообщение");
                 }
             },
+            async getMessages(user_id){
+                this.setClass(user_id);
+                const sup={
+                    user_id:user_id
+                }
+
+                const response = await axios.get(`${this.myProxy}/api/users/messages`,{params:sup});
+                //console.log(response.data);
+                this.dialogMsgs=[];
+
+                for(let i=0;i<response.data.length;i++)
+                {
+                    this.dialogMsgs.push(response.data[i]);
+
+
+
+                }
+
+
+
+            }
         },
         created() {
 
             this.getClients();
+
+
 
 
         },
@@ -517,17 +560,11 @@
                     //     .filter(client=>client.id>=(this.clientDataList[0].id-(this.maxClientsPerPage*this.currentClientPage)))
 
                     return [...this.clientDataList].slice((this.maxClientsPerPage*(this.currentClientPage-1)),(this.maxClientsPerPage*this.currentClientPage))
-
                 }
                 else{
-
                     return [...this.clientDataList]
                         .filter(client=>client.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
-
                 }
-
-
-
             },
 
         },
@@ -629,7 +666,10 @@
     .active h5{
         color: white !important;
     }
+    .incoming_msg{
+        margin-top: 2%;
 
+    }
     .incoming_msg_img {
         display: inline-block;
         width: 6%;

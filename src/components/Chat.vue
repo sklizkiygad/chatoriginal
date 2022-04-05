@@ -53,7 +53,7 @@
             <div
                  v-for="content in messages"
 
-                 :class="(userId == content.userid ? 'message current-user' : 'message')"
+                 :class="(content.role === 'User' ? 'message current-user' : 'message')"
             >
 <!--                    >-->
 
@@ -63,10 +63,10 @@
 <!--                </div>-->
 
                 <div class="message-inner ">
-                    <div class="username">{{content.username}}</div>
+                    <div class="username">{{content.name}}</div>
                     <div
-                            :style="(userId == content.userid ? {backgroundColor:bcol}:'background-color: #F3F3F3;')"
-                            class="content">{{content.content}}</div>
+                            :style="(content.role === 'User' ? {backgroundColor:bcol}:'background-color: #F3F3F3;')"
+                            class="content">{{content.message}}</div>
                 </div>
 
             </div>
@@ -178,7 +178,9 @@ export default {
                     console.log("Starting");
 
                    const response = await axios.post(`${this.myProxy}/api/users/add`,{},{params:userLog});
-                   this.userId=response.data.id;
+
+                 sessionStorage.setItem('user_id',response.data.id);
+                 this.userId=sessionStorage.getItem('user_id');
                    // const conn={
                    //     'id': this.userId
                    // }
@@ -190,16 +192,16 @@ export default {
 
 
                    this.sockets.subscribe('user_response', (data) => {
-
                         console.log('Сообщение получено');
+
+
                        const newMessage={
-
-                           username:'Admin',
-                           content:data.message,
-                           userid:111
+                           name:'Admin',
+                           message:data.message,
+                           role:'Admin',
                        }
-                       this.messages.push(newMessage);
 
+                       this.messages.push(newMessage);
                     });
                  }
             }
@@ -208,7 +210,6 @@ export default {
             }
 
          },
-
 
        sendMessage(){
            if(this.userMessage != null && this.userMessage !='')
@@ -224,11 +225,12 @@ export default {
                 this.userMessage=this.userMessage.trim();
                 const message={
                     user_id:this.userId,
-                    user_name:this.username,
-                    user_email:this.email,
+                    name:this.username,
                     message:this.userMessage,
-                    date:msgdate
+                    date:msgdate,
+                    role:'User',
                 }
+                this.messages.push(message);
                 //this.connection.send(JSON.stringify(message));
                 this.$socket.emit('user_message', message);
                 this.userMessage='';
