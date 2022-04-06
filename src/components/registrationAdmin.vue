@@ -47,22 +47,17 @@
 
                     console.log("Starting");
 
-                    // const adminLog={
-                    //     name:'admin',
-                    //     password:'sHq1U4oua8yZYAFqCFi4mRfmxB3vjp1sjvfAuxVM8hPywkHXG1QD77oguhwXMMPojF1mzy'};
-                        const adminLog={
-                        name:this.adminname,
-                        password:this.password};
 
+                         const adminLog={
+                         name:this.adminname,
+                         password:this.password};
+                     // const adminLog={
+                     //     name:'admin',
+                     //     password:'sHq1U4oua8yZYAFqCFi4mRfmxB3vjp1sjvfAuxVM8hPywkHXG1QD77oguhwXMMPojF1mzy'};
 
-                       // try{
-                       //     const response=await axios.put('http://localhost:8080/admin/login',{},{params:{
-                       //             name: this.adminname,
-                       //             password: this.password}});
-                       // }
                     try{
-                           const response=await axios.put(`${this.myProxy}/admin/login`,{},{params:adminLog});
-                        console.log(response.data.auth);
+                        const response=await axios.put(`${this.myProxy}/admin/login`,{},{params:adminLog});
+                        console.log(response.data);
                         sessionStorage.setItem('is_auth', response.data.auth.toString());
                         if(!response.data.auth){
                             this.errorAuth='Неверный логин или пароль!';
@@ -81,13 +76,14 @@
             },
             adminClose() {
 
+                this.$socket.disconnect();
                 sessionStorage.setItem('is_auth','false');
                 this.checkAuth();
                 this.adminname = null;
                 this.password = null;
             },
             checkAuth(){
-                //console.log(sessionStorage.getItem('is_auth'));
+
                 if(sessionStorage.getItem('is_auth')==='true' ){
                     this.isIn=true;
                 }

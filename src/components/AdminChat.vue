@@ -51,7 +51,7 @@
 
                         <div  v-if="clientOpen" class="status_list">
                             <ul>
-                                <li @click.prevent="chsStatus = 1" :class="{'activeStatus':chsStatus===1}">Активные</li>
+                                <li  @click.prevent="chsStatus = 1" :class="{'activeStatus':chsStatus===1}">Активные</li>
                                 <li @click.prevent="chsStatus = 2" :class="{'activeStatus':chsStatus===2}">Законченные</li>
                                 <li @click.prevent="chsStatus = 3" :class="{'activeStatus':chsStatus===3}">Бан</li>
                             </ul>
@@ -113,11 +113,15 @@
                                 <div class="chat_people"
 
                                 >
-                                    <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                                    <div class="chat_ib">
-                                        <h5>{{client.name}}  id:{{client.id}} <span class="chat_date">{{client.last_message.date}}</span></h5>
+
+                                    <div @click="endDialog(client.id)" class="chat_img" data-title="Закончить диалог"> <img  src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                                    <div  class="chat_ib">
+                                        <h5>{{client.name}} <span class="chat_date">{{client.last_message.date}}</span></h5>
+
                                         <p>{{client.last_message.message}}</p>
                                     </div>
+
+
                                 </div>
 
                             </div>
@@ -137,7 +141,7 @@
 
 
 
-                            <div style="width: 100%;height: 50px;background-color: #333333"></div>
+<!--                            <div style="width: 100%;height: 50px;background-color: #333333"></div>-->
 
 
                         </div>
@@ -263,7 +267,7 @@
 
 <!--                            </div>-->
 <!--                        </div>-->
-                        <div class="msg_history">
+                        <div class="msg_history" ref="chatter">
 <!--                            <div class="incoming_msg">-->
 <!--                                <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>-->
 <!--                                <div class="received_msg">-->
@@ -350,21 +354,15 @@
                 maxClientsPerPage:10,
                 adminMsg:'',
                 dialogMsgs:[]
-                // searchQuery:''
+
             }
         },
-        // props:{
-        //     connectionSocket:{
-        //         type:Object,
-        //         required:true
-        //     }
-        //
-        // },
+
         methods:{
             toClose(){
-               //this.connectionSocket.close();
+
                this.$emit('close')
-               // sessionStorage.setItem('is_auth','false');
+
 
             },
             openClient(){
@@ -381,30 +379,23 @@
             },
             setClass(event){
                 if(window.innerWidth<=640){
-
                     this.clientOpen=false;
                 }
-
                 this.messageOpen=true;
                 this.chsAct=event;
             },
             paginationOut(){
                 this.clientPages=Math.ceil(this.clientDataList.length/10);
-                //console.log(this.clientPages);
+                if(this.clientPages===1){
+                    this.clientPages=0;
+                }
 
             },
-
-            // subscribingAll(){
-            //     this.sockets.subscribe('admin_response', (data) => {
-            //         console.log(data);
-            //     });
-            // },
 
              getClients(){
                 try{
                     this.sockets.subscribe('admin_response', (data) => {
-
-                        //console.log(data);
+                        console.log(data);
                         if(data.new_chat){
                                          const newUser={
                                              id: data.user_id,
@@ -414,26 +405,39 @@
                                              date:data.date,
                                              last_message:data
                                          }
-                                         this.clientDataList.push(newUser)
+                                         this.clientDataList.unshift(newUser);
                         }
-
                         for(let i=0;i<this.clientDataList.length;i++) {
 
                             if (this.clientDataList[i].id == data.user_id)
                             {
                                 this.clientDataList[i].last_message=data;
+
                             }
                         }
-                        if(this.chsAct!=null){
-                            this.getMessages(this.chsAct);
+
+
+                        const message={
+                            name:"User",
+                            user_id: data.user_id,
+                            message: data.message,
+                            status:"User",
+                            date:this.dateFocuses()
                         }
+                        this.dialogMsgs.push(message);
+                        setTimeout(this.scrollToEnd,100);
+
+
+                        // if(this.chsAct!=null){
+                        //     this.getMessages(this.chsAct);
+                        // }
+
 
 
                     });
-
-
                     this.apiCallClients();
                      this.paginationOut();
+
                 }
                 catch(e){
                     alert('Проблемы с подключением');
@@ -441,41 +445,40 @@
                 }
             },
             async apiCallClients(){
+                let response=null;
+                this.clientDataList=[];
+                const config={
+                    headers:{
+                        Authorization: this.token
+                    },
+                    params:{
+                        limit:100,
+                        page:2,
+                    }
+                }
                 switch(this.chsStatus){
                     case 1:
                     {
-                        this.clientDataList=[];
-                        const response=await axios.get(`${this.myProxy}/api/users/all/status?status=Actived`);
-                        for(let i=0;i<response.data.length;i++)
-                        {
-                            this.clientDataList.push(response.data[i]);
+                        //response=await axios.get(`${this.myProxy}/api/users/all/status?status=Actived`);
 
-                        }
+                        response=await axios.get(`${this.myProxy}/api/users/all/status?status=Actived`,config);
+                        console.log(response);
                         break;
                     }
-
                    case 2:
                    {
-                       this.clientDataList=[];
-                       const response=await axios.get(`${this.myProxy}/api/users/all/status?status=Disabled`);
-                       for(let i=0;i<response.data.length;i++)
-                       {
-                           this.clientDataList.push(response.data[i]);
-
-                       }
+                       response=await axios.get(`${this.myProxy}/api/users/all/status?status=Disabled`,config);
                        break;
                    }
-
                     case 3:
                     {
-                        this.clientDataList=[];
-                        const response=await axios.get(`${this.myProxy}/api/users/all/status?status=Null`);
-                        for(let i=0;i<response.data.length;i++)
-                        {
-                            this.clientDataList.push(response.data[i]);
-                        }
+                        response=await axios.get(`${this.myProxy}/api/users/all/status?status=Null`,config);
                         break;
                     }
+                }
+                for(let i=0;i<response.data.length;i++)
+                {
+                    this.clientDataList.push(response.data[i]);
 
                 }
                 this.paginationOut();
@@ -483,81 +486,106 @@
             sendMessage(){
                 if(this.adminMsg != null && this.adminMsg !='')
                 {
-                    let now = new Date(),
-                        year=now.getFullYear().toString(),
-                        month=now.getMonth().toString(),
-                        day=now.getDate().toString(),
-                        hour=now.getHours().toString(),
-                        minute=now.getMinutes().toString();
-                    const msgdate=hour+':'+minute+'    |    '+day+'-'+month+'-'+year;
+                    // let now = new Date(),
+                    //     year=now.getFullYear().toString(),
+                    //     month=now.getMonth(),
+                    //     day=now.getDate().toString(),
+                    //     hour=now.getHours().toString(),
+                    //     minute=now.getMinutes().toString();
+                    // if (day < 10) day = '0' + day;
+                    // if (month < 10) month = '0' + month.toString();
+                    //
+                    // const msgdate=year+'-'+month+'-'+day+' '+hour+':'+minute;
                     this.adminMsg=this.adminMsg.trim();
                     const message={
                         name:"Admin",
                         user_id:this.chsAct,
                         message:this.adminMsg,
                         status:"Admin",
-                        date:msgdate
+                        date:this.dateFocuses()
                     }
 
                     for(let i=0;i<this.clientDataList.length;i++) {
                         if (this.clientDataList[i].id === message.user_id)
                         {
                             this.clientDataList[i].last_message=message;
-
                         }
                     }
                     this.dialogMsgs.push(message);
                     this.$socket.emit('admin_send_message', message);
                     this.adminMsg='';
                     console.log('Сообщение отправлено');
+
+                   // this.$refs.chatter.scrollTop = this.$refs.chatter.scrollHeight+500;
                 }
                 else{
                     alert("Введите сообщение");
                 }
+                setTimeout(this.scrollToEnd,100);
             },
             async getMessages(user_id){
                 this.setClass(user_id);
+
+
                 const sup={
-                    user_id:user_id
+                    headers:{ 'Authorization': this.token },
+
+                    params:{
+                        user_id:user_id
+                    }
+
                 }
-
-                const response = await axios.get(`${this.myProxy}/api/users/messages`,{params:sup});
-                //console.log(response.data);
+                const response = await axios.get(`${this.myProxy}/api/users/messages`,sup);
+                console.log(response.data);
                 this.dialogMsgs=[];
-
                 for(let i=0;i<response.data.length;i++)
                 {
                     this.dialogMsgs.push(response.data[i]);
+                }
+                setTimeout(this.scrollToEnd,100);
+            },
 
+            async endDialog(user_id){
+                let dat={
+                    status:'Disabled',
+                    id:user_id
+                }
+                await axios.post(`${this.myProxy}/api/users/new/status`,{},{params:dat});
 
-
+                for(let i=0;i<this.clientDataList.length;i++) {
+                    if (this.clientDataList[i].id === user_id)
+                    {
+                        console.log(i);
+                        this.clientDataList.splice(i,1);
+                    }
                 }
 
 
-
+            },
+            scrollToEnd(){
+                this.$refs.chatter.scrollTop = this.$refs.chatter.scrollHeight;
+            },
+            dateFocuses(){
+                let now = new Date(),
+                    year=now.getFullYear().toString(),
+                    month=now.getMonth(),
+                    day=now.getDate().toString(),
+                    hour=now.getHours().toString(),
+                    minute=now.getMinutes().toString();
+                if (day < 10) day = '0' + day;
+                if (month < 10) month = '0' + month.toString();
+                const msgdate=year+'-'+month+'-'+day+' '+hour+':'+minute;
+                return msgdate;
             }
         },
         created() {
-
             this.getClients();
-
-
-
-
         },
         computed:{
 
              searchedList(){
 
-                // return [...this.clientDataList]
-                //     .filter(client=>client.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
-
                 if(this.searchQuery===''){
-
-                    // return [...this.clientDataList]
-                    //     .filter(client=>client.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
-                    //     .filter(client=>client.id<=(this.clientDataList[0].id+(this.maxClientsPerPage*this.currentClientPage)))
-                    //     .filter(client=>client.id>=(this.clientDataList[0].id-(this.maxClientsPerPage*this.currentClientPage)))
 
                     return [...this.clientDataList].slice((this.maxClientsPerPage*(this.currentClientPage-1)),(this.maxClientsPerPage*this.currentClientPage))
                 }
@@ -570,7 +598,6 @@
         },
         watch:{
             chsStatus(){
-
                 this.apiCallClients();
             }
         }
@@ -638,6 +665,24 @@
         float: left;
         width: 11%;
     }
+    .chat_img:hover {
+        filter: grayscale(100%);
+        cursor: pointer;
+    }
+    .chat_img:hover::after {
+        content: attr(data-title); /* Выводим текст */
+        position: absolute; /* Абсолютное позиционирование */
+        left: 0; right: 0; bottom: 5px; /* Положение подсказки */
+        z-index: 1; /* Отображаем подсказку поверх других элементов */
+        background: rgba(0,42,167,0.6); /* Полупрозрачный цвет фона */
+        color: #fff; /* Цвет текста */
+        text-align: center; /* Выравнивание текста по центру */
+        font-family: Arial, sans-serif; /* Гарнитура шрифта */
+        font-size: 11px; /* Размер текста подсказки */
+        padding: 5px 10px; /* Поля */
+        border: 1px solid #333; /* Параметры рамки */
+
+    }
     .chat_ib {
         float: left;
         padding: 0 0 0 15px;
@@ -657,6 +702,8 @@
         /*max-height:94% ;*/
        height:calc(100vh - 125px);
         overflow-y: auto;
+
+        position: relative;
     }
 
 
@@ -800,6 +847,8 @@
 
     .pagination {
         display: inline-block;
+        /*position: absolute;*/
+        /*bottom: 0;*/
     }
 
     .pagination a {
