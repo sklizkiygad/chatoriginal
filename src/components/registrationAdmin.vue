@@ -41,34 +41,74 @@
 
         methods: {
             async logIn() {
+                // if (this.adminname != null  && this.password != null && this.adminname!=""  &&this.password!="") {
+                //     this.adminname = this.adminname.trim();
+                //
+                //
+                //     console.log("Starting");
+                //
+                //
+                //          const adminLog={
+                //          name:this.adminname,
+                //          password:this.password};
+                //      // const adminLog={
+                //      //     name:'admin',
+                //      //     password:'sHq1U4oua8yZYAFqCFi4mRfmxB3vjp1sjvfAuxVM8hPywkHXG1QD77oguhwXMMPojF1mzy'};
+                //
+                //     try{
+                //         const response=await axios.put(`${this.myProxy}/admin/login`,{},{params:adminLog});
+                //         console.log(response.data);
+                //         sessionStorage.setItem('is_auth', response.data.auth.toString());
+                //         if(!response.data.auth){
+                //             this.errorAuth='Неверный логин или пароль!';
+                //         }
+                //         sessionStorage.setItem('user',JSON.stringify(response.data.user));
+                //         this.checkAuth();
+                //
+                //     }
+                //        catch(e){
+                //            this.errorAuth='Неверный логин или пароль!';
+                //        }
+                //
+                // } else {
+                //     alert('Введите имя и пароль!');
+                // }
                 if (this.adminname != null  && this.password != null && this.adminname!=""  &&this.password!="") {
                     this.adminname = this.adminname.trim();
-
-
                     console.log("Starting");
-
-
-                         const adminLog={
-                         name:this.adminname,
-                         password:this.password};
-                     // const adminLog={
-                     //     name:'admin',
-                     //     password:'sHq1U4oua8yZYAFqCFi4mRfmxB3vjp1sjvfAuxVM8hPywkHXG1QD77oguhwXMMPojF1mzy'};
+                    const adminLog={
+                        name:this.adminname,
+                        password:this.password};
+                    // const adminLog={
+                    //     name:'admin',
+                    //     password:'sHq1U4oua8yZYAFqCFi4mRfmxB3vjp1sjvfAuxVM8hPywkHXG1QD77oguhwXMMPojF1mzy'};
 
                     try{
-                        const response=await axios.put(`${this.myProxy}/admin/login`,{},{params:adminLog});
-                        console.log(response.data);
-                        sessionStorage.setItem('is_auth', response.data.auth.toString());
-                        if(!response.data.auth){
-                            this.errorAuth='Неверный логин или пароль!';
-                        }
-                        sessionStorage.setItem('user',JSON.stringify(response.data.user));
-                        this.checkAuth();
+                       await axios.put(`${this.myProxy}/admin/login`,{},{params:adminLog})
+                           .then((res)=>{
+                               console.log(res);
+                               if(res.data.error){
+                                   this.errorAuth='Неверный логин или пароль!';
+                               }
+                               else{
+                                   sessionStorage.setItem('is_auth', res.data.auth.toString());
+                                   sessionStorage.setItem('user',JSON.stringify(res.data.user));
+                                    this.checkAuth();
+                               }
+
+                           })
+
+                        // sessionStorage.setItem('is_auth', response.data.auth.toString());
+                        // if(!response.data.auth){
+                        //     this.errorAuth='Неверный логин или пароль!';
+                        // }
+                        // sessionStorage.setItem('user',JSON.stringify(response.data.user));
+                        // this.checkAuth();
 
                     }
-                       catch(e){
-                           this.errorAuth='Неверный логин или пароль!';
-                       }
+                    catch(e){
+                        this.errorAuth='Неверный логин или пароль!';
+                    }
 
                 } else {
                     alert('Введите имя и пароль!');
