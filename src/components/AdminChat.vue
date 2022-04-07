@@ -26,14 +26,6 @@
 
                             </div>
 
-                            <!--                            <div class="srch_bar">-->
-
-                            <!--                                <div class="stylish-input-group">-->
-                            <!--                                    <input type="text" class="search-bar"  placeholder="Search" >-->
-                            <!--                                    <span class="input-group-addon">-->
-                            <!--                <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>-->
-                            <!--                </span> </div>-->
-                            <!--                            </div>-->
                             <div class="srch_bar">
                                 <h4
                                         @click="toClose"
@@ -41,14 +33,12 @@
                                 <div class="stylish-input-group" v-if="clientOpen">
                                     <input
                                             v-model="searchQuery"
-
-
-                                            type="text" class="search-bar" placeholder="Поиск">
+                                            type="text" class="search-bar"
+                                            placeholder="Поиск">
                                     <span class="input-group-addon">
-                                                                                <button type="button"> <i
-                                                                                        class="fa fa-search"
-                                                                                        aria-hidden="true"></i> </button>
-                                                                                </span></div>
+                                         <button type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                    </span>
+                                </div>
                             </div>
 
 
@@ -57,8 +47,7 @@
                         <div v-if="clientOpen" class="status_list">
                             <ul>
                                 <li @click.prevent="chsStatus = 1" :class="{'activeStatus':chsStatus===1}">Активные</li>
-                                <li @click.prevent="chsStatus = 2" :class="{'activeStatus':chsStatus===2}">Законченные
-                                </li>
+                                <li @click.prevent="chsStatus = 2" :class="{'activeStatus':chsStatus===2}">Законченные</li>
                                 <li @click.prevent="chsStatus = 3" :class="{'activeStatus':chsStatus===3}">Бан</li>
                             </ul>
 
@@ -66,37 +55,28 @@
 
                         <div class="inbox_chat" :style="{display: (clientOpen)?db:dn}">
 
-                            <div class="client_list"><transition-group name="fade">
-                                <div
-                                        class="chat_list" v-for="client in searchedList" :key="client.id"
-                                        :class="client.id === chsAct ? 'active_chat':null"
-
-                                        @click="getMessages(client.id)"
-                                >
-
-                                    <div class="chat_people"
-
-                                    >
-
-                                        <div @click="endDialog(client.id)" class="chat_img"
-                                             data-title="Закончить диалог"><img
-                                                src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+                            <div class="client_list">
+                                <transition-group name="fade">
+                                    <div
+                                            class="chat_list" v-for="client in searchedList" :key="client.id"
+                                            :class="client.id === chsAct ? 'active_chat':null"
+                                            @click="getMessages(client.id)">
+                                        <div class="chat_people">
+                                            <div @click="endDialog(client.id)"
+                                                 class="chat_img"
+                                                 data-title="Закончить диалог">
+                                                <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+                                            </div>
+                                            <div class="chat_ib">
+                                                <h5>{{client.name}}
+                                                    <span class="chat_date">{{client.last_message.date}}</span>
+                                                </h5>
+                                                <p>{{client.last_message.message}}</p>
+                                            </div>
                                         </div>
-                                        <div class="chat_ib">
-                                            <h5>{{client.name}} <span
-                                                    class="chat_date">{{client.last_message.date}}</span></h5>
-
-                                            <p>{{client.last_message.message}}</p>
-                                        </div>
-
-
                                     </div>
-
-
-
-                                </div>
-
-                            </transition-group></div>
+                                </transition-group>
+                            </div>
 
 
                             <div class="pagination" v-if="searchQuery===''">
@@ -104,67 +84,56 @@
                                 <a
                                         v-for="n in clientPages"
                                         :class="{'active':(currentClientPage)===n}"
-                                        @click.prevent="currentClientPage = n"
-                                >{{n}}</a>
+                                        @click.prevent="currentClientPage = n">{{n}}</a>
                                 <a v-if="clientPages>1">&raquo;</a>
                             </div>
                             <div style="height: 50px;background-color: #333333;width: 100%"></div>
-
                         </div>
 
 
                     </div>
-
-
                     <div class="mesgs" :style="{display: (messageOpen)?'flex':dn}">
                         <div class="butt" v-if="chsStatus===1">
                             <button @click="endDialog(chsAct)">Закрыть диалог</button>
                             <button>Забанить пользователя</button>
                         </div>
 
-
-
-
                         <div class="msg_history" ref="chatter">
-
                             <div
                                     v-for="message in dialogMsgs"
                                     :class="message.status === 'Admin'? 'outgoing_msg':'incoming_msg'">
-                                <div v-if="message.status !== 'Admin'" class="incoming_msg_img"><img
-                                        src="https://ptetutorials.com/images/user-profile.png" alt="sunil"></div>
+                                <div v-if="message.status !== 'Admin'" class="incoming_msg_img">
+                                    <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+                                </div>
                                 <div :class="message.status === 'Admin'? 'sent_msg':'received_msg'">
-
-
                                     <div :class="message.status === 'Admin'? 'sent_msg':'received_withd_msg'">
                                         <p>{{message.message}}</p>
-
                                         <span class="time_date"> {{message.date}}</span>
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
 
 
                         <div class="type_msg">
                             <div class="input_msg_write">
-                                <input v-on:keyup.enter="sendMessage" v-model="adminMsg" type="text" class="write_msg"
+                                <input v-on:keyup.enter="sendMessage"
+                                       v-model="adminMsg"
+                                       type="text"
+                                       class="write_msg"
                                        placeholder="Type a message"/>
-                                <button @click="sendMessage" class="msg_send_btn" type="button"><i
-                                        class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                                <button
+                                        @click="sendMessage"
+                                        class="msg_send_btn"
+                                        type="button">
+                                    <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+                                </button>
                             </div>
-
                         </div>
-
                     </div>
                 </div>
-
-
             </div>
         </div>
-
-
     </div>
 </template>
 
@@ -202,21 +171,15 @@
 
         methods: {
             toClose() {
-
                 this.$emit('close')
-
-
             },
             openClient() {
-
                 if (window.innerWidth <= 640) {
-
                     this.clientOpen = !this.clientOpen;
                     this.messageOpen = false;
                 } else {
                     this.clientOpen = true;
                 }
-
             },
             setClass(event) {
                 if (window.innerWidth <= 640) {
@@ -230,8 +193,6 @@
                 if (this.clientPages === 1) {
                     this.clientPages = 0;
                 }
-
-
             },
 
             getClients() {
@@ -250,7 +211,6 @@
                             this.clientDataList.unshift(newUser);
                         }
                         for (let i = 0; i < this.clientDataList.length; i++) {
-
                             if (this.clientDataList[i].id == data.user_id) {
                                 this.clientDataList[i].last_message = data;
                             }
@@ -279,7 +239,7 @@
                 this.clientDataList = [];
                 const config = {
                     headers: {
-                        Authorization: this.token
+                        Authorization: process.env.VUE_APP_TOKEN
                     },
                     params: {
                         limit: this.maxClientsPerPage,
@@ -288,10 +248,7 @@
                 }
                 switch (this.chsStatus) {
                     case 1: {
-                        //response=await axios.get(`${this.myProxy}/api/users/all/status?status=Actived`);
-
                         response = await axios.get(`${this.myProxy}/api/users/all/status?status=Actived`, config);
-
                         break;
                     }
                     case 2: {
@@ -303,18 +260,14 @@
                         break;
                     }
                 }
-
                 for (let i = 0; i < response.data.length; i++) {
                     this.clientDataList.push(response.data.users[i]);
                 }
-
-
                 this.paginationOut(response.data.length);
             },
             sendMessage() {
                 this.adminMsg = this.adminMsg.trim();
                 if (this.adminMsg != null && this.adminMsg != '') {
-
                     const message = {
                         name: "Admin",
                         user_id: this.chsAct,
@@ -322,7 +275,6 @@
                         status: "Admin",
                         date: this.dateFocuses()
                     }
-
                     console.log(message);
                     for (let i = 0; i < this.clientDataList.length; i++) {
                         if (this.clientDataList[i].id === message.user_id) {
@@ -340,17 +292,12 @@
                 setTimeout(this.scrollToEnd, 100);
             },
             async getMessages(user_id) {
-
                 this.setClass(user_id);
-
-
                 const sup = {
-                    headers: {'Authorization': this.token},
-
+                    headers: {'Authorization': process.env.VUE_APP_TOKEN},
                     params: {
                         user_id: user_id
                     }
-
                 }
                 const response = await axios.get(`${this.myProxy}/api/users/messages`, sup);
                 console.log(response.data);
@@ -362,16 +309,14 @@
             },
 
             async endDialog(user_id) {
-
                 let dat = {
                     headers: {
-                        Authorization: this.token
+                        Authorization: process.env.VUE_APP_TOKEN
                     },
                     params: {
                         status: 'Disabled',
                         id: user_id
                     }
-
                 }
                 await axios.post(`${this.myProxy}/api/users/new/status`, null, dat)
                     .then((res) => {
@@ -384,8 +329,6 @@
                         this.clientDataList.splice(i, 1);
                     }
                 }
-
-
             },
             scrollToEnd() {
                 this.$refs.chatter.scrollTop = this.$refs.chatter.scrollHeight;
@@ -408,11 +351,7 @@
         },
 
         computed: {
-
-
-
             searchedList() {
-
                 return [...this.clientDataList]
                 // if(this.searchQuery===''){
                 //
@@ -426,13 +365,13 @@
 
         },
         watch: {
-            currentClientPage(){
+            currentClientPage() {
                 this.apiCallClients();
 
             },
             chsStatus() {
                 this.apiCallClients();
-                this.messageOpen=false
+                this.messageOpen = false
             }
         }
     }
@@ -445,9 +384,6 @@
         width: 100vw;
         padding: 0;
         margin: 0;
-
-
-        /*max-width:1170px; margin:auto;*/
     }
 
     img {
@@ -465,12 +401,8 @@
 
     .inbox_msg {
         background-color: aliceblue;
-        /*border: 1px solid #c4c4c4;*/
-        /*border-left:1px solid black;*/
         clear: both;
-        /*overflow: hidden;*/
         height: 100vh;
-
     }
 
     .top_spac {
@@ -563,7 +495,6 @@
         font-size: 11px; /* Размер текста подсказки */
         padding: 5px 10px; /* Поля */
         border: 1px solid #333; /* Параметры рамки */
-
     }
 
     .chat_ib {
@@ -593,17 +524,16 @@
         /*max-height:94% ;*/
         height: calc(100vh - 125px);
         overflow-y: auto;
-        display:flex;
+        display: flex;
         flex-direction: column;
 
 
         position: relative;
     }
-    .client_list{
+
+    .client_list {
         flex: 1;
     }
-
-
 
     .active_chat {
         background: #ebebeb;
@@ -616,7 +546,6 @@
 
     .incoming_msg {
         margin-top: 2%;
-
     }
 
     .incoming_msg_img {
@@ -713,7 +642,6 @@
         width: 33px;
     }
 
-    /*.messaging { padding: 0 0 50px 0;}*/
     .msg_history {
 
         overflow-y: auto;
@@ -738,36 +666,29 @@
     .status_list {
 
     }
-.butt{
-    /*position: relative;*/
-    /*right:-50%;*/
-    /*width:50%;*/
-    /*display: flex;*/
-    /*justify-content: space-around*/
-    display: flex;
-    margin: -30px -15px 0 -25px;
-}
-.butt button{
-    background-color:#696969;
-    border: none;
-    color: white;
-    /*padding: 1% 2%;*/
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 15px;
-   /* margin: 4px 2px;*/
-    width: 50%;
 
-    border-left: 1px solid #AAAAAA;
-    cursor: pointer;
+    .butt {
+        display: flex;
+        margin: -30px -15px 0 -25px;
+    }
 
-}
+    .butt button {
+        background-color: #696969;
+        border: none;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 15px;
+        width: 50%;
+        border-left: 1px solid #AAAAAA;
+        cursor: pointer;
+
+    }
+
     .status_list ul {
         display: flex;
         list-style-type: none;
-        /*justify-content: space-around;*/
-
     }
 
     .status_list ul > li {
@@ -776,14 +697,7 @@
         border-bottom: 1px solid #c4c4c4;
         border-left: 1px solid #c4c4c4;
         cursor: pointer;
-
     }
-
-    /*.status_list ul>li:hover{
-        background-color: #AAAAAA;
-        color: white;
-        cursor: pointer;
-    }*/
 
     .status_list ul > li:hover:not(.activeStatus) {
         background-color: #AAAAAA;
@@ -798,8 +712,6 @@
 
     .pagination {
         display: inline-block;
-        /*position: absolute;*/
-        /*bottom: 0;*/
     }
 
     .pagination a {
@@ -847,8 +759,5 @@
             width: 100%;
             background-color: #f8f8f8;
         }
-
     }
-
-
 </style>

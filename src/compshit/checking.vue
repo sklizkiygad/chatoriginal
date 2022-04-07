@@ -57,9 +57,7 @@
 
         methods:{
             clickButton: function (data) {
-                console.log(this.$socket.disconnect());
-
-
+                console.log(process.env.VUE_APP_TOKEN);
             },
 
 

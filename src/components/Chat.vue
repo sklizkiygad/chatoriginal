@@ -1,26 +1,42 @@
 <template>
     <div class="base">
         <transition name="fade">
-            <div class="lowbe" :style="{backgroundColor:bcol}" @click="chiba" v-if="!isHigh">
+            <div class="lowbe"
+                 :style="{backgroundColor:bcol}"
+                 @click="chiba"
+                 v-if="!isHigh">
                 <p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                         class="bi bi-arrow-down-right-circle-fill" viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="16"
+                         height="16"
+                         fill="currentColor"
+                         class="bi bi-arrow-down-right-circle-fill"
+                         viewBox="0 0 16 16">
                         <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm5.904-2.803a.5.5 0 1 0-.707.707L9.293 10H6.525a.5.5 0 0 0 0 1H10.5a.5.5 0 0 0 .5-.5V6.525a.5.5 0 0 0-1 0v2.768L5.904 5.197z"/>
                     </svg>
                     Жмакни
                 </p>
             </div>
             <div v-else>
-                <div class="view login" v-if="!isIn" :style="{backgroundColor:bcol}">
+                <div class="view login"
+                     v-if="!isIn"
+                     :style="{backgroundColor:bcol}">
                     <header>
-                        <button class="cloi" @click="isHigh=false">Скрыть
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                        <button
+                                class="cloi"
+                                @click="isHigh=false">Скрыть
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="16"
+                                 height="16"
+                                 fill="currentColor"
+                                 class="bi bi-x-octagon-fill"
+                                 viewBox="0 0 16 16">
                                 <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353L11.46.146zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
                             </svg>
                         </button>
                     </header>
-                    <form class="login-form" @submit.prevent="logIn">
+                    <form class="login-form"
+                          @submit.prevent="logIn">
                         <div class="form-inner">
                             <h1>Регистрация</h1>
                             <label for="username">Имя (2-15 символов)</label>
@@ -44,26 +60,27 @@
                     </form>
                 </div>
 
-                <div class="view chat" :style="{backgroundColor:bcol}" v-else>
+                <div class="view chat"
+                     :style="{backgroundColor:bcol}"
+                     v-else>
                     <header>
-                        <button class="cloi" @click="isHigh=false">Скрыть</button>
-                        <button class="logout" @click="logOut">Выйти</button>
-                        <h1 style="max-width: 200px;text-overflow: ellipsis;font-size: 150%">Здравствуйте,
-                            {{username}}</h1>
+                        <button
+                                class="cloi"
+                                @click="isHigh=false">Скрыть
+                        </button>
+                        <button
+                                class="logout"
+                                @click="logOut">Выйти
+                        </button>
+                        <h1 style="max-width: 200px;text-overflow: ellipsis;font-size: 150%">
+                            Здравствуйте, {{username}}
+                        </h1>
                     </header>
                     <section class="chat-box" ref="chatter">
                         <div
                                 v-for="content in messages"
-
                                 :class="(content.role === 'User' ? 'message current-user' : 'message')"
                         >
-                            <!--                    >-->
-
-                            <!--                <div class="message-inner ">-->
-                            <!--                    <div class="username">biba</div>-->
-                            <!--                    <div class="content">i am biba</div>-->
-                            <!--                </div>-->
-
                             <div class="message-inner">
                                 <div class="username">{{content.name}}</div>
                                 <div
@@ -71,11 +88,7 @@
                                         class="content">{{content.message}}
                                 </div>
                             </div>
-
-
                         </div>
-
-
                     </section>
 
 
@@ -93,7 +106,6 @@
                         </form>
                     </footer>
                 </div>
-
             </div>
         </transition>
 
@@ -113,25 +125,19 @@
             return {
                 connection: null,
                 username: null,
-                //messages:[],
                 messages: [],
                 userMessage: null,
                 isHigh: false,
                 logError: null,
-
                 isIn: false,
                 userId: null,
-
-                //bcol:"#ea526f",
                 bcol: "#7B68EE",
                 email: null
             }
         },
         sockets: {
             connect: function () {
-
                 console.log('socket connected');
-
             },
 
         },
@@ -141,13 +147,9 @@
                 if (this.isIn) {
                     setTimeout(this.scrollToEnd, 100)
                 }
-
-
             },
 
             async logIn() {
-
-
                 if (this.email != null || this.username != null) {
                     this.username = this.username.trim();
 
@@ -159,21 +161,13 @@
                         this.logError = null;
 
                         const userLog = {
-
                             params: {
-                                // name:'sops',
-                                // email:'as@ioop.r'
                                 name: this.username,
                                 email: this.email
                             }
                         };
 
                         console.log("Starting");
-
-
-                        //const response = await axios.post(`${this.myProxy}/api/users/add`,userLog);
-                        //const response = await axios.post(`${this.myProxy}/api/users/add?name=sops&email=as@ioop.r`);
-
                         await axios.post(`${this.myProxy}/api/users/add`, null, userLog)
                             .then((res) => {
                                 if (res.data.error) {
@@ -183,20 +177,16 @@
                                 } else {
                                     console.log('all is ok');
                                     console.log(res.data);
-
                                     sessionStorage.setItem('user_id', res.data.id);
                                     sessionStorage.setItem('user_email', res.data.email);
                                     sessionStorage.setItem('user_name', res.data.name);
                                     this.checkAuth();
                                 }
                             })
-
-
                     }
                 } else {
                     this.logError = 'Введите имя!';
                 }
-
             },
             dateFocuses() {
                 let now = new Date(),
@@ -209,14 +199,11 @@
                 if (month < 10) month = '0' + month.toString();
                 const msgdate = year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
                 return msgdate;
-            }
-            ,
+            },
 
             sendMessage() {
                 this.userMessage = this.userMessage.trim();
                 if (this.userMessage != null && this.userMessage != '') {
-
-
                     const message = {
                         user_id: sessionStorage.getItem('user_id'),
                         name: sessionStorage.getItem('user_name'),
@@ -234,7 +221,6 @@
                 } else {
                     alert("Введите сообщение");
                 }
-
             },
             logOut() {
                 this.isIn = false;
@@ -254,11 +240,10 @@
                     this.messages.push(newMessage);
                     setTimeout(this.scrollToEnd, 100)
                 });
-
             },
             async getMessages() {
                 const sup = {
-                    headers: {Authorization: this.token},
+                    headers: {Authorization: proccess.env.VUE_APP_TOKEN},
                     params: {
                         user_id: sessionStorage.getItem('user_id')
                     }
@@ -286,10 +271,7 @@
                         if (this.isHigh) {
                             this.scrollToEnd();
                         }
-
                     })
-
-
             },
             checkAuth() {
                 if (sessionStorage.getItem('user_id') !== 'undefined' && sessionStorage.getItem('user_id') !== null) {
@@ -301,7 +283,6 @@
                 } else {
                     this.isIn = false;
                 }
-
 
 
             },
@@ -337,7 +318,6 @@
     }
 
     .lowbe {
-
         background-color: #ea526f;
         position: fixed;
         bottom: 0;
@@ -347,8 +327,6 @@
         text-align: center;
         cursor: pointer;
         border-radius: 5px;
-
-
     }
 
     .lowbe p {
@@ -360,22 +338,17 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-
         background-color: #ea526f;
         position: fixed;
         height: 60%;
         right: 0;
         bottom: 0;
         min-height: 380px;
-
-
         &.login {
             header {
-                /*position: relative;*/
                 display: block;
                 width: 100%;
                 padding: 50px 30px 10px;
-
                 .logout {
                     position: absolute;
                     top: 15px;
@@ -384,7 +357,6 @@
                     border: none;
                     outline: none;
                     background: none;
-
                     color: #FFF;
                     font-size: 18px;
                     margin-bottom: 10px;
@@ -484,7 +456,6 @@
             flex-direction: column;
 
             header {
-                /*position: relative;*/
                 display: block;
                 width: 100%;
                 padding: 50px 30px 10px;
@@ -535,7 +506,6 @@
                         .content {
                             display: inline-block;
                             padding: 10px 20px;
-                            /*background-color: #F3F3F3;*/
                             border-radius: 15px;
                             color: #333;
                             font-size: 18px;
@@ -557,7 +527,6 @@
                             .content {
                                 color: #FFF;
                                 font-weight: 600;
-                                /*background-color: #ea526f;*/
                             }
                         }
                     }
@@ -574,8 +543,6 @@
             }
 
             .chat-box::-webkit-scrollbar-thumb {
-
-                /* background-color: #ea526f;*/
                 background-color: #C0C0C0;
                 border-radius: 15px;
 
@@ -641,7 +608,6 @@
         outline: none;
         background: none;
         color: #FFF;
-        /*color: #AAA;*/
         font-size: 18px;
         margin-bottom: 10px;
         text-align: left;
