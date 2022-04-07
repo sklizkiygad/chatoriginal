@@ -65,6 +65,7 @@
                         </div>
 
                         <div class="inbox_chat" :style="{display: (clientOpen)?db:dn}">
+
                             <div class="client_list"><transition-group name="fade">
                                 <div
                                         class="chat_list" v-for="client in searchedList" :key="client.id"
@@ -72,6 +73,7 @@
 
                                         @click="getMessages(client.id)"
                                 >
+
                                     <div class="chat_people"
 
                                     >
@@ -89,6 +91,8 @@
 
 
                                     </div>
+
+
 
                                 </div>
 
@@ -113,6 +117,12 @@
 
 
                     <div class="mesgs" :style="{display: (messageOpen)?'flex':dn}">
+                        <div class="butt" v-if="chsStatus===1">
+                            <button @click="endDialog(chsAct)">Закрыть диалог</button>
+                            <button>Забанить пользователя</button>
+                        </div>
+
+
 
 
                         <div class="msg_history" ref="chatter">
@@ -144,7 +154,9 @@
                                 <button @click="sendMessage" class="msg_send_btn" type="button"><i
                                         class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
                             </div>
+
                         </div>
+
                     </div>
                 </div>
 
@@ -300,8 +312,9 @@
                 this.paginationOut(response.data.length);
             },
             sendMessage() {
+                this.adminMsg = this.adminMsg.trim();
                 if (this.adminMsg != null && this.adminMsg != '') {
-                    this.adminMsg = this.adminMsg.trim();
+
                     const message = {
                         name: "Admin",
                         user_id: this.chsAct,
@@ -419,6 +432,7 @@
             },
             chsStatus() {
                 this.apiCallClients();
+                this.messageOpen=false
             }
         }
     }
@@ -451,10 +465,12 @@
 
     .inbox_msg {
         background-color: aliceblue;
-        border: 1px solid #c4c4c4;
+        /*border: 1px solid #c4c4c4;*/
+        /*border-left:1px solid black;*/
         clear: both;
         /*overflow: hidden;*/
         height: 100vh;
+
     }
 
     .top_spac {
@@ -559,12 +575,14 @@
     .chat_people {
         overflow: hidden;
         clear: both;
+        flex: 1;
     }
 
     .chat_list {
         border-bottom: 1px solid #c4c4c4;
         margin: 0;
         padding: 18px 16px 10px;
+        display: flex;
     }
 
     .chat_list:hover {
@@ -611,6 +629,7 @@
         padding: 0 0 0 10px;
         vertical-align: top;
         width: 92%;
+        word-break: break-all;
     }
 
     .received_withd_msg p {
@@ -656,12 +675,13 @@
 
     .outgoing_msg {
         overflow: hidden;
-        margin: 26px 0 26px;
+        margin: 26px 15px 26px;
     }
 
     .sent_msg {
         float: right;
-        width: 46%;
+
+        word-break: break-all;
     }
 
     .input_msg_write input {
@@ -718,7 +738,31 @@
     .status_list {
 
     }
+.butt{
+    /*position: relative;*/
+    /*right:-50%;*/
+    /*width:50%;*/
+    /*display: flex;*/
+    /*justify-content: space-around*/
+    display: flex;
+    margin: -30px -15px 0 -25px;
+}
+.butt button{
+    background-color:#696969;
+    border: none;
+    color: white;
+    /*padding: 1% 2%;*/
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+   /* margin: 4px 2px;*/
+    width: 50%;
 
+    border-left: 1px solid #AAAAAA;
+    cursor: pointer;
+
+}
     .status_list ul {
         display: flex;
         list-style-type: none;

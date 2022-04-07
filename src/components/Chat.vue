@@ -171,29 +171,25 @@
                         console.log("Starting");
 
 
-                            //const response = await axios.post(`${this.myProxy}/api/users/add`,userLog);
-                            //const response = await axios.post(`${this.myProxy}/api/users/add?name=sops&email=as@ioop.r`);
+                        //const response = await axios.post(`${this.myProxy}/api/users/add`,userLog);
+                        //const response = await axios.post(`${this.myProxy}/api/users/add?name=sops&email=as@ioop.r`);
 
-                            await axios.post(`${this.myProxy}/api/users/add`, null, userLog)
-                                .then((res) => {
-                                    if(res.data.error){
-                                        alert("Ошибка соединения");
-                                        this.logError="Введите верное имя";
-                                        this.isIn=false;
-                                    }
-                                    else{
-                                        console.log('all is ok');
-                                        console.log(res.data);
+                        await axios.post(`${this.myProxy}/api/users/add`, null, userLog)
+                            .then((res) => {
+                                if (res.data.error) {
+                                    alert("Ошибка соединения");
+                                    this.logError = "Введите верное имя";
+                                    this.isIn = false;
+                                } else {
+                                    console.log('all is ok');
+                                    console.log(res.data);
 
-                                            sessionStorage.setItem('user_id', res.data.id);
-                                            sessionStorage.setItem('user_email', res.data.email);
-                                            sessionStorage.setItem('user_name', res.data.name);
-                                            this.checkAuth();
-                                    }
-                                })
-
-
-
+                                    sessionStorage.setItem('user_id', res.data.id);
+                                    sessionStorage.setItem('user_email', res.data.email);
+                                    sessionStorage.setItem('user_name', res.data.name);
+                                    this.checkAuth();
+                                }
+                            })
 
 
                     }
@@ -202,7 +198,7 @@
                 }
 
             },
-            dateFocuses(){
+            dateFocuses() {
                 let now = new Date(),
                     year = now.getFullYear().toString(),
                     month = now.getMonth(),
@@ -217,9 +213,10 @@
             ,
 
             sendMessage() {
+                this.userMessage = this.userMessage.trim();
                 if (this.userMessage != null && this.userMessage != '') {
 
-                    this.userMessage = this.userMessage.trim();
+
                     const message = {
                         user_id: sessionStorage.getItem('user_id'),
                         name: sessionStorage.getItem('user_name'),
@@ -245,7 +242,7 @@
                 this.$socket.disconnect();
                 sessionStorage.clear();
             },
-            userResponce(){
+            userResponce() {
                 this.$socket.emit('connected', {id: sessionStorage.getItem('user_id')});
                 this.sockets.subscribe('user_response', (data) => {
                     console.log('Сообщение получено');
@@ -266,67 +263,47 @@
                         user_id: sessionStorage.getItem('user_id')
                     }
                 }
-               await axios.get(`${this.myProxy}/api/users/messages`, sup)
-                   .then((res)=>{
-                       console.log(res);
-                       if(res.data.error){
-                           alert('ошибка соединения');
-                       }
-                       else{
-                           console.log(res);
-                           this.messages = [];
-                           let message = {};
-                           for (let i = 0; i < res.data.length; i++) {
-                               message = {
-                                   user_id: res.data[i].user_id,
-                                   name: ((res.data[i].status) === 'Admin' ? 'Admin' : sessionStorage.getItem('user_name')),
-                                   message: res.data[i].message,
-                                   role: ((res.data[i].status) === 'Admin' ? 'Admin' : 'User')
-                               }
-                              this.messages.push(message);
-                           }
+                await axios.get(`${this.myProxy}/api/users/messages`, sup)
+                    .then((res) => {
+                        console.log(res);
+                        if (res.data.error) {
+                            alert('ошибка соединения');
+                        } else {
+                            console.log(res);
+                            this.messages = [];
+                            let message = {};
+                            for (let i = 0; i < res.data.length; i++) {
+                                message = {
+                                    user_id: res.data[i].user_id,
+                                    name: ((res.data[i].status) === 'Admin' ? 'Admin' : sessionStorage.getItem('user_name')),
+                                    message: res.data[i].message,
+                                    role: ((res.data[i].status) === 'Admin' ? 'Admin' : 'User')
+                                }
+                                this.messages.push(message);
+                            }
 
-                       }
-                       if(this.isHigh){
-                           this.scrollToEnd();
-                       }
+                        }
+                        if (this.isHigh) {
+                            this.scrollToEnd();
+                        }
 
-                   })
+                    })
 
 
             },
             checkAuth() {
                 if (sessionStorage.getItem('user_id') !== 'undefined' && sessionStorage.getItem('user_id') !== null) {
-                    this.username=sessionStorage.getItem('user_name');
-                    this.isIn=true;
+                    this.username = sessionStorage.getItem('user_name');
+                    this.isIn = true;
                     //this.$socket.emit('connected', {id: sessionStorage.getItem('user_id')});
                     this.getMessages();
                     this.userResponce();
-                }
-                else{
-                    this.isIn=false;
+                } else {
+                    this.isIn = false;
                 }
 
 
-                // if (sessionStorage.getItem('user_id') !== 'undefined') {
-                //
-                //     this.isIn = true;
-                //     this.$socket.emit('connected', {id: this.userId});
-                //     this.getMessages(this.userId);
-                //     this.sockets.subscribe('user_response', (data) => {
-                //         console.log('Сообщение получено');
-                //         const newMessage = {
-                //             name: 'Admin',
-                //             message: data.message,
-                //             role: 'Admin',
-                //         }
-                //         this.messages.push(newMessage);
-                //         setTimeout(this.scrollToEnd, 100)
-                //     });
-                //
-                // } else {
-                //     this.isIn = false;
-                // }
+
             },
             scrollToEnd() {
                 this.$refs.chatter.scrollTop = this.$refs.chatter.scrollHeight;
@@ -559,11 +536,13 @@
                             display: inline-block;
                             padding: 10px 20px;
                             /*background-color: #F3F3F3;*/
-                            border-radius: 999px;
+                            border-radius: 15px;
                             color: #333;
                             font-size: 18px;
                             line-height: 1.2em;
                             text-align: left;
+                            word-break: break-all;
+                            max-width: 250px;
                         }
                     }
 
