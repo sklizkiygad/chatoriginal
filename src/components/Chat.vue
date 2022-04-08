@@ -237,14 +237,22 @@
             userResponce() {
                 this.$socket.emit('connected', {id: sessionStorage.getItem('user_id')});
                 this.sockets.subscribe('user_response', (data) => {
-                    console.log('Сообщение получено');
-                    const newMessage = {
-                        name: 'Admin',
-                        message: data.message,
-                        role: 'Admin',
+                    if(data.error){
+                        console.log(data);
+                        alert('Проблемы с серваком')
                     }
-                    this.messages.push(newMessage);
-                    setTimeout(this.scrollToEnd, 100)
+                    else{
+                        console.log('Сообщение получено');
+                        const newMessage = {
+                            name: 'Admin',
+                            message: data.message,
+                            role: 'Admin',
+                        }
+                        this.messages.push(newMessage);
+                        setTimeout(this.scrollToEnd, 100)
+
+                    }
+
                 });
             },
             async getMessages() {

@@ -1,10 +1,5 @@
 <template>
     <router-view></router-view>
-<!--    <div class="base">-->
-
-<!--&lt;!&ndash;      <Chat />&ndash;&gt;-->
-<!--&lt;!&ndash;      <AdminChat/>&ndash;&gt;-->
-<!--    </div>-->
 </template>
 
 <script>
