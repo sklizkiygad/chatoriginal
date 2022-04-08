@@ -72,7 +72,7 @@
                                 class="logout"
                                 @click="logOut">Выйти
                         </button>
-                        <h1 style="max-width: 200px;text-overflow: ellipsis;font-size: 150%">
+                        <h1 style="max-width: 250px;overflow: hidden;font-size: 110%">
                             Здравствуйте, {{username}}
                         </h1>
                     </header>
@@ -94,9 +94,15 @@
 
                     <footer>
                         <form @submit.prevent="sendMessage">
-                            <input
+<!--                            <input-->
+<!--                                    v-model="userMessage"-->
+<!--                                    type="text"-->
+<!--                                    placeholder="Написать сообщение..."/>-->
+                            <textarea
+
                                     v-model="userMessage"
-                                    type="text"
+                                    rows="2"
+                                    cols="4"
                                     placeholder="Написать сообщение..."/>
                             <input
                                     :style="{backgroundColor:bcol}"
@@ -243,7 +249,7 @@
             },
             async getMessages() {
                 const sup = {
-                    headers: {Authorization: proccess.env.VUE_APP_TOKEN},
+                    headers: {Authorization: process.env.VUE_APP_TOKEN},
                     params: {
                         user_id: sessionStorage.getItem('user_id')
                     }
@@ -552,7 +558,7 @@
                 position: sticky;
                 bottom: 0px;
                 background-color: #FFF;
-                padding: 30px;
+                padding: 10px;
                 box-shadow: 0px 0px 12px rgba(100, 100, 100, 0.2);
 
                 form {
@@ -571,6 +577,28 @@
 
                         color: #333;
                         font-size: 18px;
+                        box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+                        background-color: #F3F3F3;
+                        transition: 0.4s;
+
+                        &::placeholder {
+                            color: #888;
+                            transition: 0.4s;
+                        }
+                    }
+                    textarea {
+                        flex: 1 1 100%;
+                        appearance: none;
+                        border: none;
+                        outline: none;
+                        /*background: none;*/
+                        display: block;
+                        width: 100%;
+                        padding: 1px 5px;
+                        border-radius: 8px 0px 0px 8px;
+                        resize: none;
+                        color: #333;
+                        font-size: 15px;
                         box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
                         background-color: #F3F3F3;
                         transition: 0.4s;
@@ -608,7 +636,7 @@
         outline: none;
         background: none;
         color: #FFF;
-        font-size: 18px;
+        /*font-size: 18px;*/
         margin-bottom: 10px;
         text-align: left;
     }

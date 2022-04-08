@@ -1,7 +1,7 @@
 import Chat from "@/components/Chat";
 import registrationAdmin from "@/components/registrationAdmin";
-import {createRouter, createWebHashHistory, createWebHistory} from "vue-router";
-import checking from "@/compshit/checking";
+import {createRouter, createWebHistory} from "vue-router";
+
 
 
 const routes=[
@@ -14,15 +14,10 @@ const routes=[
         path:'/admin',
         component:registrationAdmin
     },
-    {
-        path:'/checking',
-        component:checking
-    },
 ]
 
 const router= createRouter({
     routes,
-    //history:createWebHistory(process.env.BASE_URL)
    // history:createWebHashHistory(process.env.BASE_URL)
     history:createWebHistory(process.env.BASE_URL)
 })

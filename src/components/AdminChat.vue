@@ -117,11 +117,17 @@
 
                         <div class="type_msg">
                             <div class="input_msg_write">
-                                <input v-on:keyup.enter="sendMessage"
-                                       v-model="adminMsg"
-                                       type="text"
-                                       class="write_msg"
-                                       placeholder="Type a message"/>
+<!--                                <input v-on:keyup.enter="sendMessage"-->
+<!--                                       v-model="adminMsg"-->
+<!--                                       type="text"-->
+<!--                                       class="write_msg"-->
+<!--                                       placeholder="Type a message"/>-->
+                                <textarea
+                                        v-model="adminMsg"
+                                        class="write_msg"
+                                        cols="30"
+                                        rows="4"
+                                        placeholder="Введите сообщение"/>
                                 <button
                                         @click="sendMessage"
                                         class="msg_send_btn"
@@ -731,6 +737,14 @@
 
     .pagination a:hover:not(.active) {
         background-color: #ddd;
+    }
+    .write_msg{
+        background: none;
+        outline: none;
+        border: none;
+        width: 94%;
+        resize: none;
+
     }
 
 
