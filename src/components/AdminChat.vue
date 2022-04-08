@@ -309,26 +309,29 @@
             },
 
             async endDialog(user_id) {
-                let dat = {
-                    headers: {
-                        Authorization: process.env.VUE_APP_TOKEN
-                    },
-                    params: {
-                        status: 'Disabled',
-                        id: user_id
+                if (confirm("Вы уверены что хотите закончить диалог с пользователем?")) {
+                    let dat = {
+                        headers: {
+                            Authorization: process.env.VUE_APP_TOKEN
+                        },
+                        params: {
+                            status: 'Disabled',
+                            id: user_id
+                        }
                     }
-                }
-                await axios.post(`${this.myProxy}/api/users/new/status`, null, dat)
-                    .then((res) => {
-                        console.log(res);
-                    })
+                    await axios.post(`${this.myProxy}/api/users/new/status`, null, dat)
+                        .then((res) => {
+                            console.log(res);
+                        })
 
-                for (let i = 0; i < this.clientDataList.length; i++) {
-                    if (this.clientDataList[i].id === user_id) {
-                        console.log(i);
-                        this.clientDataList.splice(i, 1);
+                    for (let i = 0; i < this.clientDataList.length; i++) {
+                        if (this.clientDataList[i].id === user_id) {
+                            console.log(i);
+                            this.clientDataList.splice(i, 1);
+                        }
                     }
                 }
+
             },
             scrollToEnd() {
                 this.$refs.chatter.scrollTop = this.$refs.chatter.scrollHeight;

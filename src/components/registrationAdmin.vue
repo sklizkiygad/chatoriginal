@@ -49,6 +49,10 @@
                         name: this.adminname,
                         password: this.password
                     };
+                    // const adminLog = {
+                    //   name: 'admin'
+                    //     password: 'sHq1U4oua8yZYAFqCFi4mRfmxB3vjp1sjvfAuxVM8hPywkHXG1QD77oguhwXMMPojF1mzy'
+                    // };
                     await axios.put(`${this.myProxy}/admin/login`, {}, {params: adminLog})
                         .then((res) => {
                             console.log(res);
