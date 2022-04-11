@@ -19,18 +19,13 @@
 </script>
 
 <style >
-    html,body{
-        margin: 0;
-    }
-    p{
-       margin-bottom: 0;
-    }
-    .base{
-        height: 100vh;
-        background-image: url("../public/img/nezuko.jpg");
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center;
-    }
+    /*html,body{*/
+    /*    margin: 0;*/
+    /*    overflow: hidden;*/
+    /*}*/
+    /*p{*/
+    /*   margin-bottom: 0;*/
+    /*}*/
+
 
 </style>
