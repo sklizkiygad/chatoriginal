@@ -146,7 +146,8 @@ img {
 }
 
 .incoming_msg {
-    margin-top: 2%;
+    /*margin-top: 1%;*/
+    margin-bottom: 1%;
 }
 
 .incoming_msg_img {
@@ -244,6 +245,7 @@ img {
 }
 
 .msg_history {
+
 
     overflow-y: auto;
 }
