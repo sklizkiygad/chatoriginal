@@ -1,6 +1,7 @@
-import Chat from "@/components/Chat";
-import registrationAdmin from "@/components/registrationAdmin";
+import Chat from "@/pages/Chat/Chat";
+
 import {createRouter, createWebHistory} from "vue-router";
+import AdminPanel from "@/pages/AdminPanel/AdminPanel";
 
 
 
@@ -12,7 +13,7 @@ const routes=[
 
     {
         path:'/admin',
-        component:registrationAdmin
+        component:AdminPanel
     },
 ]
 

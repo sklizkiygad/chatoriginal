@@ -3,8 +3,8 @@
 </template>
 
 <script>
-    import Chat from "@/components/Chat";
-    import AdminChat from "@/components/AdminChat";
+    import Chat from "@/pages/Chat/Chat";
+    import AdminChat from "@/components/AdminChat/AdminChat";
 
     export default {
 
