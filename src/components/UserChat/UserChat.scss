@@ -175,21 +175,38 @@
           appearance: none;
           border: none;
           outline: none;
-          background: none;
           display: block;
-          padding: 10px 15px;
-          border-radius: 0px 8px 8px 0px;
+          /*padding: 10px 15px;*/
+          /*border-radius: 0px 8px 8px 0px;*/
           background-color: #ea526f;
           color: #FFF;
-          font-size: 18px;
-          font-weight: 700;
+          /*font-size: 18px;*/
+          /*font-weight: 700;*/
         }
+
+
+        label{
+            appearance: none;
+            border: 1px solid white;
+            outline: none;
+            display: block;
+            background-color: #ea526f;
+            color: #FFF;
+
+        }
+        label:first-child{
+          border-radius: 0px 8px 0px 0px;
+        }
+        label:nth-child(3){
+          border-radius: 0px 0px 8px 0px;
+        }
+
       }
     }
   }
 }
 
-.cloi {
+.cloi{
   position: absolute;
   top: 15px;
   left: 15px;

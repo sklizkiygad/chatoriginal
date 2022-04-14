@@ -80,7 +80,7 @@ methods:{
             if (!this.username || this.username.length > 15 || this.username.length < 2) {
                 this.logError = 'Введите верное имя';
             } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this.email)) {
-                this.logError = 'Wrong email!';
+                this.logError = 'Неправильный email!';
             } else {
                 this.logError = null;
                 const userLog = {
