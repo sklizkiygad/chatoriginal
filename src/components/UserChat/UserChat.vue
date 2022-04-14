@@ -33,7 +33,8 @@
                         <footer>
                             <form @submit.prevent="sendMessage">
                                 <textarea
-
+                                        ref="inpMes"
+                                        @keypress.enter="sendMessage"
                                         v-model="userMessage"
                                         rows="2"
                                         cols="4"
@@ -83,6 +84,7 @@
                 this.$emit('collapse')
             },
             sendMessage() {
+                console.log(this.$refs.inpMes.target);
                 if (this.userMessage != null && this.userMessage != '') {
                     this.userMessage = this.userMessage.trim();
                     if (this.userMessage != null && this.userMessage != ''){
@@ -98,7 +100,6 @@
                         this.messages.push(message);
                         this.userMessage = '';
                         console.log('Сообщение отправлено');
-
                     }
                     else {
                         alert("Введите сообщение");

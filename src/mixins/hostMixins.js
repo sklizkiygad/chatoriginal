@@ -34,6 +34,9 @@ export default {
                 }
                 else{
                     console.log('Сообщение получено');
+
+                    console.log(data);
+
                     const newMessage = {
                         name: 'Admin',
                         message: data.message,

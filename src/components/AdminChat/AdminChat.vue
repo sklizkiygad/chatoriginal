@@ -113,19 +113,45 @@
 
 
                         <div class="type_msg">
+
                             <div class="input_msg_write">
                                 <textarea
+                                        @keypress.enter="sendMessage"
                                         v-model="adminMsg"
                                         class="write_msg"
                                         cols="30"
                                         rows="4"
                                         placeholder="Введите сообщение"/>
-                                <button
-                                        @click="sendMessage"
-                                        class="msg_send_btn"
-                                        type="button">
-                                    <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
-                                </button>
+
+
+                                    <button
+                                            @click="sendMessage"
+                                            class="msg_send_btn"
+                                            type="button">
+                                        <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+                                    </button>
+                                <label  class="file_uploader" for="file"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" class="bi bi-file-earmark-arrow-down" viewBox="0 -4 10 20">
+                                    <path d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293V6.5z"/>
+                                    <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
+                                </svg></label>
+                                    <input style="display: none" type="file" id="file" v-on:change="handleFileUpload" ref="file" />
+                                <div style="display: flex;flex-wrap: wrap"
+                                        >
+                                    <div style="display: flex;flex-direction: column"
+                                            v-if="files.length>0"
+                                            v-for="file in files">
+
+                                        <img :src="file.fileURL" alt="1" style="height: 100px;width: 100px;object-fit: cover;margin-right: 5px ">
+
+                                        <p style="font-size: 12px">{{file.file.name}}</p>
+                                    </div>
+                                </div>
+
+
+
+
+
+
                             </div>
                         </div>
                     </div>
@@ -162,7 +188,9 @@
                 currentClientPage: 1,
                 maxClientsPerPage: 10,
                 adminMsg: '',
-                dialogMsgs: []
+                dialogMsgs: [],
+                files:[],
+                objectURL:''
             }
         },
 
@@ -263,14 +291,18 @@
                 this.paginationOut(response.data.length);
             },
             sendMessage() {
+
+
                 this.adminMsg = this.adminMsg.trim();
                 if (this.adminMsg != null && this.adminMsg != '') {
+
                     const message = {
                         name: "Admin",
                         user_id: this.chsAct,
                         message: this.adminMsg,
                         status: "Admin",
-                        date: this.dateFocuses()
+                        date: this.dateFocuses(),
+                        file:''
                     }
                     console.log(message);
                     for (let i = 0; i < this.clientDataList.length; i++) {
@@ -287,6 +319,16 @@
                     alert("Введите сообщение");
                 }
 
+            },
+            handleFileUpload(){
+                let formData = new FormData();
+                formData.append('file', this.file);
+                let pushFile={
+                    file:this.$refs.file.files[0],
+                    fileURL:window.URL.createObjectURL(this.$refs.file.files[0])
+                }
+                this.files.push(pushFile);
+                console.log(this.files);
             },
             async getMessages(user_id) {
                 this.setClass(user_id);
