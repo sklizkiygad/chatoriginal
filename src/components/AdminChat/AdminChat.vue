@@ -105,32 +105,34 @@
                                 <div :class="message.status === 'Admin'? 'sent_msg':'received_msg'">
                                     <div :class="message.status === 'Admin'? 'sent_msg':'received_withd_msg'">
                                         <p>{{message.message}}
-                                            <span  style="display:block;"> <a
+                                            <span  style="display:block;">
+                                             <a
                                                     v-if="message.file.length!==0"
                                                     v-for="(file, index) in message.file"
                                                     :key="file.id"
-                                                    :href="getFiles(message.file[index].name,1)"
+                                                    :href="getFiles(message.file[index].name)"
                                                     style="color: black"
                                                     target="_blank"
                                             >
+                                                   <img
+                                                           v-if="isImage(message.file[index].name)"
+                                                           :src="getFiles(message.file[index].name)"
+                                                           style="height: 200px; max-width:400px;display: block"/>
+
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-arrow-down" viewBox="0 0 16 16">
                                                     <path d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293V6.5z"/>
                                                     <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
                                                 </svg>
                                                 {{message.file[index].name}} <br>
-                                            </a></span>
+                                            </a>
+                                            </span>
 
                                         </p>
 
 
 
 
-                                        <img
-                                                v-if="message.file.length!==0"
-                                                v-for="(file, index) in message.file"
-                                                :key="file.id"
-                                                :src="getFiles(message.file[index].name,2)"
-                                                style="height: 150px"/>
+
 
 
                                         <span class="time_date"> {{message.date}}</span>
@@ -472,22 +474,25 @@ else{
                 const msgdate = year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
                 return msgdate;
             },
-             getFiles(name,typ){
-                if(typ===1){
+             getFiles(name){
+
                     const res = this.myProxy + '/api/file/' + name;
                     return res;
-                }
-                else{
-                    if(name!==null){
-                        if(name.substr(-4)==='.jpg'||name.substr(-4)==='.gif'||name.substr(-4)==='.png')
-                        {
-                            console.log(name);
-                            const res = this.myProxy + '/api/file/' + name;
-                            return res;
-                        }
+
+                    },
+            isImage(name){
+                if(name!==null){
+                    if(name.substr(-4)==='.jpg'||name.substr(-4)==='.gif'||name.substr(-4)==='.png')
+                    {
+                        console.log('true');
+                        return true;
+                    }
+                    else {
+                        console.log('false');
+                        return false;
                     }
                 }
-                    }
+            }
                 },
 
 

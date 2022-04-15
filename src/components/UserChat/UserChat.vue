@@ -37,12 +37,11 @@
                                                 :key="file.id"
                                         >
                                                  <a
-
                                                     :href="getFiles(content.file[index].name)"
                                                     style="display: block;color:black"
                                                     target="_blank"
-
                                                     >
+                                                     <img v-if="isImage(content.file[index].name)" :src="getFiles(content.file[index].name)">
                                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-arrow-down" viewBox="0 0 16 16">
                                                          <path fill-rule="evenodd" d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z"/>
                                                          <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>
@@ -207,32 +206,6 @@
                     }
 
                 }
-
-
-
-                // console.log(this.$refs.inpMes.target);
-                // if (this.userMessage != null && this.userMessage != '') {
-                //     this.userMessage = this.userMessage.trim();
-                //     if (this.userMessage != null && this.userMessage != ''){
-                //         const message = {
-                //             user_id: sessionStorage.getItem('user_id'),
-                //             name: sessionStorage.getItem('user_name'),
-                //             message: this.userMessage,
-                //             date: this.dateFocuses(),
-                //             role: 'User'
-                //         }
-                //         console.log(message);
-                //         this.$socket.emit('user_message', message);
-                //         this.messages.push(message);
-                //         this.userMessage = '';
-                //         console.log('Сообщение отправлено');
-                //     }
-                //     else {
-                //         alert("Введите сообщение");
-                //     }
-                // } else {
-                //     alert("Введите сообщение");
-                // }
             },
             logOut() {
                 this.$emit('logOut');
@@ -311,6 +284,19 @@
                     console.log(e);
                 })
             },
+            isImage(name){
+                    if(name!==null){
+                        if(name.substr(-4)==='.jpg'||name.substr(-4)==='.gif'||name.substr(-4)==='.png')
+                        {
+                            console.log('true');
+                            return true;
+                        }
+                        else {
+                            console.log('false');
+                            return false;
+                        }
+                    }
+            }
 
         },
         mounted() {
