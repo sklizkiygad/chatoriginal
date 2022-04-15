@@ -30,16 +30,28 @@
                                             :style="(content.role === 'User' ? {backgroundColor:bcol}:'background-color: #F3F3F3;')"
                                             class="content">
                                         {{content.message}}
-                                        <br v-if="content.file.length!==0"/>
-                                        <img
+
+                                        <div
                                                 v-if="content.file.length!==0"
                                                 v-for="(file, index) in content.file"
                                                 :key="file.id"
-                                                :src="getFiles(content.file[index].name)"
-                                                style="height: 50px"/>
+                                        >
+                                                 <a
+
+                                                    :href="getFiles(content.file[index].name)"
+                                                    style="display: block;color:black"
+                                                    target="_blank"
+
+                                                    >
+                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-arrow-down" viewBox="0 0 16 16">
+                                                         <path fill-rule="evenodd" d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z"/>
+                                                         <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>
+                                                     </svg>
+                                                     {{content.file[index].name}}
+                                                 </a>
 
 
-
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -69,13 +81,23 @@
                                         <path d="m11.798 8.271-3.182 1.97c-.27.166-.616-.036-.616-.372V9.1s-2.571-.3-4 2.4c.571-4.8 3.143-4.8 4-4.8v-.769c0-.336.346-.538.616-.371l3.182 1.969c.27.166.27.576 0 .742z"/>
                                         <path d="m.5 3 .04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2zm.694 2.09A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09l-.636 7a1 1 0 0 1-.996.91H2.826a1 1 0 0 1-.995-.91l-.637-7zM6.172 2a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672z"/>
                                     </svg></label>
-                                <input style="display: none"
+                                <input
+                                        ref="file"
+                                        v-on:change="handleFileUpload"
+                                        style="display: none"
                                         id="fileUp"
                                         type="file"
                                 />
                                 </div>
 
                             </form>
+                            <div style="display: flex;flex-direction: column"
+                                 v-if="files.length>0"
+                                 v-for="file in files">
+
+                                <!--                                        <img :src="file.fileURL" alt="1" style="height: 100px;width: 100px;object-fit: cover;margin-right: 5px ">-->
+                                <p style="font-size: 12px">{{file.name}}&ensp;</p>
+                            </div>
                         </footer>
                     </div>
 </template>
@@ -92,7 +114,8 @@
                 userMessage: null,
                 logError: null,
                 userId: null,
-                email: null
+                email: null,
+                files:[]
             }
         },
         mixins: [hostMixins],
@@ -115,29 +138,101 @@
                 this.$emit('collapse')
             },
             sendMessage() {
-                console.log(this.$refs.inpMes.target);
-                if (this.userMessage != null && this.userMessage != '') {
+                if (this.files !== [])
+                {
+                    let fileArr=[];
+                    this.files.forEach((file)=>{
+                        fileArr.push(file.name);
+                    })
+                    if(this.userMessage !==null){
+                        this.userMessage= this.userMessage.trim();
+                    }
+
+
+                    let message = {
+                        name: sessionStorage.getItem('user_name'),
+                        user_id: sessionStorage.getItem('user_id'),
+                        message: this.userMessage,
+                        status: "User",
+                        date: this.dateFocuses(),
+                        file:fileArr
+                    }
+                    console.log(message);
+                    this.$socket.emit('user_message', message);
+
+                    message = {
+                        name: sessionStorage.getItem('user_name'),
+                        user_id: sessionStorage.getItem('user_id'),
+                        message: this.userMessage,
+                        status: "User",
+                        role: "User",
+                        date: this.dateFocuses(),
+                        file:this.files
+                    }
+
+                    console.log(message);
+                    this.messages.push(message);
+                    this.userMessage = '';
+                    this.files=[];
+                    console.log('Сообщение отправлено');
+
+                }
+                else{
                     this.userMessage = this.userMessage.trim();
-                    if (this.userMessage != null && this.userMessage != ''){
-                        const message = {
-                            user_id: sessionStorage.getItem('user_id'),
+                    if (this.userMessage != null && this.userMessage != '') {
+                        let message = {
                             name: sessionStorage.getItem('user_name'),
+                            user_id: sessionStorage.getItem('user_id'),
                             message: this.userMessage,
+                            status: "User",
+                            role: "User",
                             date: this.dateFocuses(),
-                            role: 'User'
+                            file:null
                         }
                         console.log(message);
+                        for (let i = 0; i < this.clientDataList.length; i++) {
+                            if (this.clientDataList[i].id === message.user_id) {
+                                this.clientDataList[i].last_message = message;
+                            }
+                        }
                         this.$socket.emit('user_message', message);
+                        console.log(message);
                         this.messages.push(message);
                         this.userMessage = '';
+                        this.files=[];
                         console.log('Сообщение отправлено');
-                    }
-                    else {
+
+                    } else {
                         alert("Введите сообщение");
                     }
-                } else {
-                    alert("Введите сообщение");
+
                 }
+
+
+
+                // console.log(this.$refs.inpMes.target);
+                // if (this.userMessage != null && this.userMessage != '') {
+                //     this.userMessage = this.userMessage.trim();
+                //     if (this.userMessage != null && this.userMessage != ''){
+                //         const message = {
+                //             user_id: sessionStorage.getItem('user_id'),
+                //             name: sessionStorage.getItem('user_name'),
+                //             message: this.userMessage,
+                //             date: this.dateFocuses(),
+                //             role: 'User'
+                //         }
+                //         console.log(message);
+                //         this.$socket.emit('user_message', message);
+                //         this.messages.push(message);
+                //         this.userMessage = '';
+                //         console.log('Сообщение отправлено');
+                //     }
+                //     else {
+                //         alert("Введите сообщение");
+                //     }
+                // } else {
+                //     alert("Введите сообщение");
+                // }
             },
             logOut() {
                 this.$emit('logOut');
@@ -189,9 +284,33 @@
 
             },
             getFiles(name){
-                const res = this.myProxy + '/api/file/' + name;
-                return res;
-            }
+                    const res = this.myProxy + '/api/file/' + name;
+                    return res;
+            },
+
+            async handleFileUpload(){
+                let formData = new FormData();
+                formData.append('file', this.$refs.file.files[0]);
+                console.log(this.$refs.file.files[0]);
+
+
+                await axios.post(`${this.myProxy}/api/file/upload`,formData,{
+                    headers:{
+                        'Content-type':'multipart/form-data'
+                    }
+                }).then((ans)=>{
+                    console.log(ans);
+                    console.log("Успешно отправлен файл");
+                    let pushFile={
+                        name:ans.data,
+                        file:formData,
+                        fileURL:window.URL.createObjectURL(this.$refs.file.files[0])
+                    }
+                    this.files.push(pushFile);
+                }).catch((e)=>{
+                    console.log(e);
+                })
+            },
 
         },
         mounted() {
