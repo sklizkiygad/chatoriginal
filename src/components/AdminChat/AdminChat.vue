@@ -126,15 +126,7 @@
                                                 {{message.file[index].name}} <br>
                                             </a>
                                             </span>
-
                                         </p>
-
-
-
-
-
-
-
                                         <span class="time_date"> {{message.date}}</span>
                                     </div>
                                 </div>
@@ -269,12 +261,19 @@
                                 this.clientDataList[i].last_message = data;
                             }
                         }
+                        let fileArray=[];
+                        for(let i=0;i<data.file.length;i++){
+                            fileArray.push({
+                                "name": data.file[i]
+                            })
+                        }
                         const message = {
                             name: "User",
                             user_id: data.user_id,
                             message: data.message,
                             status: "User",
                             date: this.dateFocuses(),
+                            file:fileArray
                         }
                         this.dialogMsgs.push(message);
                     });
@@ -484,11 +483,11 @@ else{
                 if(name!==null){
                     if(name.substr(-4)==='.jpg'||name.substr(-4)==='.gif'||name.substr(-4)==='.png')
                     {
-                        console.log('true');
+
                         return true;
                     }
                     else {
-                        console.log('false');
+
                         return false;
                     }
                 }

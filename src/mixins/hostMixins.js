@@ -35,13 +35,27 @@ export default {
                 else{
                     console.log('Сообщение получено');
 
-                    console.log(data);
+
+
+
+
+                    let fileArray=[];
+                    for(let i=0;i<data.file.length;i++){
+                        fileArray.push({
+                            "name": data.file[i]
+                        })
+                    }
+                    console.log(fileArray);
+
 
                     const newMessage = {
                         name: 'Admin',
                         message: data.message,
                         role: 'Admin',
+                        file:fileArray
+
                     }
+
                     this.messages.push(newMessage);
 
                     if(this.isHigh){

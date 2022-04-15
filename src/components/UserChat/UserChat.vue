@@ -143,6 +143,7 @@
                     this.files.forEach((file)=>{
                         fileArr.push(file.name);
                     })
+
                     if(this.userMessage !==null){
                         this.userMessage= this.userMessage.trim();
                     }
@@ -168,6 +169,7 @@
                         date: this.dateFocuses(),
                         file:this.files
                     }
+                    console.log(message);
 
                     console.log(message);
                     this.messages.push(message);
@@ -285,14 +287,13 @@
                 })
             },
             isImage(name){
-                    if(name!==null){
+
+                if(name!==null){
                         if(name.substr(-4)==='.jpg'||name.substr(-4)==='.gif'||name.substr(-4)==='.png')
                         {
-                            console.log('true');
                             return true;
                         }
                         else {
-                            console.log('false');
                             return false;
                         }
                     }
