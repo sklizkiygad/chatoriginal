@@ -105,6 +105,13 @@
                                 <div :class="message.status === 'Admin'? 'sent_msg':'received_msg'">
                                     <div :class="message.status === 'Admin'? 'sent_msg':'received_withd_msg'">
                                         <p>{{message.message}}</p>
+                                        <img
+                                                v-if="message.file.length!==0"
+                                                v-for="(file, index) in message.file"
+                                                :key="file.id"
+                                                :src="getFiles(message.file[index].name)"
+                                                style="height: 150px"/>
+
                                         <span class="time_date"> {{message.date}}</span>
                                     </div>
                                 </div>
@@ -122,8 +129,6 @@
                                         cols="30"
                                         rows="4"
                                         placeholder="Введите сообщение"/>
-
-
                                     <button
                                             @click="sendMessage"
                                             class="msg_send_btn"
@@ -142,6 +147,8 @@
                                             v-for="file in files">
 
                                         <img :src="file.fileURL" alt="1" style="height: 100px;width: 100px;object-fit: cover;margin-right: 5px ">
+
+
 
                                         <p style="font-size: 12px">{{file.file.name}}</p>
                                     </div>
@@ -245,7 +252,7 @@
                             user_id: data.user_id,
                             message: data.message,
                             status: "User",
-                            date: this.dateFocuses()
+                            date: this.dateFocuses(),
                         }
                         this.dialogMsgs.push(message);
                     });
@@ -291,45 +298,104 @@
                 this.paginationOut(response.data.length);
             },
             sendMessage() {
+if (this.files !== [])
+{
+    let fileArr=[];
+    this.files.forEach((file)=>{
+        fileArr.push(file.name);
+    })
+    this.adminMsg = this.adminMsg.trim();
 
+        let message = {
+            name: "Admin",
+            user_id: this.chsAct,
+            message: this.adminMsg,
+            status: "Admin",
+            date: this.dateFocuses(),
+            file:fileArr
+        }
+        console.log(message);
+        for (let i = 0; i < this.clientDataList.length; i++) {
+            if (this.clientDataList[i].id === message.user_id) {
+                this.clientDataList[i].last_message = message;
+            }
+        }
+        this.$socket.emit('admin_send_message', message);
 
-                this.adminMsg = this.adminMsg.trim();
-                if (this.adminMsg != null && this.adminMsg != '') {
+            message = {
+                name: "Admin",
+                user_id: this.chsAct,
+                message: this.adminMsg,
+                status: "Admin",
+                date: this.dateFocuses(),
+                file:this.files
+            }
 
-                    const message = {
-                        name: "Admin",
-                        user_id: this.chsAct,
-                        message: this.adminMsg,
-                        status: "Admin",
-                        date: this.dateFocuses(),
-                        file:''
-                    }
-                    console.log(message);
-                    for (let i = 0; i < this.clientDataList.length; i++) {
-                        if (this.clientDataList[i].id === message.user_id) {
-                            this.clientDataList[i].last_message = message;
-                        }
-                    }
-                    this.dialogMsgs.push(message);
-                    this.$socket.emit('admin_send_message', message);
-                    this.adminMsg = '';
-                    console.log('Сообщение отправлено');
+        console.log(message);
+        this.dialogMsgs.push(message);
+        this.adminMsg = '';
+        this.files=[];
+        console.log('Сообщение отправлено');
 
-                } else {
-                    alert("Введите сообщение");
-                }
+}
+else{
+    this.adminMsg = this.adminMsg.trim();
+    if (this.adminMsg != null && this.adminMsg != '') {
+        let message = {
+            name: "Admin",
+            user_id: this.chsAct,
+            message: this.adminMsg,
+            status: "Admin",
+            date: this.dateFocuses(),
+            file:null
+        }
+        console.log(message);
+        for (let i = 0; i < this.clientDataList.length; i++) {
+            if (this.clientDataList[i].id === message.user_id) {
+                this.clientDataList[i].last_message = message;
+            }
+        }
+        this.$socket.emit('admin_send_message', message);
+        console.log(message);
+        this.dialogMsgs.push(message);
+        this.adminMsg = '';
+        this.files=[];
+        console.log('Сообщение отправлено');
+
+    } else {
+        alert("Введите сообщение");
+    }
+
+}
+
 
             },
-            handleFileUpload(){
+
+
+            async handleFileUpload(){
                 let formData = new FormData();
-                formData.append('file', this.file);
-                let pushFile={
-                    file:this.$refs.file.files[0],
-                    fileURL:window.URL.createObjectURL(this.$refs.file.files[0])
-                }
-                this.files.push(pushFile);
-                console.log(this.files);
+                formData.append('file', this.$refs.file.files[0]);
+                console.log(this.$refs.file.files[0]);
+
+
+                await axios.post(`${this.myProxy}/api/file/upload`,formData,{
+                    headers:{
+                        'Content-type':'multipart/form-data'
+                    }
+                }).then((ans)=>{
+                    console.log(ans);
+                    console.log("Успешно отправлен файл");
+                    let pushFile={
+                        name:ans.data,
+                        file:formData,
+                        fileURL:window.URL.createObjectURL(this.$refs.file.files[0])
+                    }
+                    this.files.push(pushFile);
+                }).catch((e)=>{
+                    console.log(e);
+                })
             },
+
             async getMessages(user_id) {
                 this.setClass(user_id);
                 const sup = {
@@ -387,8 +453,14 @@
                 if (month < 10) month = '0' + month.toString();
                 const msgdate = year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
                 return msgdate;
+            },
+             getFiles(name){
+                const res = this.myProxy + '/api/file/' + name;
+                return res;
             }
+
         },
+
         created() {
             this.getClients();
         },
@@ -415,6 +487,10 @@
                 this.apiCallClients();
                 this.messageOpen = false
             },
+            chsAct(){
+                this.files=[];
+            },
+
             dialogMsgs: {
                 handler(val, oldVal) {
                     setTimeout(this.scrollToEnd,200);

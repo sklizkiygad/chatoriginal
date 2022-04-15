@@ -4,13 +4,18 @@
                         <header>
                             <button
                                     class="cloi"
-                                    @click="chiba">Скрыть
+                                    @click="chiba"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrows-angle-contract" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M.172 15.828a.5.5 0 0 0 .707 0l4.096-4.096V14.5a.5.5 0 1 0 1 0v-3.975a.5.5 0 0 0-.5-.5H1.5a.5.5 0 0 0 0 1h2.768L.172 15.121a.5.5 0 0 0 0 .707zM15.828.172a.5.5 0 0 0-.707 0l-4.096 4.096V1.5a.5.5 0 1 0-1 0v3.975a.5.5 0 0 0 .5.5H14.5a.5.5 0 0 0 0-1h-2.768L15.828.879a.5.5 0 0 0 0-.707z"/>
+                            </svg>
                             </button>
                             <button
                                     class="logout"
-                                    @click="logOut">Выйти
+                                    @click="logOut"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"/>
+                                <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                            </svg>
                             </button>
-                            <h1 style="max-width: 250px;overflow: hidden;font-size: 110%">
+                            <h1 style="max-width: 250px;overflow: hidden;font-size: 110%;text-align: center">
                                 Здравствуйте, {{username}}
                             </h1>
                         </header>
@@ -23,7 +28,18 @@
                                     <div class="username">{{content.name}}</div>
                                     <div
                                             :style="(content.role === 'User' ? {backgroundColor:bcol}:'background-color: #F3F3F3;')"
-                                            class="content">{{content.message}}
+                                            class="content">
+                                        {{content.message}}
+                                        <br v-if="content.file.length!==0"/>
+                                        <img
+                                                v-if="content.file.length!==0"
+                                                v-for="(file, index) in content.file"
+                                                :key="file.id"
+                                                :src="getFiles(content.file[index].name)"
+                                                style="height: 50px"/>
+
+
+
                                     </div>
                                 </div>
                             </div>
@@ -49,7 +65,10 @@
                                         id="subBut"
                                         value='Отпр.'
                                 />
-                                    <label :style="{backgroundColor:bcol}" for="fileUp">Файл</label>
+                                    <label :style="{backgroundColor:bcol}" for="fileUp"><svg style="width: 100%" xmlns="http://www.w3.org/2000/svg" width="20" height="16" fill="currentColor" class="bi bi-folder-symlink" viewBox="0 0 16 16">
+                                        <path d="m11.798 8.271-3.182 1.97c-.27.166-.616-.036-.616-.372V9.1s-2.571-.3-4 2.4c.571-4.8 3.143-4.8 4-4.8v-.769c0-.336.346-.538.616-.371l3.182 1.969c.27.166.27.576 0 .742z"/>
+                                        <path d="m.5 3 .04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2zm.694 2.09A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09l-.636 7a1 1 0 0 1-.996.91H2.826a1 1 0 0 1-.995-.91l-.637-7zM6.172 2a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672z"/>
+                                    </svg></label>
                                 <input style="display: none"
                                         id="fileUp"
                                         type="file"
@@ -147,7 +166,8 @@
                                     user_id: res.data[i].user_id,
                                     name: ((res.data[i].status) === 'Admin' ? 'Admin' : sessionStorage.getItem('user_name')),
                                     message: res.data[i].message,
-                                    role: ((res.data[i].status) === 'Admin' ? 'Admin' : 'User')
+                                    role: ((res.data[i].status) === 'Admin' ? 'Admin' : 'User'),
+                                    file: res.data[i].file
                                 }
                                 this.messages.push(message);
                             }
@@ -168,6 +188,10 @@
                 }
 
             },
+            getFiles(name){
+                const res = this.myProxy + '/api/file/' + name;
+                return res;
+            }
 
         },
         mounted() {

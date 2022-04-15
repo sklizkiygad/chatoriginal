@@ -18,6 +18,7 @@
   width: 15%;
   right: 0;
   bottom: 0;
+  border-radius: 15px 15px 0px 0px;
   min-height: 380px;
   &.chat {
     flex-direction: column;
@@ -26,7 +27,7 @@
     header {
       display: block;
       width: 100%;
-      padding: 50px 30px 10px;
+      padding: 20px 30px 10px;
 
       .logout {
         position: absolute;
@@ -49,7 +50,7 @@
     }
 
     .chat-box {
-      border-radius: 24px 24px 0px 0px;
+      border-radius: 15px 15px 0px 0px;
       background-color: #FFF;
       box-shadow: 0px 0px 12px rgba(100, 100, 100, 0.2);
       flex: 1 1 100%;
@@ -65,7 +66,7 @@
         .message-inner {
           .username {
             color: #888;
-            font-size: 16px;
+            font-size: 15px;
             margin-bottom: 5px;
             padding-left: 15px;
             padding-right: 15px;
@@ -76,7 +77,7 @@
             padding: 10px 20px;
             border-radius: 15px;
             color: #333;
-            font-size: 18px;
+            font-size: 15px;
             line-height: 1.2em;
             text-align: left;
             word-break: break-all;
@@ -85,7 +86,6 @@
         }
 
         &.current-user {
-          margin-top: 30px;
           justify-content: flex-end;
           text-align: right;
 
@@ -138,7 +138,7 @@
           border-radius: 8px 0px 0px 8px;
 
           color: #333;
-          font-size: 18px;
+          font-size: 15px;
           box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
           background-color: #F3F3F3;
           transition: 0.4s;
@@ -176,12 +176,8 @@
           border: none;
           outline: none;
           display: block;
-          /*padding: 10px 15px;*/
-          /*border-radius: 0px 8px 8px 0px;*/
           background-color: #ea526f;
           color: #FFF;
-          /*font-size: 18px;*/
-          /*font-weight: 700;*/
         }
 
 
@@ -192,7 +188,7 @@
             display: block;
             background-color: #ea526f;
             color: #FFF;
-
+          cursor: pointer;
         }
         label:first-child{
           border-radius: 0px 8px 0px 0px;
@@ -215,7 +211,6 @@
   outline: none;
   background: none;
   color: #FFF;
-  /*font-size: 18px;*/
   margin-bottom: 10px;
   text-align: left;
 }
