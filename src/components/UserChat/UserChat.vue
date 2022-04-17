@@ -107,6 +107,7 @@
     export default {
         data() {
 
+
             return {
                 username: null,
                 messages: [],
@@ -114,7 +115,8 @@
                 logError: null,
                 userId: null,
                 email: null,
-                files:[]
+                files: []
+
             }
         },
         mixins: [hostMixins],
@@ -130,24 +132,25 @@
             isIn:{
                 type:Boolean,
                 default: false,
-            }
+            },
+
         },
         methods:{
             chiba() {
                 this.$emit('collapse')
             },
             sendMessage() {
-                if (this.files !== [])
+                console.log(this.files.length);
+                if (this.files.length>0)
                 {
+                    console.log('files');
                     let fileArr=[];
                     this.files.forEach((file)=>{
                         fileArr.push(file.name);
                     })
-
                     if(this.userMessage !==null){
                         this.userMessage= this.userMessage.trim();
                     }
-
 
                     let message = {
                         name: sessionStorage.getItem('user_name'),
@@ -179,8 +182,12 @@
 
                 }
                 else{
-                    this.userMessage = this.userMessage.trim();
-                    if (this.userMessage != null && this.userMessage != '') {
+                    console.log('without files');
+                    if (this.userMessage !== null){
+                        this.userMessage = this.userMessage.trim();
+                    }
+
+                    if (this.userMessage !== null && this.userMessage !== '') {
                         let message = {
                             name: sessionStorage.getItem('user_name'),
                             user_id: sessionStorage.getItem('user_id'),
@@ -188,21 +195,15 @@
                             status: "User",
                             role: "User",
                             date: this.dateFocuses(),
-                            file:null
+                            file:[]
                         }
                         console.log(message);
-                        for (let i = 0; i < this.clientDataList.length; i++) {
-                            if (this.clientDataList[i].id === message.user_id) {
-                                this.clientDataList[i].last_message = message;
-                            }
-                        }
                         this.$socket.emit('user_message', message);
                         console.log(message);
                         this.messages.push(message);
                         this.userMessage = '';
                         this.files=[];
                         console.log('Сообщение отправлено');
-
                     } else {
                         alert("Введите сообщение");
                     }
@@ -253,6 +254,7 @@
                     this.$emit('isLogOk', true);
                     this.getMessages();
                     this.userResponce();
+
                 } else {
                     this.$emit('isLogOk', false);
                 }
@@ -282,12 +284,12 @@
                         fileURL:window.URL.createObjectURL(this.$refs.file.files[0])
                     }
                     this.files.push(pushFile);
+
                 }).catch((e)=>{
                     console.log(e);
                 })
             },
             isImage(name){
-
                 if(name!==null){
                         if(name.substr(-4)==='.jpg'||name.substr(-4)==='.gif'||name.substr(-4)==='.png')
                         {

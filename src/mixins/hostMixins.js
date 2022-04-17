@@ -4,7 +4,8 @@ export default {
     data() {
         return {
            //myProxy: 'http://31.28.9.200:23765',
-            myProxy:process.env.VUE_APP_PROXY
+            myProxy:process.env.VUE_APP_PROXY,
+
 
         }
     },
@@ -34,30 +35,20 @@ export default {
                 }
                 else{
                     console.log('Сообщение получено');
-
-
-
-
-
                     let fileArray=[];
                     for(let i=0;i<data.file.length;i++){
                         fileArray.push({
                             "name": data.file[i]
                         })
                     }
-                    console.log(fileArray);
-
-
                     const newMessage = {
                         name: 'Admin',
                         message: data.message,
                         role: 'Admin',
                         file:fileArray
-
                     }
-
+                    console.log(newMessage);
                     this.messages.push(newMessage);
-
                     if(this.isHigh){
                         setTimeout(this.scrollToEnd,1000);
                     }

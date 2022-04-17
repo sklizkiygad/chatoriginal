@@ -47,7 +47,9 @@
                 logError: null,
                 isIn: false,
                 userId: null,
-                email: null
+                email: null,
+                messages:[],
+
             }
         },
         mixins: [hostMixins],
@@ -63,7 +65,9 @@ methods:{
     checkAuth() {
         if (sessionStorage.getItem('user_id') !== 'undefined' && sessionStorage.getItem('user_id') !== null) {
             this.username = sessionStorage.getItem('user_name');
+            this.userResponce();
             this.$emit('isLogOk', true);
+
         } else {
             this.$emit('isLogOk', false);
         }
@@ -96,6 +100,7 @@ methods:{
                             sessionStorage.setItem('user_id', res.data.id);
                             sessionStorage.setItem('user_email', res.data.email);
                             sessionStorage.setItem('user_name', res.data.name);
+
                             this.checkAuth();
                         }
                     })

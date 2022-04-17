@@ -30,6 +30,8 @@
                         :isHigh="isHigh"
                         @logOut="logOut"
                         @collapse="chiba"
+
+
                 />
             </div>
         </transition>
@@ -59,7 +61,7 @@
                 isIn: false,
                 userId: null,
                 bcol: "#7B68EE",
-                email: null
+                email: null,
             }
         },
         sockets: {
@@ -91,6 +93,7 @@
                 }
 
             },
+
 
         },
         mounted() {
