@@ -26,7 +26,7 @@ export default {
             this.$refs.chatter.scrollTop = this.$refs.chatter.scrollHeight;
         },
 
-        userResponce() {
+       userResponce() {
             this.$socket.emit('connected', {id: sessionStorage.getItem('user_id')});
             this.sockets.subscribe('user_response', (data) => {
                 if(data.error){
@@ -52,9 +52,18 @@ export default {
                     if(this.isHigh){
                         setTimeout(this.scrollToEnd,1000);
                     }
+                    this.playAudio();
+
+
+
                 }
             });
         },
+        async playAudio(){
+            //let audi=new Audio("https://song.nazvonok.ru/song/6c80/sms-uvedomlenie-na-iphone-zvuk-sms-na-telefonah-apple.mp3?id=25161");
+            let audi=new Audio("../notification/notification.mp3");
+            await audi.play();
+        }
 
 
     }
