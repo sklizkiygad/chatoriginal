@@ -1,10 +1,13 @@
 
 
 export default {
+
     data() {
+
         return {
            //myProxy: 'http://31.28.9.200:23765',
             myProxy:process.env.VUE_APP_PROXY,
+
 
 
         }
@@ -49,9 +52,6 @@ export default {
                     }
                     console.log(newMessage);
                     this.messages.push(newMessage);
-                    if(this.isHigh){
-                        setTimeout(this.scrollToEnd,1000);
-                    }
                     this.playAudio();
 
 
@@ -60,8 +60,7 @@ export default {
             });
         },
         async playAudio(){
-            //let audi=new Audio("https://song.nazvonok.ru/song/6c80/sms-uvedomlenie-na-iphone-zvuk-sms-na-telefonah-apple.mp3?id=25161");
-            let audi=new Audio("../notification/notification.mp3");
+            let audi=new Audio("https://song.nazvonok.ru/song/a9ba/ultra-sms-korotkiy-futuristichnyy-zvuchok.mp3?id=26328");
             await audi.play();
         }
 

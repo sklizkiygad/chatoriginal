@@ -61,7 +61,7 @@
                             <form @submit.prevent="sendMessage">
                                 <textarea
                                         ref="inpMes"
-                                        @keypress.enter="sendMessage"
+                                        @keyup.enter="sendMessage"
                                         v-model="userMessage"
                                         rows="2"
                                         cols="4"
@@ -269,8 +269,6 @@
                 let formData = new FormData();
                 formData.append('file', this.$refs.file.files[0]);
                 console.log(this.$refs.file.files[0]);
-
-
                 await axios.post(`${this.myProxy}/api/file/upload`,formData,{
                     headers:{
                         'Content-type':'multipart/form-data'
@@ -308,7 +306,10 @@
         watch: {
             messages: {
                 handler(val, oldVal) {
-                    setTimeout(this.scrollToEnd,200);
+                    if(this.isHigh){
+                        setTimeout(this.scrollToEnd,200);
+                    }
+
                 },
                 deep: true
             },

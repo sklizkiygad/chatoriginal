@@ -138,7 +138,7 @@
 
                             <div class="input_msg_write">
                                 <textarea
-                                        @keypress.enter="sendMessage"
+                                        @keyup.enter="sendMessage"
                                         v-model="adminMsg"
                                         class="write_msg"
                                         cols="30"
@@ -207,7 +207,7 @@
                 searchQuery: '',
                 clientPages: 1,
                 currentClientPage: 1,
-                maxClientsPerPage: 10,
+                maxClientsPerPage: 8,
                 adminMsg: '',
                 dialogMsgs: [],
                 files:[],
@@ -235,6 +235,7 @@
                 this.chsAct = event;
             },
             paginationOut(numCli) {
+                console.log('Количество клиентов '+numCli);
                 this.clientPages = Math.ceil(numCli / this.maxClientsPerPage);
                 if (this.clientPages === 1) {
                     this.clientPages = 0;
@@ -278,7 +279,6 @@
                         this.dialogMsgs.push(message);
                     });
                     this.apiCallClients();
-                    this.paginationOut();
 
                 } catch (e) {
                     alert('Проблемы с подключением');
@@ -299,33 +299,61 @@
                 }
                 switch (this.chsStatus) {
                     case 1: {
-                        response = await axios.get(`${this.myProxy}/api/users/all/status?status=Actived`, config);
+                        await axios.get(`${this.myProxy}/api/users/all/status?status=Actived`, config).then((res)=>{
+                            console.log(res);
+                            this.paginationOut(res.data.length);
+                            for (let i = 0; i < res.data.users.length; i++)
+                            {
+                                    res.data.users[i].last_message.date=res.data.users[i].last_message.date.slice(0, -3);
+                                    this.clientDataList.push(res.data.users[i]);
+                            }
+                        });
+
                         break;
+
                     }
                     case 2: {
-                        response = await axios.get(`${this.myProxy}/api/users/all/status?status=Disabled`, config);
+                        response = await axios.get(`${this.myProxy}/api/users/all/status?status=Disabled`, config).then((res)=>{
+                            console.log(res);
+                            for (let i = 0; i < res.data.users.length; i++)
+                            {
+                                res.data.users[i].last_message.date=res.data.users[i].last_message.date.slice(0, -3);
+                                this.clientDataList.push(res.data.users[i]);
+                            }
+                            this.paginationOut(res.data.length);
+                        });
+
                         break;
                     }
                     case 3: {
-                        response = await axios.get(`${this.myProxy}/api/users/all/status?status=Null`, config);
+                        response = await axios.get(`${this.myProxy}/api/users/all/status?status=Null`, config).then((res)=>{
+                            console.log(res);
+                            for (let i = 0; i < res.data.users.length; i++)
+                            {
+                                res.data.users[i].last_message.date=res.data.users[i].last_message.date.slice(0, -3);
+                                this.clientDataList.push(res.data.users[i]);
+                            }
+                            this.paginationOut(res.data.length);
+                        });
                         break;
                     }
                 }
-                for (let i = 0; i < response.data.length; i++) {
 
-                    response.data.users[i].last_message.date=response.data.users[i].last_message.date.slice(0, -3);
-                    this.clientDataList.push(response.data.users[i]);
-                }
-                this.paginationOut(response.data.length);
+
             },
             sendMessage() {
-if (this.files !== [])
+if (this.files.length>0)
 {
+    console.log('with files');
     let fileArr=[];
     this.files.forEach((file)=>{
         fileArr.push(file.name);
     })
-    this.adminMsg = this.adminMsg.trim();
+
+    if(this.adminMsg !==''){
+        this.adminMsg= this.adminMsg.trim();
+    }
+
 
         let message = {
             name: "Admin",
@@ -338,7 +366,13 @@ if (this.files !== [])
         console.log(message);
         for (let i = 0; i < this.clientDataList.length; i++) {
             if (this.clientDataList[i].id === message.user_id) {
-                this.clientDataList[i].last_message = message;
+                if(this.clientDataList[i].last_message!==''){
+                    this.clientDataList[i].last_message = message;
+                }
+                else{
+                    this.clientDataList[i].last_message = "[Вложение]";
+                }
+
             }
         }
         this.$socket.emit('admin_send_message', message);
@@ -360,7 +394,11 @@ if (this.files !== [])
 
 }
 else{
-    this.adminMsg = this.adminMsg.trim();
+
+    console.log('without files');
+    if(this.adminMsg !==''){
+        this.adminMsg= this.adminMsg.trim();
+    }
     if (this.adminMsg != null && this.adminMsg != '') {
         let message = {
             name: "Admin",
@@ -368,7 +406,7 @@ else{
             message: this.adminMsg,
             status: "Admin",
             date: this.dateFocuses(),
-            file:null
+            file:[]
         }
         console.log(message);
         for (let i = 0; i < this.clientDataList.length; i++) {
@@ -385,6 +423,7 @@ else{
 
     } else {
         alert("Введите сообщение");
+        this.adminMsg = '';
     }
 
 }
