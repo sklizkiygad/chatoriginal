@@ -106,18 +106,22 @@
                                     <div :class="message.status === 'Admin'? 'sent_msg':'received_withd_msg'">
                                         <p>{{message.message}}
                                             <span  style="display:block;">
-                                             <a
-                                                    v-if="message.file.length!==0"
-                                                    v-for="(file, index) in message.file"
-                                                    :key="file.id"
+                                                <div  v-if="message.file.length!==0"
+                                                      v-for="(file, index) in message.file"
+                                                      :key="file.id">
+                                                <a   v-if="isImage(message.file[index].name)" :href="getFiles(message.file[index].name)" target="_blank">
+                                                    <img
+                                                            :src="getFiles(message.file[index].name)"
+                                                            style="height: 200px; max-width:400px;display: block"/>
+                                                </a>
+                                             <a v-else
+
+
                                                     :href="getFiles(message.file[index].name)"
                                                     style="color: black"
                                                     target="_blank"
                                             >
-                                                   <img
-                                                           v-if="isImage(message.file[index].name)"
-                                                           :src="getFiles(message.file[index].name)"
-                                                           style="height: 200px; max-width:400px;display: block"/>
+
 
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-arrow-down" viewBox="0 0 16 16">
                                                     <path d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293V6.5z"/>
@@ -125,6 +129,7 @@
                                                 </svg>
                                                 {{message.file[index].name}} <br>
                                             </a>
+                                                    </div>
                                             </span>
                                         </p>
                                         <span class="time_date"> {{message.date}}</span>

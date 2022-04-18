@@ -14,7 +14,7 @@
   background-color: #ea526f;
   position: fixed;
   height: 60%;
-  min-width: 250px;
+  min-width: 350px;
   width: 15%;
   right: 0;
   bottom: 0;
@@ -22,7 +22,7 @@
   min-height: 380px;
   &.chat {
     flex-direction: column;
-    min-width: 310px;
+    min-width: 350px;
 
     header {
       display: block;
