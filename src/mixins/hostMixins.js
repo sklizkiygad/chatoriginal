@@ -1,15 +1,9 @@
 
-
 export default {
-
     data() {
-
         return {
            //myProxy: 'http://31.28.9.200:23765',
             myProxy:process.env.VUE_APP_PROXY,
-
-
-
         }
     },
     methods:{
@@ -53,9 +47,6 @@ export default {
                     console.log(newMessage);
                     this.messages.push(newMessage);
                     this.playAudio();
-
-
-
                 }
             });
         },

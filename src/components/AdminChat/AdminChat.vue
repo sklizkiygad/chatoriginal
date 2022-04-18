@@ -68,7 +68,8 @@
                                                 <h5>{{client.name}}
                                                     <span class="chat_date">{{client.last_message.date}}</span>
                                                 </h5>
-                                                <p>{{client.last_message.message}}</p>
+                                                <p v-if="client.last_message.message!==''&&client.last_message.message!==null">{{client.last_message.message}}</p>
+                                                <p v-else>[Вложение]</p>
                                             </div>
                                         </div>
                                     </div>
@@ -115,14 +116,10 @@
                                                             style="height: 200px; max-width:400px;display: block"/>
                                                 </a>
                                              <a v-else
-
-
                                                     :href="getFiles(message.file[index].name)"
                                                     style="color: black"
                                                     target="_blank"
                                             >
-
-
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-arrow-down" viewBox="0 0 16 16">
                                                     <path d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293V6.5z"/>
                                                     <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
@@ -165,19 +162,9 @@
                                     <div style="display: flex;flex-direction: column"
                                             v-if="files.length>0"
                                             v-for="file in files">
-
-
-<!--                                        <img :src="file.fileURL" alt="1" style="height: 100px;width: 100px;object-fit: cover;margin-right: 5px ">-->
-
                                         <p style="font-size: 12px">{{file.name}}&ensp;</p>
                                     </div>
                                 </div>
-
-
-
-
-
-
                             </div>
                         </div>
                     </div>
@@ -260,6 +247,7 @@
                                 date: data.date,
                                 last_message: data
                             }
+
                             this.clientDataList.unshift(newUser);
                         }
                         for (let i = 0; i < this.clientDataList.length; i++) {
@@ -291,7 +279,6 @@
                 }
             },
             async apiCallClients() {
-                let response = null;
                 this.clientDataList = [];
                 const config = {
                     headers: {
@@ -302,136 +289,80 @@
                         page: this.currentClientPage,
                     }
                 }
+                let stat='';
+
                 switch (this.chsStatus) {
                     case 1: {
-                        await axios.get(`${this.myProxy}/api/users/all/status?status=Actived`, config).then((res)=>{
-                            console.log(res);
-                            this.paginationOut(res.data.length);
-                            for (let i = 0; i < res.data.users.length; i++)
-                            {
-                                    res.data.users[i].last_message.date=res.data.users[i].last_message.date.slice(0, -3);
-                                    this.clientDataList.push(res.data.users[i]);
-                            }
-                        });
-
+                        stat='Actived';
                         break;
-
                     }
                     case 2: {
-                        response = await axios.get(`${this.myProxy}/api/users/all/status?status=Disabled`, config).then((res)=>{
-                            console.log(res);
-                            for (let i = 0; i < res.data.users.length; i++)
-                            {
-                                res.data.users[i].last_message.date=res.data.users[i].last_message.date.slice(0, -3);
-                                this.clientDataList.push(res.data.users[i]);
-                            }
-                            this.paginationOut(res.data.length);
-                        });
-
+                        stat='Disabled';
                         break;
                     }
                     case 3: {
-                        response = await axios.get(`${this.myProxy}/api/users/all/status?status=Null`, config).then((res)=>{
-                            console.log(res);
-                            for (let i = 0; i < res.data.users.length; i++)
-                            {
-                                res.data.users[i].last_message.date=res.data.users[i].last_message.date.slice(0, -3);
-                                this.clientDataList.push(res.data.users[i]);
-                            }
-                            this.paginationOut(res.data.length);
-                        });
+                        stat='Null';
                         break;
                     }
                 }
-
-
+                await axios.get(`${this.myProxy}/api/users/all/status?status=${stat}`, config).then((res)=>{
+                    console.log(res);
+                    this.paginationOut(res.data.length);
+                    for (let i = 0; i < res.data.users.length; i++)
+                    {
+                        res.data.users[i].last_message.date=res.data.users[i].last_message.date.slice(0, -3);
+                        this.clientDataList.push(res.data.users[i]);
+                    }
+                });
             },
+
             sendMessage() {
-if (this.files.length>0)
-{
-    console.log('with files');
-    let fileArr=[];
-    this.files.forEach((file)=>{
-        fileArr.push(file.name);
-    })
-
-    if(this.adminMsg !==''){
-        this.adminMsg= this.adminMsg.trim();
-    }
-
-
-        let message = {
-            name: "Admin",
-            user_id: this.chsAct,
-            message: this.adminMsg,
-            status: "Admin",
-            date: this.dateFocuses(),
-            file:fileArr
-        }
-        console.log(message);
-        for (let i = 0; i < this.clientDataList.length; i++) {
-            if (this.clientDataList[i].id === message.user_id) {
-                if(this.clientDataList[i].last_message!==''){
-                    this.clientDataList[i].last_message = message;
+                let fileArr=[];
+                if(this.files.length>0) {
+                    console.log('with files');
+                    this.files.forEach((file) => {
+                        fileArr.push(file.name);
+                    })
+                    if(this.adminMsg!==''){
+                        this.adminMsg= this.adminMsg.trim();
+                    }
                 }
                 else{
-                    this.clientDataList[i].last_message = "[Вложение]";
+                    fileArr=[];
+                    if(this.adminMsg==='' || this.adminMsg==='\n'){
+                        this.adminMsg = '';
+                        alert("Введите сообщение");
+                        return
+                    }
                 }
+                    let message = {
+                        name: "Admin",
+                        user_id: this.chsAct,
+                        message: this.adminMsg,
+                        status: "Admin",
+                        date: this.dateFocuses(),
+                        file:fileArr
+                    }
+                this.$socket.emit('admin_send_message', message);
+                    for (let i = 0; i < this.clientDataList.length; i++) {
+                        if (this.clientDataList[i].id === message.user_id) {
+                                this.clientDataList[i].last_message = message;
+                        }
+                    }
 
-            }
-        }
-        this.$socket.emit('admin_send_message', message);
-
-            message = {
-                name: "Admin",
-                user_id: this.chsAct,
-                message: this.adminMsg,
-                status: "Admin",
-                date: this.dateFocuses(),
-                file:this.files
-            }
-
-        console.log(message);
-        this.dialogMsgs.push(message);
-        this.adminMsg = '';
-        this.files=[];
-        console.log('Сообщение отправлено');
-
-}
-else{
-
-    console.log('without files');
-    if(this.adminMsg !==''){
-        this.adminMsg= this.adminMsg.trim();
-    }
-    if (this.adminMsg != null && this.adminMsg != '') {
-        let message = {
-            name: "Admin",
-            user_id: this.chsAct,
-            message: this.adminMsg,
-            status: "Admin",
-            date: this.dateFocuses(),
-            file:[]
-        }
-        console.log(message);
-        for (let i = 0; i < this.clientDataList.length; i++) {
-            if (this.clientDataList[i].id === message.user_id) {
-                this.clientDataList[i].last_message = message;
-            }
-        }
-        this.$socket.emit('admin_send_message', message);
-        console.log(message);
-        this.dialogMsgs.push(message);
-        this.adminMsg = '';
-        this.files=[];
-        console.log('Сообщение отправлено');
-
-    } else {
-        alert("Введите сообщение");
-        this.adminMsg = '';
-    }
-
-}
+                message = {
+                    name: "Admin",
+                    user_id: this.chsAct,
+                    message: this.adminMsg,
+                    status: "Admin",
+                    date: this.dateFocuses(),
+                    file:this.files
+                }
+                console.log(message);
+                this.dialogMsgs.push(message);
+                this.adminMsg = '';
+                this.files=[];
+                console.log('Сообщение отправлено');
 
             },
 
@@ -518,20 +449,17 @@ else{
                 return msgdate;
             },
              getFiles(name){
-
                     const res = this.myProxy + '/api/file/' + name;
                     return res;
-
                     },
+
             isImage(name){
                 if(name!==null){
                     if(name.substr(-4)==='.jpg'||name.substr(-4)==='.gif'||name.substr(-4)==='.png')
                     {
-
                         return true;
                     }
                     else {
-
                         return false;
                     }
                 }

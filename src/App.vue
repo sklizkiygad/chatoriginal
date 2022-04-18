@@ -19,13 +19,4 @@
 </script>
 
 <style >
-    /*html,body{*/
-    /*    margin: 0;*/
-    /*    overflow: hidden;*/
-    /*}*/
-    /*p{*/
-    /*   margin-bottom: 0;*/
-    /*}*/
-
-
 </style>

@@ -38,7 +38,6 @@
                                         >
                                             <a v-if="isImage(content.file[index].name)"  :href="getFiles(content.file[index].name)" target="_blank"> <img  style="margin-bottom: 5px" :src="getFiles(content.file[index].name)">
                                             </a>
-
                                                  <a v-else
                                                     :href="getFiles(content.file[index].name)"
                                                     style="display: block;color:black"
@@ -50,9 +49,6 @@
                                                      </svg>
                                                      {{content.file[index].name}}
                                                  </a>
-
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -96,8 +92,6 @@
                             <div style="display: flex;flex-direction: column"
                                  v-if="files.length>0"
                                  v-for="file in files">
-
-                                <!--                                        <img :src="file.fileURL" alt="1" style="height: 100px;width: 100px;object-fit: cover;margin-right: 5px ">-->
                                 <p style="font-size: 12px">{{file.name}}&ensp;</p>
                             </div>
                         </footer>
@@ -143,79 +137,54 @@
                 this.$emit('collapse')
             },
             sendMessage() {
-                console.log(this.files.length);
-                if (this.files.length>0)
-                {
-                    console.log('files');
-                    let fileArr=[];
-                    this.files.forEach((file)=>{
+                let fileArr=[];
+                if(this.files.length>0) {
+                    console.log('with files');
+                    this.files.forEach((file) => {
                         fileArr.push(file.name);
                     })
-                    if(this.userMessage !==null){
+                    if(this.userMessage!==''){
                         this.userMessage= this.userMessage.trim();
                     }
-
-                    let message = {
-                        name: sessionStorage.getItem('user_name'),
-                        user_id: sessionStorage.getItem('user_id'),
-                        message: this.userMessage,
-                        status: "User",
-                        date: this.dateFocuses(),
-                        file:fileArr
-                    }
-                    console.log(message);
-                    this.$socket.emit('user_message', message);
-
-                    message = {
-                        name: sessionStorage.getItem('user_name'),
-                        user_id: sessionStorage.getItem('user_id'),
-                        message: this.userMessage,
-                        status: "User",
-                        role: "User",
-                        date: this.dateFocuses(),
-                        file:this.files
-                    }
-                    console.log(message);
-
-                    console.log(message);
-                    this.messages.push(message);
-                    this.userMessage = '';
-                    this.files=[];
-                    console.log('Сообщение отправлено');
-
                 }
                 else{
-                    console.log('without files');
-                    if (this.userMessage !== null){
-                        this.userMessage = this.userMessage.trim();
-                    }
-
-                    if (this.userMessage !== null && this.userMessage !== '') {
-                        let message = {
-                            name: sessionStorage.getItem('user_name'),
-                            user_id: sessionStorage.getItem('user_id'),
-                            message: this.userMessage,
-                            status: "User",
-                            role: "User",
-                            date: this.dateFocuses(),
-                            file:[]
-                        }
-                        console.log(message);
-                        this.$socket.emit('user_message', message);
-                        console.log(message);
-                        this.messages.push(message);
+                    fileArr=[];
+                    if(this.userMessage==='' || this.userMessage==='\n'){
                         this.userMessage = '';
-                        this.files=[];
-                        console.log('Сообщение отправлено');
-                    } else {
                         alert("Введите сообщение");
+                        return
                     }
-
                 }
+                let message = {
+                    name: sessionStorage.getItem('user_name'),
+                    user_id: sessionStorage.getItem('user_id'),
+                    message: this.userMessage,
+                    status: "User",
+                    role: "User",
+                    date: this.dateFocuses(),
+                    file:fileArr
+                }
+                this.$socket.emit('user_message', message);
+                message = {
+                    name: sessionStorage.getItem('user_name'),
+                    user_id: sessionStorage.getItem('user_id'),
+                    message: this.userMessage,
+                    status: "User",
+                    role: "User",
+                    date: this.dateFocuses(),
+                    file:this.files
+                }
+                console.log(message);
+                this.messages.push(message);
+                this.userMessage = '';
+                this.files=[];
+                console.log('Сообщение отправлено');
             },
+
             logOut() {
                 this.$emit('logOut');
             },
+
             async getMessages() {
                 const sup = {
                     headers: {
@@ -245,7 +214,6 @@
                                 }
                                 this.messages.push(message);
                             }
-
                         }
 
                     })
