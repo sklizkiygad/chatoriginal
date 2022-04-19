@@ -4,6 +4,12 @@
 ```
 npm install
 ```
+## Project pre-launch
+```
+rename 
+
+.env.exampl -> .env
+```
 
 ### Compiles and hot-reloads for development
 ```
