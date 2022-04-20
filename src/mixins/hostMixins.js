@@ -19,11 +19,7 @@ export default {
             const msgdate = year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
             return msgdate;
         },
-        scrollToEnd() {
-            this.$refs.chatter.scrollTop = this.$refs.chatter.scrollHeight;
-        },
-
-       userResponce() {
+        userResponce() {
             this.$socket.emit('connected', {id: sessionStorage.getItem('user_id')});
             this.sockets.subscribe('user_response', (data) => {
                 if(data.error){
@@ -45,7 +41,8 @@ export default {
                         file:fileArray
                     }
                     console.log(newMessage);
-                    this.messages.push(newMessage);
+                    //this.messages.push(newMessage);
+                    this.myNewMessage=newMessage;
                     this.playAudio();
                 }
             });
@@ -53,8 +50,10 @@ export default {
         async playAudio(){
             let audi=new Audio("https://song.nazvonok.ru/song/a9ba/ultra-sms-korotkiy-futuristichnyy-zvuchok.mp3?id=26328");
             await audi.play();
-        }
-
+        },
+        scrollToEnd() {
+            this.$refs.chatter.scrollTop = this.$refs.chatter.scrollHeight;
+        },
 
     }
 }

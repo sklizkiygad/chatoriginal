@@ -1,8 +1,7 @@
 <template>
     <div class="base">
-        <h1 id="zaga">Admin registration</h1>
         <div id="wrapper">
-            <form id="signin" @submit.prevent="logIn" autocomplete="off">
+            <form id="signin_form" @submit.prevent="logIn" autocomplete="off">
                 <input v-model="adminname" type="text" id="user" name="user" placeholder="username"/>
                 <input v-model="password" type="password" id="pass" name="pass" placeholder="password"/>
                 <button type="submit">&#xf0da;</button>
@@ -35,7 +34,7 @@
         },
         methods: {
             async logIn() {
-                if (this.adminname != null && this.password != null && this.adminname != "" && this.password != "") {
+                if (this.adminname  && this.password && this.adminname !== "" && this.password !== "") {
                     this.adminname = this.adminname.trim();
                     console.log("Starting");
                     const adminLog = {
@@ -77,5 +76,5 @@
 </script>
 
 <style scoped>
-@import "registrationAdmin.css";
+@import "RegistrationAdmin.css";
 </style>

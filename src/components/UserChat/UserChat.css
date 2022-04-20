@@ -1,0 +1,31 @@
+* {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ea526f;
+  position: fixed;
+  height: 60%;
+  min-width: 350px;
+  width: 15%;
+  right: 0;
+  bottom: 0;
+  border-radius: 15px 15px 0px 0px;
+  min-height: 380px;
+}
+.view.chat {
+  flex-direction: column;
+  min-width: 350px;
+}
+
+button, button:active, button:focus {
+  outline: none;
+  cursor: pointer;
+}

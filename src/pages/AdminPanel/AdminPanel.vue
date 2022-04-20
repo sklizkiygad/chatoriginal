@@ -13,7 +13,7 @@
 <script>
     import AdminChat from "@/components/AdminChat/AdminChat";
     import hostMixins from "@/mixins/hostMixins";
-    import registrationAdmin from "@/components/registrationAdmin/registrationAdmin";
+    import registrationAdmin from "@/components/RegistrationAdmin/RegistrationAdmin";
 
     export default {
         mixins: [hostMixins],
@@ -21,13 +21,11 @@
             AdminChat,
             registrationAdmin
         },
-
         data() {
             return {
                 isIn: false,
             }
         },
-
         methods: {
             checkAuth() {
                 if (sessionStorage.getItem('is_auth') === 'true') {

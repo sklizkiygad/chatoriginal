@@ -83,7 +83,6 @@
             userLogging(booba){
                 this.isIn=booba;
             },
-
             checkAuth() {
                 if (sessionStorage.getItem('user_id') !== 'undefined' && sessionStorage.getItem('user_id') !== null) {
                     this.username = sessionStorage.getItem('user_name');
@@ -93,8 +92,6 @@
                 }
 
             },
-
-
         },
         mounted() {
             this.checkAuth();

@@ -73,7 +73,7 @@ methods:{
         }
     },
     async logIn() {
-        if (this.email != null || this.username != null) {
+        if (this.email || this.username) {
             this.username = this.username.trim();
             if (!this.username || this.username.length > 15 || this.username.length < 2) {
                 this.logError = 'Введите верное имя';
@@ -109,7 +109,6 @@ methods:{
             this.logError = 'Введите имя!';
         }
     },
-
 }
     }
 </script>
