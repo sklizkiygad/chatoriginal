@@ -44,8 +44,8 @@
 
     import hostMixins from "@/mixins/hostMixins";
     import axios from 'axios';
-    import LogChat from "@/components/LogChat/LogChat";
-    import UserChat from "@/components/UserChat/UserChat";
+    import LogChat from "@/components/User/LogChat/LogChat";
+    import UserChat from "@/components/User/UserChat/UserChat";
 
     export default {
         components: {LogChat,UserChat},

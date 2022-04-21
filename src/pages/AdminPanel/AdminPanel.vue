@@ -11,9 +11,9 @@
 </template>
 
 <script>
-    import AdminChat from "@/components/AdminChat/AdminChat";
+    import AdminChat from "@/components/Admin/AdminChat/AdminChat";
     import hostMixins from "@/mixins/hostMixins";
-    import registrationAdmin from "@/components/RegistrationAdmin/RegistrationAdmin";
+    import registrationAdmin from "@/components/Admin/RegistrationAdmin/RegistrationAdmin";
 
     export default {
         mixins: [hostMixins],

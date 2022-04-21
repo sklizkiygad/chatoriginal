@@ -1,0 +1,109 @@
+
+img {
+    max-width: 100%;
+}
+
+.main_block {
+    height: 100vh;
+    width: 100vw;
+    padding: 0;
+    margin: 0;
+    background-color: aliceblue;
+    clear: both;
+    display: flex;
+
+}
+
+.inbox_people {
+    background: #f8f8f8 none repeat scroll 0 0;
+    overflow: hidden;
+    width: 40%;
+    border-right: 1px solid #c4c4c4;
+    height: 100%;
+}
+
+.top_spac {
+    margin: 20px 0 0;
+}
+
+
+.chat_list {
+    border-bottom: 1px solid #c4c4c4;
+    margin: 0;
+    padding: 18px 16px 10px;
+    display: flex;
+}
+
+.chat_list:hover {
+    background-color: #ebebeb;
+}
+
+.active_chat {
+    background: #ebebeb;
+}
+
+
+.active h5 {
+    color: white !important;
+}
+
+.inbox_messages {
+    padding: 30px 15px 0 25px;
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+.search-bar {
+    outline: none;
+}
+
+.activeStatus {
+    background-color: #696969;
+    color: white;
+}
+
+
+.pagination {
+    display: inline-block;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: #696969;
+    color: white;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
+}
+
+
+
+@media (max-width: 640px) {
+    .inbox_msg {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+    }
+
+    .inbox_messages {
+        width: 100%;
+        background-color: aliceblue;
+    }
+
+    .inbox_people {
+        overflow: visible;
+        width: 100%;
+    }
+
+}

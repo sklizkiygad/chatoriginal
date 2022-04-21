@@ -28,6 +28,17 @@ export default {
                 this.isBanned=false;
             }
         },
+        isImage(name){
+            if(name!==null){
+                if(name.substr(-4)==='.jpg'||name.substr(-4)==='.gif'||name.substr(-4)==='.png'||name.substr(-4)==='jpeg')
+                {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        },
         userResponce() {
             this.$socket.emit('connected', {id: sessionStorage.getItem('user_id')});
             this.sockets.subscribe('user_response', (data) => {

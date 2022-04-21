@@ -4,7 +4,7 @@
 
 <script>
     import Chat from "@/pages/Chat/Chat";
-    import AdminChat from "@/components/AdminChat/AdminChat";
+    import AdminChat from "@/components/Admin/AdminChat/AdminChat";
 
     export default {
 
