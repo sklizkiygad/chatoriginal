@@ -63,10 +63,12 @@
 
 methods:{
     checkAuth() {
-        if (sessionStorage.getItem('user_id') !== 'undefined' && sessionStorage.getItem('user_id') !== null) {
+        if (sessionStorage.getItem('user_id') !== 'undefined' && sessionStorage.getItem('user_id')) {
             this.username = sessionStorage.getItem('user_name');
-            this.userResponce();
-            this.$emit('isLogOk', true);
+            this.$socket.emit('connected', {id: sessionStorage.getItem('user_id')});
+                this.userResponce();
+                this.$emit('isLogOk', true);
+
 
         } else {
             this.$emit('isLogOk', false);
@@ -92,7 +94,13 @@ methods:{
                 await axios.post(`${this.myProxy}/api/users/add`, null, userLog)
                     .then((res) => {
                         if (res.data.error) {
-                            this.logError = "Введите верное имя";
+                            console.log(res.data.error);
+                            if(res.data.error==="User banned"){
+                                this.logError = "Вы заблокированы";
+                            }else{
+                                this.logError = "Введите верное имя";
+                            }
+
                             this.$emit('isLogOk', false);
                         } else {
                             console.log('all is ok');
@@ -100,7 +108,7 @@ methods:{
                             sessionStorage.setItem('user_id', res.data.id);
                             sessionStorage.setItem('user_email', res.data.email);
                             sessionStorage.setItem('user_name', res.data.name);
-
+                            sessionStorage.setItem('user_status',res.data.status);
                             this.checkAuth();
                         }
                     })

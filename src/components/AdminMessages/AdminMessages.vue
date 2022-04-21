@@ -1,7 +1,7 @@
 <template>
     <div class="butt" v-if="chsStatus===1">
         <button @click="endDialog">Закрыть диалог</button>
-        <button>Забанить пользователя</button>
+        <button @click="banUser">Забанить пользователя</button>
     </div>
     <div class="msg_history" ref="chatter">
         <div v-if="isLoading" class="loader"></div>
@@ -130,6 +130,24 @@
                         },
                         params: {
                             status: 'Disabled',
+                            id: this.userId
+                        }
+                    }
+                    await axios.post(`${this.myProxy}/api/users/new/status`, null, dat)
+                        .then((res) => {
+                            console.log(res);
+                            this.$emit('endDialog',this.userId);
+                        })
+                }
+            },
+            async banUser() {
+                if (confirm("Вы уверены что хотите заблокировать пользователем?")) {
+                    let dat = {
+                        headers: {
+                            Authorization: process.env.VUE_APP_TOKEN
+                        },
+                        params: {
+                            status: 'Banned',
                             id: this.userId
                         }
                     }

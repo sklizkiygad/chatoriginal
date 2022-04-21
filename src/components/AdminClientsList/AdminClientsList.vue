@@ -162,7 +162,7 @@
                         break;
                     }
                     case 3: {
-                        stat='Null';
+                        stat='Banned';
                         break;
                     }
                 }

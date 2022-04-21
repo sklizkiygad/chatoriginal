@@ -1,8 +1,14 @@
 <template>
     <section class="chat-box" ref="chatter">
-        <div v-if="isLoading"
+        <p v-if="isBanned">
+            Вы заблокированы и не можете отправлять сообщения
+        </p>
+
+        <div v-else-if="!isBanned && isLoading"
              :style="`border-top: 16px solid ${bcol}`"
-             class="loader"></div>
+             class="loader">
+
+        </div>
 
         <div    v-else
                 v-for="content in messages"
@@ -49,6 +55,7 @@
             return{
                 isLoading:true,
                 messages:[],
+                isBanned:false,
             }
         },
         mixins:[hostMixins],
@@ -79,51 +86,56 @@ props:{
                 const res = this.myProxy + '/api/file/' + name;
                 return res;
             },
+
             async getMessages() {
-                const sup = {
-                    headers: {
-                        Authorization: process.env.VUE_APP_TOKEN
-                    },
-                    params: {
-                        user_id: sessionStorage.getItem('user_id')
-                    }
-                }
-                console.log(sup);
-                await axios.get(`${this.myProxy}/api/users/messages`, sup)
-                    .then((res) => {
-                        console.log(res);
-                        if (res.data.error) {
-                            alert('ошибка соединения');
-                        } else {
-
-                            this.messages = [];
-                            let message = {};
-                            for (let i = 0; i < res.data.length; i++) {
-                                message = {
-                                    user_id: res.data[i].user_id,
-                                    name: ((res.data[i].status) === 'Admin' ? 'Admin' : sessionStorage.getItem('user_name')),
-                                    message: res.data[i].message,
-                                    role: ((res.data[i].status) === 'Admin' ? 'Admin' : 'User'),
-                                    file: res.data[i].file
-                                }
-                                this.messages.push(message);
-                            }
-                            this.isLoading=false;
+                this.checkStatus();
+                if(!this.isBanned){
+                    const sup = {
+                        headers: {
+                            Authorization: process.env.VUE_APP_TOKEN
+                        },
+                        params: {
+                            user_id: sessionStorage.getItem('user_id')
                         }
+                    }
+                    console.log(sup);
+                    await axios.get(`${this.myProxy}/api/users/messages`, sup)
+                        .then((res) => {
+                            console.log(res);
+                            if (res.data.error) {
+                                alert('ошибка соединения');
+                            } else {
 
-                    })
+                                this.messages = [];
+                                let message = {};
+                                for (let i = 0; i < res.data.length; i++) {
+                                    message = {
+                                        user_id: res.data[i].user_id,
+                                        name: ((res.data[i].status) === 'Admin' ? 'Admin' : sessionStorage.getItem('user_name')),
+                                        message: res.data[i].message,
+                                        role: ((res.data[i].status) === 'Admin' ? 'Admin' : 'User'),
+                                        file: res.data[i].file
+                                    }
+                                    this.messages.push(message);
+                                }
+                                this.isLoading=false;
+                            }
+
+                        })
+                }
+
             },
             addNewMessage(){
 
                 this.messages.push(this.newMessage);
-            }
+            },
+
         },
         created() {
             this.getMessages();
         },
         watch: {
             newMessage(){
-
                 this.addNewMessage();
             },
             messages: {

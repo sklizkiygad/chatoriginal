@@ -19,12 +19,26 @@ export default {
             const msgdate = year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
             return msgdate;
         },
+        checkStatus(){
+            if(sessionStorage.getItem('user_status')==="Banned")
+            {
+                this.isBanned=true;
+            }
+            else{
+                this.isBanned=false;
+            }
+        },
         userResponce() {
             this.$socket.emit('connected', {id: sessionStorage.getItem('user_id')});
             this.sockets.subscribe('user_response', (data) => {
                 if(data.error){
-                    console.log(data);
-                    alert('Проблемы с серваком')
+                    if(data.error==="User banned")
+                    {
+                        sessionStorage.setItem('user_status',"Banned");
+                        alert("Вы заблокированы");
+                        this.checkStatus();
+                    }
+                    console.log(data.error);
                 }
                 else{
                     console.log('Сообщение получено');
