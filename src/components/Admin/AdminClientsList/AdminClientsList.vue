@@ -121,25 +121,29 @@
 
             addNewClient(data) {
                         console.log(data);
-                        if (data.new_chat) {
-                            const newUser = {
-                                id: data.user_id,
-                                name: data.name,
-                                status: "Actived",
-                                role: "User",
-                                date: data.date,
-                                last_message: data
+                        if(this.currentClientPage===this.clientPages){
+                            if (data.new_chat) {
+                                const newUser = {
+                                    id: data.user_id,
+                                    name: data.name,
+                                    status: "Actived",
+                                    role: "User",
+                                    date: data.date,
+                                    last_message: data
+                                }
+                                this.clientDataList.push(newUser);
                             }
-                            this.clientDataList.push(newUser);
-                        }
-                for (let i = 0; i < this.clientDataList.length; i++) {
-                            if (this.clientDataList[i].id === data.user_id) {
-                                this.clientDataList[i].last_message = data;
+                            for (let i = 0; i < this.clientDataList.length; i++) {
+                                if (this.clientDataList[i].id === data.user_id) {
+                                    this.clientDataList[i].last_message = data;
+                                }
                             }
                         }
+
             },
 
             async apiCallClients() {
+                console.log('I am calling');
                 this.clientDataList = [];
                 const config = {
                     headers: {
@@ -173,7 +177,11 @@
                     {
                         res.data.users[i].last_message.date=res.data.users[i].last_message.date.slice(0, -3);
                         this.clientDataList.push(res.data.users[i]);
+                        if(i>=this.maxClientsPerPage){
+                            break;
+                        }
                     }
+
                 });
             },
             updateLastMessage(mess){
@@ -191,10 +199,11 @@
         },
         watch:{
             chosenStatus(){
+                this.currentClientPage=1;
                 this.apiCallClients();
             },
-            currentClientPage(){
-                this.apiCallClients();
+            currentClientPage(newVal){
+                    this.apiCallClients();
             },
             newLastMessage(lastMes){
                 this.updateLastMessage(lastMes);
