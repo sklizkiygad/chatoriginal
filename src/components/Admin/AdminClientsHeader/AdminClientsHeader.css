@@ -78,9 +78,9 @@
 
 
 @media (max-width: 640px) {
-    .headind_srch {
-        position: fixed;
-        width: 100%;
-        background-color: #f8f8f8;
-    }
+    /*.headind_srch {*/
+    /*    !*position: fixed;*!*/
+    /*    !*width: 70%;*!*/
+    /*    !*background-color: #f8f8f8;*!*/
+    /*}*/
 }

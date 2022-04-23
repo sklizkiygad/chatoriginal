@@ -51,8 +51,8 @@
 }
 
 @media (max-width: 640px) {
-    .inbox_chat {
-        height: 100%;
-        margin-top: 80px;
-    }
+    /*.inbox_chat {*/
+    /*    height: 100%;*/
+    /*    margin-top: 80px;*/
+    /*}*/
 }
