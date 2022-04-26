@@ -68,8 +68,6 @@ methods:{
             //this.$socket.emit('connected', {id: sessionStorage.getItem('user_id')});
                 this.userResponce();
                 this.$emit('isLogOk', true);
-
-
         } else {
             this.$emit('isLogOk', false);
         }
@@ -107,9 +105,10 @@ methods:{
                             sessionStorage.setItem('user_email', res.data.email);
                             sessionStorage.setItem('user_name', res.data.name);
                             sessionStorage.setItem('user_status',res.data.status);
-                            console.log(res.data.id);
-                            this.$socket.emit('connected', {id: res.data.id});
+                           // this.$socket.emit('connected', {id: res.data.id});
+                            this.userResponce();
                             this.checkAuth();
+
                         }
                     })
             }

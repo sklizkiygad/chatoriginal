@@ -131,7 +131,7 @@
 
             addNewClient(data) {
                         console.log(data);
-                        if(this.currentClientPage===this.clientPages){
+
                             if (data.new_chat) {
                                 const newUser = {
                                     id: data.user_id,
@@ -141,15 +141,16 @@
                                     date: data.date,
                                     last_message: data
                                 }
-                                this.clientDataList.push(newUser);
+                                this.clientDataList.unshift(newUser);
                             }
+
                             for (let i = 0; i < this.clientDataList.length; i++) {
                                 if (this.clientDataList[i].id === data.user_id) {
                                     this.clientDataList[i].last_message = data;
                                 }
                             }
-                        }
-                this.sortClientListByDate();
+
+
             },
 
 

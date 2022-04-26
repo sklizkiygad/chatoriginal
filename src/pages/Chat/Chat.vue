@@ -30,8 +30,6 @@
                         :isHigh="isHigh"
                         @logOut="logOut"
                         @collapse="chiba"
-
-
                 />
             </div>
         </transition>
@@ -96,6 +94,7 @@
         mounted() {
             this.checkAuth();
         },
+
 
 
     }
