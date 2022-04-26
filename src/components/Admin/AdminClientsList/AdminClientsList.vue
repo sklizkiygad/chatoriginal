@@ -158,6 +158,7 @@
             async apiCallClients() {
                 console.log('I am calling');
                 this.clientDataList = [];
+                this.fullClientDataList=[];
                 const config = {
                     headers: {
                         Authorization: process.env.VUE_APP_TOKEN
