@@ -1,8 +1,13 @@
 <template>
     <div class="inbox_chat">
+
         <div class="client_list">
-            <transition-group name="fade">
+
+            <transition-group   name="fade">
+
+                <div v-if="isLoading" class="loaderAbs"></div>
                 <div
+                        v-else
                         class="chat_list" v-for="client in searchedList" :key="client.id"
                         :class="client.id === chsAct ? 'active_chat':null"
                         @click="chosenUser(client.id)">
@@ -13,25 +18,31 @@
                         </div>
                         <div class="chat_ib">
                             <h5>{{client.name}}
-                                <span class="chat_date">{{client.last_message.date}}</span>
+                                <span class="chat_date">{{client.last_message.date.slice(0, -3)}}</span>
                             </h5>
                             <p v-if="client.last_message.message!=='' && client.last_message.message!==null">{{client.last_message.message}}</p>
                             <p v-else>[Вложение]</p>
                         </div>
                     </div>
+
                 </div>
             </transition-group>
+
+            <div class="observer" ref="observer"></div>
         </div>
 
 
-        <div class="pagination" v-if="searchQuery===''">
-            <a v-if="clientPages>1">&laquo;</a>
-            <a
-                    v-for="n in clientPages"
-                    :class="{'active':(currentClientPage)===n}"
-                    @click.prevent="currentClientPage = n">{{n}}</a>
-            <a v-if="clientPages>1">&raquo;</a>
-        </div>
+
+
+
+<!--        <div class="pagination" v-if="searchQuery===''">-->
+<!--            <a v-if="clientPages>1">&laquo;</a>-->
+<!--            <a-->
+<!--                    v-for="n in clientPages"-->
+<!--                    :class="{'active':(currentClientPage)===n}"-->
+<!--                    @click.prevent="currentClientPage = n">{{n}}</a>-->
+<!--            <a v-if="clientPages>1">&raquo;</a>-->
+<!--        </div>-->
     </div>
 </template>
 
@@ -45,11 +56,12 @@
         data(){
             return{
                 clientPages: 1,
-                currentClientPage:1,
+                currentClientPage:0,
                 maxClientsPerPage:10,
                 clientDataList:[],
                 chsAct:null,
-
+                fullClientDataList:[],
+                isLoading:true
             }
         },
 
@@ -84,9 +96,7 @@
             paginationOut(numCli) {
                 console.log('Количество клиентов '+numCli);
                 this.clientPages = Math.ceil(numCli / this.maxClientsPerPage);
-                if (this.clientPages === 1) {
-                    this.clientPages = 0;
-                }
+
             },
 
              chosenUser(user_id) {
@@ -139,8 +149,10 @@
                                 }
                             }
                         }
-
+                this.sortClientListByDate();
             },
+
+
 
             async apiCallClients() {
                 console.log('I am calling');
@@ -149,10 +161,10 @@
                     headers: {
                         Authorization: process.env.VUE_APP_TOKEN
                     },
-                    params: {
-                        limit: this.maxClientsPerPage,
-                        page: this.currentClientPage,
-                    }
+                    // params: {
+                    //     limit: this.maxClientsPerPage,
+                    //     page: this.currentClientPage,
+                    // }
                 }
                 let stat='';
 
@@ -175,34 +187,79 @@
                     this.paginationOut(res.data.length);
                     for (let i = 0; i < res.data.users.length; i++)
                     {
-                        res.data.users[i].last_message.date=res.data.users[i].last_message.date.slice(0, -3);
-                        this.clientDataList.push(res.data.users[i]);
-                        if(i>=this.maxClientsPerPage){
-                            break;
-                        }
+                        //res.data.users[i].last_message.date=res.data.users[i].last_message.date.slice(0, -3);
+                        this.fullClientDataList.push(res.data.users[i]);
                     }
+
+                    this.loadMoreClients();
 
                 });
             },
             updateLastMessage(mess){
                 for (let i = 0; i < this.clientDataList.length; i++) {
-
                     if (this.clientDataList[i].id == mess.user_id) {
                         this.clientDataList[i].last_message = mess;
                     }
                 }
+                this.sortClientListByDate();
+            },
+            sortClientListByDate(){
+                console.log('привет');
+                let dateMeme1=Date.parse(this.clientDataList[0].last_message.date);
+                let dateMeme2=Date.parse(this.clientDataList[3].last_message.date);
+
+                    console.log(dateMeme1);
+                    console.log(dateMeme2);
+                    this.clientDataList.sort((a,b)=>Date.parse(b.last_message.date)-Date.parse(a.last_message.date))
+
+
+
+
+            },
+            loadMoreClients(){
+                console.log('яродился');
+                const beginIteration=this.clientDataList.length;
+                let maxIteration=this.clientDataList.length+this.maxClientsPerPage;
+
+
+                if(this.fullClientDataList.length-beginIteration<this.maxClientsPerPage) {
+                    maxIteration=beginIteration+(this.fullClientDataList.length-beginIteration);
+                }
+
+                    for (let i = beginIteration; i < maxIteration; i++)
+                    {
+                        this.clientDataList.push(this.fullClientDataList[i]);
+                    }
+                this.isLoading=false;
+                }
+
+            },
+
+
+        mounted() {
+            this.apiCallClients();
+
+            const options={
+                rootMargin:'0px',
+                threshold:0
             }
+
+
+            const callback=(entries,observer)=>{
+                if(entries[0].isIntersecting){
+                    this.loadMoreClients();
+                }
+            }
+            const observer = new IntersectionObserver(callback,options);
+            observer.observe(this.$refs.observer);
         },
 
-        created() {
-            this.apiCallClients();
-        },
         watch:{
             chosenStatus(){
                 this.currentClientPage=1;
                 this.apiCallClients();
             },
-            currentClientPage(newVal){
+            currentClientPage(){
                     this.apiCallClients();
             },
             newLastMessage(lastMes){

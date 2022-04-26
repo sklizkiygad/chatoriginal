@@ -10,13 +10,20 @@ export default {
         dateFocuses() {
             let now = new Date(),
                 year = now.getFullYear().toString(),
-                month = now.getMonth(),
+                month = now.getMonth()+1,
                 day = now.getDate().toString(),
                 hour = now.getHours().toString(),
-                minute = now.getMinutes().toString();
+                minute = now.getMinutes().toString(),
+            second=now.getSeconds().toString();
+
             if (day < 10) day = '0' + day;
             if (month < 10) month = '0' + month.toString();
-            const msgdate = year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
+            if (hour < 10) hour= '0' + hour;
+            if (minute < 10) minute= '0' + minute;
+            if (second < 10) second= '0' + second;
+
+
+            const msgdate = year + '-' + month + '-' + day + ' ' + hour + ':' + minute+':'+second;
             return msgdate;
         },
         checkStatus(){
@@ -79,6 +86,7 @@ export default {
         scrollToEnd() {
             this.$refs.chatter.scrollTop = this.$refs.chatter.scrollHeight;
         },
+
 
     }
 }

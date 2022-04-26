@@ -5,15 +5,14 @@
                         <admin-clients-header
                            @messOpen="openClients"
                            @close="toClose"
-                           @status="changeStatus"
-                        />
+                           @status="changeStatus"/>
+
                         <admin-clients-list
                           @openMessage="openMessages"
                           :chosenStatus="chosenStatus"
                           :newLastMessage="lastMessageToUpdate"
                           :newClient="addNewUser"
-                          :endDialogUserId="userIdEndDialog"
-                        />
+                          :endDialogUserId="userIdEndDialog"/>
                     </div>
 
                     <div class="inbox_people_collapse" v-else @click="clientOpen=!clientOpen">
@@ -33,13 +32,12 @@
 
 
                     <div class="inbox_messages" :style="{display: (isMessageOpen)?db:dn}">
-
                          <admin-messages
                             :chosenStatus="chosenStatus"
                             :userId="messagesUserId"
                             :sendMessage="lastMessageToUpdate"
-                            @endDialog="endDialog"
-                          />
+                            @endDialog="endDialog"/>
+
                          <admin-write-message
                              @updateLastMessage="updateClientList"
                              :chsAct="messagesUserId"/>

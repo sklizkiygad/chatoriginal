@@ -35,7 +35,7 @@
                           </div>
                         </span>
                     </p>
-                    <span class="time_date"> {{message.date}}</span>
+                    <span class="time_date"> {{message.date.slice(0, -3)}}</span>
                 </div>
             </div>
         </div>
@@ -82,7 +82,7 @@
                     console.log(response.data);
                     this.dialogMsgs = [];
                     for (let i = 0; i < response.data.length; i++) {
-                        response.data[i].date = response.data[i].date.slice(0, -3);
+                       // response.data[i].date = response.data[i].date.slice(0, -3);
                         this.dialogMsgs.push(response.data[i]);
                     }
                     this.isLoading=false;

@@ -107,6 +107,7 @@ methods:{
         this.files=[];
         console.log('Сообщение отправлено');
 
+
     },
 }
     }
