@@ -105,7 +105,7 @@ methods:{
                             sessionStorage.setItem('user_email', res.data.email);
                             sessionStorage.setItem('user_name', res.data.name);
                             sessionStorage.setItem('user_status',res.data.status);
-                           // this.$socket.emit('connected', {id: res.data.id});
+                            this.$socket.emit('connected', {id: res.data.id});
                             this.userResponce();
                             this.checkAuth();
 
