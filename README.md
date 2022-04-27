@@ -5,11 +5,6 @@
 npm install
 ```
 
-### Pre-launch
-```
-rename .env.example -> .env
-```
-
 ### Compiles and hot-reloads for development
 ```
 npm run serve
