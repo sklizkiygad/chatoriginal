@@ -72,8 +72,8 @@
                 this.isHigh = !this.isHigh;
             },
             logOut() {
+                console.log('дисконнектюсь');
                 this.sockets.unsubscribe('message_response');
-                this.$socket.disconnect();
                 sessionStorage.clear();
                 this.isIn=false;
             },

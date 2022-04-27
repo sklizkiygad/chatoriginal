@@ -35,7 +35,6 @@
                 }
             },
             adminClose() {
-                this.$socket.disconnect();
                 sessionStorage.clear();
                 this.checkAuth();
                 this.adminname = null;

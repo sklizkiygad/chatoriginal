@@ -75,14 +75,14 @@ export default {
                     console.log(newMessage);
                     //this.messages.push(newMessage);
                     this.myNewMessage=newMessage;
-                    this.playAudio();
+                    //this.playAudio();
                 }
             });
         },
-        async playAudio(){
-            let audi=new Audio("https://song.nazvonok.ru/song/a9ba/ultra-sms-korotkiy-futuristichnyy-zvuchok.mp3?id=26328");
-            await audi.play();
-        },
+        // async playAudio(){
+        //     let audi=new Audio("https://song.nazvonok.ru/song/a9ba/ultra-sms-korotkiy-futuristichnyy-zvuchok.mp3?id=26328");
+        //     await audi.play();
+        // },
         scrollToEnd() {
             this.$refs.chatter.scrollTop = this.$refs.chatter.scrollHeight;
         },

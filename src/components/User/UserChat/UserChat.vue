@@ -3,7 +3,7 @@
 
 <user-chat-header
         @collapse="chiba"
-        @logOut="logOut"/>
+        @logOutUserChat="logOutUC"/>
 
     <user-chat-messages
             :newMessage="myNewMessage"/>
@@ -40,7 +40,8 @@
             chiba() {
                 this.$emit('collapse')
             },
-            logOut() {
+            logOutUC() {
+
                 this.$emit('logOut');
             },
             sendingMessage(mess){
