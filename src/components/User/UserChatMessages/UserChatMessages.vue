@@ -76,6 +76,15 @@ props:{
                 const res = this.myProxy + '/api/file/' + name;
                 return res;
             },
+            checkStatus(){
+                if(sessionStorage.getItem('user_status')==="Banned")
+                {
+                    this.isBanned=true;
+                }
+                else{
+                    this.isBanned=false;
+                }
+            },
 
             async getMessages() {
                 this.checkStatus();

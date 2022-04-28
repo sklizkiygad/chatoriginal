@@ -30,19 +30,6 @@
 
             <div class="observer" ref="observer"></div>
         </div>
-
-
-
-
-
-<!--        <div class="pagination" v-if="searchQuery===''">-->
-<!--            <a v-if="clientPages>1">&laquo;</a>-->
-<!--            <a-->
-<!--                    v-for="n in clientPages"-->
-<!--                    :class="{'active':(currentClientPage)===n}"-->
-<!--                    @click.prevent="currentClientPage = n">{{n}}</a>-->
-<!--            <a v-if="clientPages>1">&raquo;</a>-->
-<!--        </div>-->
     </div>
 </template>
 
@@ -189,7 +176,6 @@
                     this.paginationOut(res.data.length);
                     for (let i = 0; i < res.data.users.length; i++)
                     {
-                        //res.data.users[i].last_message.date=res.data.users[i].last_message.date.slice(0, -3);
                         this.fullClientDataList.push(res.data.users[i]);
                     }
 
@@ -206,17 +192,8 @@
                 this.sortClientListByDate();
             },
             sortClientListByDate(){
-                console.log('привет');
-                let dateMeme1=Date.parse(this.clientDataList[0].last_message.date);
-                let dateMeme2=Date.parse(this.clientDataList[3].last_message.date);
 
-                    console.log(dateMeme1);
-                    console.log(dateMeme2);
                     this.clientDataList.sort((a,b)=>Date.parse(b.last_message.date)-Date.parse(a.last_message.date))
-
-
-
-
             },
             loadMoreClients(){
                 console.log('яродился');

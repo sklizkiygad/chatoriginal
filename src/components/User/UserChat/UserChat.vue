@@ -37,11 +37,45 @@
             },
         },
         methods:{
+            userResponce() {
+                this.$socket.emit('connected', {id: sessionStorage.getItem('user_id')});
+                this.sockets.subscribe('user_response', (data) => {
+                    if(data.error){
+                        if(data.error==="User banned")
+                        {
+                                sessionStorage.setItem('user_status',"Banned");
+                                this.chiba();
+                                console.log("Вы заблокированы");
+
+
+                        }
+                        console.log(data.error);
+
+                    }
+                    else{
+                        console.log('Сообщение получено');
+                        let fileArray=[];
+                        for(let i=0;i<data.file.length;i++){
+                            fileArray.push({
+                                "name": data.file[i]
+                            })
+                        }
+                        const newMessage = {
+                            name: 'Admin',
+                            message: data.message,
+                            role: 'Admin',
+                            file:fileArray
+                        }
+                        console.log(newMessage);
+                        this.myNewMessage=newMessage;
+
+                    }
+                });
+            },
             chiba() {
                 this.$emit('collapse')
             },
             logOutUC() {
-
                 this.$emit('logOut');
             },
             sendingMessage(mess){

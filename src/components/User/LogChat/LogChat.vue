@@ -65,8 +65,6 @@ methods:{
     checkAuth() {
         if (sessionStorage.getItem('user_id') !== 'undefined' && sessionStorage.getItem('user_id')) {
             this.username = sessionStorage.getItem('user_name');
-            //this.$socket.emit('connected', {id: sessionStorage.getItem('user_id')});
-                this.userResponce();
                 this.$emit('isLogOk', true);
         }
         else {
@@ -106,10 +104,7 @@ methods:{
                             sessionStorage.setItem('user_email', res.data.email);
                             sessionStorage.setItem('user_name', res.data.name);
                             sessionStorage.setItem('user_status',res.data.status);
-                            //this.$socket.emit('connected', {id: res.data.id});
-                            // this.userResponce();
-                             this.checkAuth();
-
+                            this.checkAuth();
                         }
                     })
             }
