@@ -45,8 +45,6 @@
                         {
                                 sessionStorage.setItem('user_status',"Banned");
                                 this.chiba();
-                                console.log("Вы заблокированы");
-
 
                         }
                         console.log(data.error);
