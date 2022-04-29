@@ -1,6 +1,7 @@
 <template>
     <div class="base">
         <transition name="fade">
+
             <div class="lowbe"
                  :style="{backgroundColor:bcol}"
                  @click="chiba"
@@ -17,6 +18,7 @@
                     Жмакни
                 </p>
             </div>
+
             <div v-else>
                 <LogChat
                         v-if="!isIn"
@@ -32,6 +34,7 @@
                         @collapse="chiba"
                 />
             </div>
+            
         </transition>
 
     </div>
@@ -100,6 +103,6 @@
     }
 </script>
 
-<style lang="scss" scoped>
-    @import "./Chat.scss";
+<style  scoped>
+    @import "Chat.css";
 </style>

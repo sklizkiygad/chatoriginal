@@ -1,0 +1,42 @@
+* {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+.base{
+  height: 100vh;
+  background-image: url("../../../public/img/nezuko.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.lowbe {
+  background-color: #ea526f;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  min-width: 350px;
+  width: 15%;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.lowbe p {
+  color: #FFFFFF;
+  font-size: 100%;
+}
+
