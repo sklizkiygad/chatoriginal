@@ -91,6 +91,7 @@
                                         },
                                         changeStatus(stat) {
                                             this.chosenStatus = stat;
+                                            this.isMessageOpen=false;
                                         },
                                         openMessages(user_id) {
                                             this.messagesUserId = user_id;

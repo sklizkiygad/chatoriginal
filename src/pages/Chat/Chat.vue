@@ -44,7 +44,6 @@
 <script>
 
     import hostMixins from "@/mixins/hostMixins";
-    import axios from 'axios';
     import LogChat from "@/components/User/LogChat/LogChat";
     import UserChat from "@/components/User/UserChat/UserChat";
 
