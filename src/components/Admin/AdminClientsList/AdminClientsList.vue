@@ -1,37 +1,35 @@
 <template>
-    <div class="inbox_chat">
 
-        <div class="client_list">
+    <div class="client-list">
+        <transition-group  name="fade">
 
-            <transition-group   name="fade">
+            <div v-if="isLoading" class="client-list__loader"></div>
 
-                <div v-if="isLoading" class="loaderAbs"></div>
                 <div
                         v-else
-                        class="chat_list" v-for="client in searchedList" :key="client.id"
+                        class="client-list__client-card" v-for="client in searchedList" :key="client.id"
                         :class="client.id === chsAct ? 'active_chat':null"
                         @click="chosenUser(client.id)">
-                    <div class="chat_people">
-                        <div @click="endDialog(client.id)"
-                             class="chat_img">
-                            <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-                        </div>
-                        <div class="chat_ib">
-                            <h5>{{client.name}}
-                                <span class="chat_date">{{client.last_message.date.slice(0, -3)}}</span>
-                            </h5>
-                            <p v-if="client.last_message.message!=='' && client.last_message.message!==null">{{client.last_message.message}}</p>
-                            <p v-else>[Вложение]</p>
-                        </div>
+
+                    <div
+                         class="client-list__client-img">
+                        <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
                     </div>
-
+                    <div class="client-list__last-message">
+                        <h5>{{client.name}}
+                            <span >{{client.last_message.date.slice(0, -3)}}</span>
+                        </h5>
+                        <p v-if="client.last_message.message!=='' && client.last_message.message!==null">{{client.last_message.message}}</p>
+                        <p v-else>[Вложение]</p>
+                    </div>
                 </div>
-            </transition-group>
 
-            <div class="observer" ref="observer"></div>
-        </div>
+        </transition-group>
+
+        <div class="client-list__observer" ref="observer"></div>
     </div>
 </template>
+
 
 <script>
     import axios from "axios";

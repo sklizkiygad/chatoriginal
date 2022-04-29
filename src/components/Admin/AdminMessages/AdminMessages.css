@@ -16,26 +16,26 @@
     cursor: pointer;
 }
 
-.msg_history {
+.message-history {
     overflow-y: auto;
     height: 100%;
 }
 
-.outgoing_msg {
+.message-history__outgoing-message {
     overflow: hidden;
     margin: 26px 15px 26px;
 }
 
-.incoming_msg {
+.message-history__incoming-msg {
     margin-bottom: 1%;
 }
 
-.incoming_msg_img {
+.message-history__incoming-msg_img {
     display: inline-block;
     width: 6%;
 }
 
-.sent_msg p {
+.message-history__sent-message p {
     background: #05728f none repeat scroll 0 0;
     border-radius: 3px;
     font-size: 14px;
@@ -45,12 +45,12 @@
     width: 100%;
 }
 
-.sent_msg {
+.message-history__sent-message {
     float: right;
     word-break: break-all;
 }
 
-.received_msg {
+.message-history__received-message {
     display: inline-block;
     padding: 0 0 0 10px;
     vertical-align: top;
@@ -58,7 +58,7 @@
     word-break: break-all;
 }
 
-.received_withd_msg p {
+.message-history__received-withd-msg p {
     background: #ebebeb none repeat scroll 0 0;
     border-radius: 3px;
     color: #646464;
@@ -67,27 +67,27 @@
     padding: 5px 10px 5px 12px;
     width: 100%;
 }
-.received_withd_msg {
+.message-history__received-withd-msg {
     width: 57%;
 }
-.message_inner_file{
+.message-history__message-inner-file{
     display:block;
 }
-.message_inner_file a{
+.message-history__message-inner-file a{
     color:black;
 }
-.message_inner_file img{
+.message-history__message-inner-file img{
     height: 200px;
     max-width:400px;
     display: block;
 }
-.time_date {
+.message-history__time-date {
     color: #747474;
     display: block;
     font-size: 12px;
     margin: 8px 0 0;
 }
-.loader {
+.message-history__loader {
     border: 16px solid #f3f3f3;
     border-radius: 50%;
     border-top: 16px solid #555;

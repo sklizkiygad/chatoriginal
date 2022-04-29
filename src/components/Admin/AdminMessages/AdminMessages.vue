@@ -3,18 +3,18 @@
         <button @click="endDialog">Закрыть диалог</button>
         <button @click="banUser">Забанить пользователя</button>
     </div>
-    <div class="msg_history" ref="chatter">
-        <div v-if="isLoading" class="loader"></div>
-        <div v-else
+    <div class="message-history" ref="chatter">
+        <div v-if="isLoading" class="message-history__loader"></div>
+        <div    v-else
                 v-for="message in dialogMsgs"
-                :class="message.status === 'Admin'? 'outgoing_msg':'incoming_msg'">
-            <div v-if="message.status !== 'Admin'" class="incoming_msg_img">
+                :class="message.status === 'Admin'? 'message-history__outgoing-message':'message-history__incoming-msg'">
+            <div v-if="message.status !== 'Admin'" class="message-history__incoming-msg_img">
                 <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
             </div>
-            <div :class="message.status === 'Admin'? 'sent_msg':'received_msg'">
-                <div :class="message.status === 'Admin'? 'sent_msg':'received_withd_msg'">
+            <div :class="message.status === 'Admin'? 'message-history__sent-message':'message-history__received-message'">
+                <div :class="message.status === 'Admin'? 'message-history__sent-message':'message-history__received-withd-msg'">
                     <p>{{message.message}}
-                        <span v-if="message.file.length!==0" class="message_inner_file">
+                        <span v-if="message.file.length!==0" class="message-history__message-inner-file">
                           <div
                              v-for="(file, index) in message.file"
                              :key="file.id">
@@ -35,7 +35,7 @@
                           </div>
                         </span>
                     </p>
-                    <span class="time_date"> {{message.date.slice(0, -3)}}</span>
+                    <span class="message-history__time-date"> {{message.date.slice(0, -3)}}</span>
                 </div>
             </div>
         </div>

@@ -3,7 +3,7 @@ img {
     max-width: 100%;
 }
 
-.main_block {
+.messenger {
     height: 100vh;
     width: 100vw;
     padding: 0;
@@ -14,14 +14,14 @@ img {
 
 }
 
-.inbox_people {
+.messenger__clients {
     background: #f8f8f8 none repeat scroll 0 0;
     overflow: hidden;
     width: 50%;
     border-right: 1px solid #c4c4c4;
     height: 100%;
 }
-.inbox_people_collapse{
+.messenger__clients-collapse{
    width:20px;
     display: flex;
     flex-direction: column;
@@ -29,24 +29,13 @@ img {
     cursor: pointer;
     background-color: #AAAAAA;
 }
-.all_collapse{
+.all-collapse{
     margin: auto;
 }
 .top_spac {
     margin: 20px 0 0;
 }
 
-
-.chat_list {
-    border-bottom: 1px solid #c4c4c4;
-    margin: 0;
-    padding: 18px 16px 10px;
-    display: flex;
-}
-
-.chat_list:hover {
-    background-color: #ebebeb;
-}
 
 .active_chat {
     background: #ebebeb;
@@ -57,7 +46,7 @@ img {
     color: white !important;
 }
 
-.inbox_messages {
+.messenger__messages {
     padding: 30px 15px 0 25px;
     /*width: 60%;*/
     width: 100%;
@@ -113,12 +102,12 @@ img {
         height: auto;
     }
 
-    .inbox_messages {
+    .messenger__messages {
         width: 100%;
         background-color: aliceblue;
     }
 
-    .inbox_people {
+    .messenger__clients {
         overflow: visible;
         width: 70%;
         position: absolute;

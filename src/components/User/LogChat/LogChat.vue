@@ -1,17 +1,17 @@
 <template>
-    <div class="view login"
+    <div class="login"
          :style="{backgroundColor:bcol}">
         <header>
             <button
-                    class="cloi"
+                    class="login__collapse-button"
                     @click="this.$emit('collapse')"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrows-angle-contract" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M.172 15.828a.5.5 0 0 0 .707 0l4.096-4.096V14.5a.5.5 0 1 0 1 0v-3.975a.5.5 0 0 0-.5-.5H1.5a.5.5 0 0 0 0 1h2.768L.172 15.121a.5.5 0 0 0 0 .707zM15.828.172a.5.5 0 0 0-.707 0l-4.096 4.096V1.5a.5.5 0 1 0-1 0v3.975a.5.5 0 0 0 .5.5H14.5a.5.5 0 0 0 0-1h-2.768L15.828.879a.5.5 0 0 0 0-.707z"/>
             </svg>
             </button>
         </header>
-        <form class="login-form"
+        <form class="login__form"
               @submit.prevent="logIn">
-            <div class="form-inner">
+            <div class="login__form__inner">
                 <h1>Регистрация</h1>
                 <label for="username">Имя (2-15 символов)</label>
                 <input
@@ -116,6 +116,6 @@ methods:{
     }
 </script>
 
-<style lang="scss" scoped>
-    @import "LogChat";
+<style  scoped>
+    @import "LogChat.css";
 </style>

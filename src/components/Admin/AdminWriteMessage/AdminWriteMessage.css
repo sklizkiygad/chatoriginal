@@ -1,8 +1,8 @@
-.type_msg {
-    border-top: 1px solid #c4c4c4;
-    position: relative;
-}
-.input_msg_write input {
+/*.type_msg {*/
+/*    border-top: 1px solid #c4c4c4;*/
+/*    position: relative;*/
+/*}*/
+.input-msg-write input {
     background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
     border: medium none;
     color: #4c4c4c;
@@ -11,14 +11,14 @@
     width: 100%;
     outline: none;
 }
-.write_msg{
+.input-msg-write__area{
     background: none;
     outline: none;
     border: none;
     width: 94%;
     resize: none;
 }
-.msg_send_btn {
+.input-msg-write__send-btn {
     background: #05728f none repeat scroll 0 0;
     border: medium none;
     border-radius: 50%;
@@ -31,7 +31,7 @@
     top: 11px;
     width: 33px;
 }
-.file_uploader{
+.input-msg-write__file-uploader{
     background: #05728f none repeat scroll 0 0;
     border: medium none;
     border-radius: 50%;
@@ -43,21 +43,25 @@
     top: 60px;
     width: 33px;
 }
-.input_msg_write input{
+.input-msg-write{
+    border-top: 1px solid #c4c4c4;
+    position: relative;
+}
+.input-msg-write input{
     display: none;
 }
-.input_msg_write input{
+.input-msg-write input{
     display: none;
 }
-.msg_butt{
+.input-msg-write__file-button{
    display: flex;
     flex-wrap: wrap;
 }
-.files_list{
+.input-msg-write__files_list{
   display: flex;
     flex-direction: column;
 }
-.files_list a{
+.input-msg-write__files_list a{
    font-size: 12px;
     color:black;
 }

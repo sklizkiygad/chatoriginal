@@ -1,5 +1,5 @@
 <template>
-<div class="view chat" :style="{backgroundColor:bcol}">
+<div class="chat" :style="{backgroundColor:bcol}">
 
 <user-chat-header
         @collapse="chiba"
@@ -17,6 +17,7 @@
     import UserChatHeader from "@/components/User/UserChatHeader/UserChatHeader";
     import UserChatMessages from "@/components/User/UserChatMessages/UserChatMessages";
     import UserChatTypeMessage from "@/components/User/UserChatTypeMessage/UserChatTypeMessage";
+    import axios from "axios";
     export default {
         components:{
             UserChatHeader,
@@ -26,7 +27,9 @@
         data() {
             return {
                 username: null,
-                myNewMessage:null
+                myNewMessage:null,
+
+
             }
         },
         mixins: [hostMixins],
@@ -64,7 +67,11 @@
                             role: 'Admin',
                             file:fileArray
                         }
+
+
                         console.log(newMessage);
+
+
                         this.myNewMessage=newMessage;
 
                     }

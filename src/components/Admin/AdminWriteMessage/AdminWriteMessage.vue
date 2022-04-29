@@ -1,34 +1,32 @@
 <template>
-    <div class="type_msg">
-        <div class="input_msg_write">
+        <div class="input-msg-write">
             <textarea
               @keyup.enter="sendMessage"
                v-model="adminMsg"
-               class="write_msg"
+               class="input-msg-write__area"
                cols="30"
                rows="4"
                 placeholder="Введите сообщение"/>
             <button
                     @click="sendMessage"
-                    class="msg_send_btn"
+                    class="input-msg-write__send-btn"
                     type="button">
                 <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
             </button>
-            <label  class="file_uploader" for="file"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" class="bi bi-file-earmark-arrow-down" viewBox="0 -4 10 20">
+            <label  class="input-msg-write__file-uploader" for="file"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" class="bi bi-file-earmark-arrow-down" viewBox="0 -4 10 20">
                 <path d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293V6.5z"/>
                 <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
             </svg></label>
             <input type="file" id="file" v-on:input="handleFileUpload" ref="file"  />
-            <div clas="msg_butt">
+            <div clas="input-msg-write__file-button">
                 <div v-if="files.length>0">
-                    <div class="files_list"
+                    <div class="input-msg-write__files_list"
                          v-for="file in files">
                         <a :href="file.fileURL"  target="_blank">{{file.name}}&ensp;</a>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </template>
 
 <script>

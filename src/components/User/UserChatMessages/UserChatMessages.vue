@@ -1,23 +1,24 @@
 <template>
-    <section class="chat-box" ref="chatter">
+    <section class="user-message-history" ref="chatter">
         <p v-if="isBanned">
             Вы заблокированы и не можете отправлять сообщения
         </p>
 
         <div v-else-if="!isBanned && isLoading"
              :style="`border-top: 16px solid ${bcol}`"
-             class="loader">
+             class="user-message-history__loader">
 
         </div>
 
         <div    v-else
                 v-for="content in messages"
-                :class="(content.role === 'User' ? 'message current-user' : 'message')">
-            <div class="message-inner">
-                <div class="username">{{content.name}}</div>
+                class="user-message-history__messages-list"
+                :class="(content.role === 'User' ? 'current-user' : null)">
+            <div class="user-message-history__messages-list__message-inner">
+                <div class="user-message-history__messages-list__message-inner__username">{{content.name}}</div>
                 <div
                         :style="(content.role === 'User' ? {backgroundColor:bcol}:'background-color: #F3F3F3;')"
-                        class="content">
+                        class="user-message-history__messages-list__message-inner__content">
                     {{content.message}}
                     <div
                             v-if="content.file.length!==0"
@@ -26,11 +27,11 @@
                         <a v-if="isImage(content.file[index].name)"
                            :href="getFiles(content.file[index].name)"
                            target="_blank">
-                            <img  class="content_img"  :src="getFiles(content.file[index].name)">
+                            <img  class="user-message-history__messages-list__message-inner__content__img"  :src="getFiles(content.file[index].name)">
                         </a>
                         <a v-else
                            :href="getFiles(content.file[index].name)"
-                           class="content_links"
+                           class="user-message-history__messages-list__message-inner__content__links"
                            target="_blank"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-arrow-down" viewBox="0 0 16 16">

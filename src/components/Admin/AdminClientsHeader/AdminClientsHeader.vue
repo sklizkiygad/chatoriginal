@@ -1,6 +1,6 @@
 <template>
-    <div class="headind_srch">
-        <div class="recent_heading">
+    <div class="clients-header">
+        <div class="clients-header__topic">
             <h4 @click="visClients">Клиенты
 
                 <svg v-if="!clientOpen" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
@@ -13,31 +13,29 @@
                 </svg>
 
             </h4>
+            <h4 @click="toClose">Выход</h4>
         </div>
 
-        <div class="srch_bar">
-            <h4
-                    @click="toClose"
-            >Выход</h4>
-            <div class="stylish-input-group" >
+        <div class="clients-header__seach-bar">
                 <input
                         v-model="searchQuery"
                         type="text"
-                        class="search-bar"
                         placeholder="Поиск">
-                <span class="input-group-addon">
-                                         <button type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
-                                    </span>
-            </div>
+                <span class="clients-header__input-group-addon">
+                <button type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
+                </span>
         </div>
+
     </div>
-    <div  class="status_list">
+
+    <div class="status_list">
         <ul>
             <li @click.prevent="chosenStatus = 1" :class="{'activeStatus':chosenStatus===1}">Активные</li>
             <li @click.prevent="chosenStatus = 2" :class="{'activeStatus':chosenStatus===2}">Законченные</li>
             <li @click.prevent="chosenStatus = 3" :class="{'activeStatus':chosenStatus===3}">Бан</li>
         </ul>
     </div>
+
 </template>
 
 <script>
