@@ -5,14 +5,16 @@
                         <admin-clients-header
                            @messOpen="openClients"
                            @close="toClose"
-                           @status="changeStatus"/>
+                           @status="changeStatus"
+                           @updateSearchQuery="searchRequest"/>
 
                         <admin-clients-list
                           @openMessage="openMessages"
                           :chosenStatus="chosenStatus"
                           :newLastMessage="lastMessageToUpdate"
                           :newClient="addNewUser"
-                          :endDialogUserId="userIdEndDialog"/>
+                          :endDialogUserId="userIdEndDialog"
+                          :searchText="searchQueryText"/>
                     </div>
 
                     <div class="messenger__clients-collapse" v-else @click="clientOpen=!clientOpen">
@@ -79,6 +81,7 @@
                                             userIdEndDialog: null,
                                             newMessage: null,
                                             isMessageOpen: false,
+                                            searchQueryText:''
                                         }
                                     },
 
@@ -99,6 +102,9 @@
                                         },
                                         updateClientList(mess) {
                                             this.lastMessageToUpdate = mess;
+                                        },
+                                        searchRequest(tex){
+                                            this.searchQueryText=tex;
                                         },
 
                                         messageResponse() {

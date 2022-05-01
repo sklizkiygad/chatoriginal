@@ -60,6 +60,9 @@ export default {
     watch:{
         chosenStatus(){
             this.$emit("status",this.chosenStatus);
+        },
+        searchQuery(vivi){
+            this.$emit("updateSearchQuery",vivi);
         }
 
     }

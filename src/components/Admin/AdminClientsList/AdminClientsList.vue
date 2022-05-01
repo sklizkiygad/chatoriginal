@@ -46,7 +46,8 @@
                 clientDataList:[],
                 chsAct:null,
                 fullClientDataList:[],
-                isLoading:true
+                isLoading:true,
+                searchQuery:''
             }
         },
 
@@ -74,6 +75,10 @@
             endDialogUserId:{
                 type:Number,
                 default:null
+            },
+            searchText:{
+                type:String,
+                default:''
             }
         },
 
@@ -252,12 +257,23 @@
                         this.clientDataList.splice(i, 1);
                     }
                 }
+            },
+            searchText(tex){
+            this.searchQuery=tex;
+
             }
 
         },
         computed: {
             searchedList() {
-                return [...this.clientDataList]
+                if(this.searchQuery===''){
+
+                    return [...this.clientDataList]
+                }
+                else{
+                    return [...this.clientDataList]
+                        .filter(client=>client.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
+                }
                 // if(this.searchQuery===''){
                 //
                 //     return [...this.clientDataList].slice((this.maxClientsPerPage*(this.currentClientPage-1)),(this.maxClientsPerPage*this.currentClientPage))
@@ -267,8 +283,9 @@
                 //         .filter(client=>client.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
                 // }
             },
-
         },
+
+
 
     }
 
