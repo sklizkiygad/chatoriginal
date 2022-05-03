@@ -40,6 +40,12 @@
             },
         },
         methods:{
+            soundNotification() {
+                let audio = new Audio();
+                audio.src = 'https://ringon.site/?do=get-file&id=34361';
+                audio.volume=0.3;
+                audio.play();
+            },
             userResponce() {
                 this.$socket.emit('connected', {id: sessionStorage.getItem('user_id')});
                 this.sockets.subscribe('user_response', (data) => {
@@ -73,6 +79,7 @@
 
 
                         this.myNewMessage=newMessage;
+                        this.soundNotification();
 
                     }
                 });

@@ -125,8 +125,8 @@ props:{
                 }
 
             },
-            addNewMessage(){
 
+            addNewMessage(){
                 this.messages.push(this.newMessage);
             },
 
