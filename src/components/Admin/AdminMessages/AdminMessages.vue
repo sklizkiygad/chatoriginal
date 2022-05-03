@@ -147,8 +147,6 @@
                             console.log(res);
                             this.$emit('endDialog',this.userId);
                         })
-
-
                 }
             },
         },

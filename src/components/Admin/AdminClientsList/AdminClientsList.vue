@@ -153,10 +153,6 @@
                     headers: {
                         Authorization: process.env.VUE_APP_TOKEN
                     },
-                    // params: {
-                    //     limit: this.maxClientsPerPage,
-                    //     page: this.currentClientPage,
-                    // }
                 }
                 let stat='';
 

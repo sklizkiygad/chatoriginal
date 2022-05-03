@@ -45,7 +45,6 @@ export default {
             clientOpen:true,
             searchQuery: '',
             chosenStatus:1,
-            clientOpen:true,
         }
     },
     methods:{

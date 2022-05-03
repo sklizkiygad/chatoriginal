@@ -104,8 +104,6 @@ methods:{
         this.adminMsg = '';
         this.files=[];
         console.log('Сообщение отправлено');
-
-
     },
 }
     }
