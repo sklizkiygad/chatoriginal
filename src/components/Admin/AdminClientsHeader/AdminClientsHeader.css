@@ -14,17 +14,20 @@
     justify-content: space-between;
 }
 
-.clients-header__topic h4{
+.clients-header h4{
     cursor: pointer;
     display: inline-block;
     color: #05728f;
     font-size: 21px;
-
 }
 
 .clients-header__seach-bar {
     width: 100%;
     text-align: right;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
 
 }
 

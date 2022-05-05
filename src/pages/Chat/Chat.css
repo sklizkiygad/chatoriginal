@@ -24,20 +24,5 @@
 }
 
 
-.lowbe {
-  background-color: #ea526f;
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  min-width: 350px;
-  width: 15%;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 5px;
-}
 
-.lowbe p {
-  color: #FFFFFF;
-  font-size: 100%;
-}
 

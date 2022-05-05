@@ -17,7 +17,6 @@
     import UserChatHeader from "@/components/User/UserChatHeader/UserChatHeader";
     import UserChatMessages from "@/components/User/UserChatMessages/UserChatMessages";
     import UserChatTypeMessage from "@/components/User/UserChatTypeMessage/UserChatTypeMessage";
-    import axios from "axios";
     export default {
         components:{
             UserChatHeader,

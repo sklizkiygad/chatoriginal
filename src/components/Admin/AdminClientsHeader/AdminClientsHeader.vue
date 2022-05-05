@@ -2,7 +2,6 @@
     <div class="clients-header">
         <div class="clients-header__topic">
             <h4 @click="visClients">Клиенты
-
                 <svg v-if="!clientOpen" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
                     <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
@@ -17,13 +16,15 @@
         </div>
 
         <div class="clients-header__seach-bar">
-                <input
-                        v-model="searchQuery"
-                        type="text"
-                        placeholder="Поиск">
-                <span class="clients-header__input-group-addon">
+            <h4 @click="toChangeStyle">Дизайн чата</h4>
+           <div> <input
+                   v-model="searchQuery"
+                   type="text"
+                   placeholder="Поиск">
+               <span class="clients-header__input-group-addon">
                 <button type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
-                </span>
+                </span></div>
+
         </div>
 
     </div>
@@ -55,6 +56,9 @@ export default {
             this.clientOpen=!this.clientOpen;
             this.$emit("messOpen",this.clientOpen);
         },
+        toChangeStyle(){
+            this.$emit("changeStyleChat");
+        }
     },
     watch:{
         chosenStatus(){

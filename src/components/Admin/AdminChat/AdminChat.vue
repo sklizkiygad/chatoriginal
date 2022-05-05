@@ -6,15 +6,19 @@
                            @messOpen="openClients"
                            @close="toClose"
                            @status="changeStatus"
-                           @updateSearchQuery="searchRequest"/>
-
+                           @updateSearchQuery="searchRequest"
+                           @changeStyleChat="openChangeStyle"
+                        />
+                        <admin-style-changer v-if="isChangingStyleOpen"/>
                         <admin-clients-list
+                          v-else
                           @openMessage="openMessages"
                           :chosenStatus="chosenStatus"
                           :newLastMessage="lastMessageToUpdate"
                           :newClient="addNewUser"
                           :endDialogUserId="userIdEndDialog"
                           :searchText="searchQueryText"/>
+
                     </div>
 
                     <div class="messenger__clients-collapse" v-else @click="clientOpen=!clientOpen">
@@ -55,13 +59,15 @@
                                 import AdminClientsList from "@/components/Admin/AdminClientsList/AdminClientsList";
                                 import AdminMessages from "@/components/Admin/AdminMessages/AdminMessages";
                                 import AdminWriteMessage from "@/components/Admin/AdminWriteMessage/AdminWriteMessage";
+                                import AdminStyleChanger from "@/components/Admin/AdminStyleChanger/AdminStyleChanger";
 
                                 export default {
                                     components: {
                                         AdminClientsHeader,
                                         AdminClientsList,
                                         AdminMessages,
-                                        AdminWriteMessage
+                                        AdminWriteMessage,
+                                        AdminStyleChanger
                                     },
                                     sockets: {
                                         connect: function () {
@@ -81,7 +87,8 @@
                                             userIdEndDialog: null,
                                             newMessage: null,
                                             isMessageOpen: false,
-                                            searchQueryText:''
+                                            searchQueryText:'',
+                                            isChangingStyleOpen:false
                                         }
                                     },
 
@@ -105,6 +112,10 @@
                                         },
                                         searchRequest(tex){
                                             this.searchQueryText=tex;
+                                        },
+                                        openChangeStyle(){
+                                            this.isMessageOpen=false;
+                                            this.isChangingStyleOpen=!this.isChangingStyleOpen;
                                         },
 
                                         messageResponse() {
