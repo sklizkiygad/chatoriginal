@@ -51,9 +51,6 @@
             return{
                 files:[],
                 userMessage:'',
-                telegramToken:'5363461740:AAFGrcOV0zd6f28zyKsI_GFFLQylb7A_dFY',
-                telegramChatId:1173830066
-
             }
         },
         mixins:[hostMixins],
@@ -87,14 +84,6 @@
                     file:fileArr
                 }
                 this.$socket.emit('user_message', message);
-                if(sessionStorage.getItem('user_status')==='Actived'){
-                    const fullMessage=`User id:${message.user_id} %0AName: ${message.name} %0AText: ${message.message}`;
-                    axios.post(`https://api.telegram.org/bot${this.telegramToken}/sendMessage?chat_id=${this.telegramChatId}&text=${fullMessage}`).then((res)=>{
-                        console.log("Succes", res);
-                    },error=>{
-                        console.log(error);
-                    });
-                }
 
                 message = {
                     name: sessionStorage.getItem('user_name'),

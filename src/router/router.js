@@ -2,6 +2,7 @@ import Chat from "@/pages/Chat/Chat";
 
 import {createRouter, createWebHistory} from "vue-router";
 import AdminPanel from "@/pages/AdminPanel/AdminPanel";
+import {createWebHashHistory} from "vue-router/dist/vue-router.esm-browser";
 
 
 

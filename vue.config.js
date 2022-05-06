@@ -8,6 +8,5 @@ module.exports = {
 // module.exports={
 //   devServer: {
 //     proxy: 'http://31.28.9.200:23765',
-//
 //   }
 // }
