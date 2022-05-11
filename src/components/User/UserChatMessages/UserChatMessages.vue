@@ -1,11 +1,11 @@
 <template>
-    <section class="user-message-history" ref="chatter">
+    <section class="user-message-history" ref="chatter" :style="{backgroundColor:mainBackColor}">
         <p v-if="isBanned">
             Вы заблокированы и не можете отправлять сообщения
         </p>
 
         <div v-else-if="!isBanned && isLoading"
-             :style="`border-top: 16px solid ${bcol}`"
+             :style="`border-top: 16px solid ${mainColor}`"
              class="user-message-history__loader">
 
         </div>
@@ -15,11 +15,12 @@
                 class="user-message-history__messages-list"
                 :class="(content.role === 'User' ? 'current-user' : null)">
             <div class="user-message-history__messages-list__message-inner">
-                <div class="user-message-history__messages-list__message-inner__username">{{content.name}}</div>
+                <div class="user-message-history__messages-list__message-inner__username" ><p :style="{color:usernameColor}">{{content.name}}</p></div>
                 <div
-                        :style="(content.role === 'User' ? {backgroundColor:bcol}:'background-color: #F3F3F3;')"
+                        :style="(content.role === 'User' ? {backgroundColor:mainColor,color:mainTextColor}:{backgroundColor:adminMsgBackCol,color:adminMsgFontCol})"
                         class="user-message-history__messages-list__message-inner__content">
-                    {{content.message}}
+                    <p>{{content.message}}</p>
+
                     <div
                             v-if="content.file.length!==0"
                             v-for="(file, index) in content.file"
@@ -27,7 +28,7 @@
                         <a v-if="isImage(content.file[index].name)"
                            :href="getFiles(content.file[index].name)"
                            target="_blank">
-                            <img  class="user-message-history__messages-list__message-inner__content__img"  :src="getFiles(content.file[index].name)">
+                            <img class="user-message-history__messages-list__message-inner__content__img"  :src="getFiles(content.file[index].name)">
                         </a>
                         <a v-else
                            :href="getFiles(content.file[index].name)"
@@ -50,6 +51,7 @@
 <script>
     import hostMixins from "@/mixins/hostMixins";
     import axios from "axios";
+    import {mapState} from "vuex";
 
     export default {
         data(){
@@ -61,10 +63,7 @@
         },
         mixins:[hostMixins],
 props:{
-    bcol:{
-        type:String,
-        default:"#7B68EE"
-    },
+
     newMessage:{
         type:Object,
         default: null
@@ -129,8 +128,8 @@ props:{
             addNewMessage(){
                 this.messages.push(this.newMessage);
             },
-
         },
+
         created() {
             this.getMessages();
         },
@@ -144,6 +143,16 @@ props:{
                 },
                 deep: true
             },
+        },
+        computed:{
+            ...mapState({
+                mainColor:state=>state.styleForUser.mainColor,
+                mainTextColor:state=>state.styleForUser.mainTextColor,
+                adminMsgBackCol:state=>state.styleForUser.adminMsgBackCol,
+                adminMsgFontCol:state=>state.styleForUser.adminMsgFontCol,
+                usernameColor: state=>state.styleForUser.usernameColor,
+                mainBackColor:state=>state.styleForUser.mainBackColor,
+            })
         }
 
     }

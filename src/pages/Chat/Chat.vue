@@ -1,24 +1,23 @@
 <template>
-    <div class="base">
+
+
         <transition name="fade">
 
 
             <user-chat-low
                     v-if="!isHigh"
-                    :chatColor="bcol"
                     @setLow="chiba"
             />
 
             <div v-else>
                 <LogChat
                         v-if="!isIn"
-                        :bcol="bcol"
                          @isLogOk="userLogging"
                          @collapse="chiba"
                 />
                 <UserChat
                         v-else
-                        :bcol="bcol"
+
                         :isHigh="isHigh"
                         @logOut="logOut"
                         @collapse="chiba"
@@ -27,7 +26,7 @@
             
         </transition>
 
-    </div>
+
 </template>
 
 
@@ -37,8 +36,11 @@
     import LogChat from "@/components/User/LogChat/LogChat";
     import UserChat from "@/components/User/UserChat/UserChat";
     import UserChatLow from "@/components/User/UserChatLow/UserChatLow";
+    import $store from "@/store";
+    import {mapState,mapActions} from "vuex";
 
     export default {
+
         components: {LogChat,UserChat,UserChatLow},
         mixins: [hostMixins],
         data() {
@@ -51,7 +53,6 @@
                 logError: null,
                 isIn: false,
                 userId: null,
-                bcol: "#7B68EE",
                 email: null,
             }
         },
@@ -61,8 +62,13 @@
             },
         },
         methods: {
+            ...mapActions({
+                getSiteId:'styleForUser/getSiteId'
+            }),
             chiba() {
                 this.isHigh = !this.isHigh;
+                localStorage.setItem('chatIsFulled',this.isHigh);
+
             },
             logOut() {
                 console.log('дисконнектюсь');
@@ -81,12 +87,21 @@
                 } else {
                     this.isIn = false;
                 }
-
             },
         },
         mounted() {
             this.checkAuth();
         },
+        created() {
+            console.log(window.location.host);
+            this.getSiteId(window.location.host);
+
+        },
+        computed:{
+            ...mapState({
+                mainColor:state=>state.styleForUser.mainColor,
+            })
+        }
 
 
 

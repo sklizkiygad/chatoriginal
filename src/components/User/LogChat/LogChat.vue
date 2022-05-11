@@ -1,10 +1,10 @@
 <template>
     <div class="login"
-         :style="{backgroundColor:bcol}">
+         :style="{backgroundColor:mainColor}">
         <header>
             <button
                     class="login__collapse-button"
-                    @click="this.$emit('collapse')"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrows-angle-contract" viewBox="0 0 16 16">
+                    @click="this.$emit('collapse')"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" :fill="mainTextColor" class="bi bi-arrows-angle-contract" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M.172 15.828a.5.5 0 0 0 .707 0l4.096-4.096V14.5a.5.5 0 1 0 1 0v-3.975a.5.5 0 0 0-.5-.5H1.5a.5.5 0 0 0 0 1h2.768L.172 15.121a.5.5 0 0 0 0 .707zM15.828.172a.5.5 0 0 0-.707 0l-4.096 4.096V1.5a.5.5 0 1 0-1 0v3.975a.5.5 0 0 0 .5.5H14.5a.5.5 0 0 0 0-1h-2.768L15.828.879a.5.5 0 0 0 0-.707z"/>
             </svg>
             </button>
@@ -26,7 +26,8 @@
                         v-model="email"
                         placeholder="Введите адрес почты"/>
                 <input
-                        :style="{backgroundColor:bcol}"
+                        :style="{backgroundColor:mainColor,color: mainTextColor}"
+
                         type="submit"
                         value="Войти"/>
                 <p>{{logError}}</p>
@@ -38,6 +39,7 @@
 <script>
     import axios from "axios";
     import hostMixins from "@/mixins/hostMixins";
+    import {mapState} from "vuex";
 
 
     export default {
@@ -53,13 +55,6 @@
             }
         },
         mixins: [hostMixins],
-        props:{
-            bcol:{
-                type:String,
-                default:"#7B68EE"
-            }
-
-        },
 
 methods:{
     checkAuth() {
@@ -112,7 +107,14 @@ methods:{
             this.logError = 'Введите имя!';
         }
     },
-}
+
+},
+        computed:{
+            ...mapState({
+                mainColor:state=>state.styleForUser.mainColor,
+                mainTextColor:state=>state.styleForUser.mainTextColor,
+            })
+        }
     }
 </script>
 

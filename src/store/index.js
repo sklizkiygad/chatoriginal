@@ -1,9 +1,10 @@
-import {createStore} from 'vuex';
+import {createStore} from "vuex";
+import {userStyles} from "@/store/userStyles";
 
 
 export default createStore({
-    state:{
-        myHttp:'http://31.28.9.200:23765'
-    }
+    modules:{
+        styleForUser:userStyles
 
+    }
 })

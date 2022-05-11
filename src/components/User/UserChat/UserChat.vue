@@ -1,5 +1,5 @@
 <template>
-<div class="chat" :style="{backgroundColor:bcol}">
+<div class="chat" :style="{backgroundColor:mainColor}">
 
 <user-chat-header
         @collapse="chiba"
@@ -17,6 +17,7 @@
     import UserChatHeader from "@/components/User/UserChatHeader/UserChatHeader";
     import UserChatMessages from "@/components/User/UserChatMessages/UserChatMessages";
     import UserChatTypeMessage from "@/components/User/UserChatTypeMessage/UserChatTypeMessage";
+    import {mapState} from "vuex";
     export default {
         components:{
             UserChatHeader,
@@ -32,12 +33,6 @@
             }
         },
         mixins: [hostMixins],
-        props:{
-            bcol:{
-                type:String,
-                default:"#7B68EE"
-            },
-        },
         methods:{
             soundNotification() {
                 let audio = new Audio();
@@ -107,6 +102,11 @@
         mounted() {
             this.checkAuth();
         },
+        computed:{
+            ...mapState({
+                mainColor:state=>state.styleForUser.mainColor,
+            })
+        }
     }
 </script>
 <style  scoped>

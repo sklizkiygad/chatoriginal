@@ -1,14 +1,27 @@
 <template>
 
 
-    <user-chat-low v-if="!isHigh"
-                   :chatColor="chatColor"
-                   :mainTextColor="mainTextColor"
-                   :chatPosition="chatPosition"
-                   @setLow="changeSize"
-    />
 
-    <div v-else class="chat" :style='{backgroundColor:chatColor}' :class="chatPosition==='left' ? 'positionLeft':'positionRight'">
+
+    <div  v-if="!isHigh"
+         class="lowbeAdmin"
+         :style="{backgroundColor:chatColor}"
+         @click="this.$emit('setLow')"
+    >
+        <p :style="{color:mainTextColor}">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 width="16"
+                 height="16"
+                 :fill="mainTextColor"
+                 class="bi bi-arrow-down-right-circle-fill"
+                 viewBox="0 0 16 16">
+                <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm5.904-2.803a.5.5 0 1 0-.707.707L9.293 10H6.525a.5.5 0 0 0 0 1H10.5a.5.5 0 0 0 .5-.5V6.525a.5.5 0 0 0-1 0v2.768L5.904 5.197z"/>
+            </svg>
+            Жмакни
+        </p>
+    </div>
+
+    <div v-else class="admin-style-chat" :style='{backgroundColor:chatColor}' :class="chatPosition==='left' ? 'positionLeft':'positionRight'">
         <header>
             <button class="header__buttons">
                 <svg  @click="changeSize" xmlns="http://www.w3.org/2000/svg" width="20" height="20" :fill="mainTextColor" class="bi bi-arrows-angle-contract" viewBox="0 0 16 16">
@@ -147,5 +160,7 @@ import UserChatLow from "@/components/User/UserChatLow/UserChatLow";
 @import "../../User/UserChatMessages/UserChatMessages.css";
 @import "../../User/UserChatTypeMessage/UserChatTypeMessage.css";
 @import "../../../pages/Chat/Chat.css";
+@import "AdminUserChatStyle.css";
+
 
 </style>

@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css');
 
-/*.base {*/
-/*    height: 100vh;*/
-/*    background: rgb(52, 56, 61);*/
-/*}*/
+.registration-page {
+    height: 100vh;
+    background: rgb(52, 56, 61);
+}
 
 * {
     font-family: 'Open Sans', 'sans-serif', 'FontAwesome';
@@ -20,7 +20,7 @@ p {
     margin-bottom: 0;
 }
 
-#signin {
+#registration-page__signin {
 
     position: absolute;
     width: 320px;
@@ -29,19 +29,19 @@ p {
     top: 50%;
     margin-top: -75px;
 }
-#signin p{
+#registration-page__signin p{
     color: #FFFFFF;
 }
 
 /* === Sign in Form === */
-#signin__form {
+#registration-page__signin__form {
     height: 90px;
     width: 300px;
     border-radius: 8px;
     position: relative;
 }
 
-#signin__form::before {
+#registration-page__signin__form::before {
     display: block;
     position: relative;
     height: 2px;
@@ -52,23 +52,23 @@ p {
     z-index: 1;
 }
 
-#signin__form input:first-of-type {
+#registration-page__signin__form input:first-of-type {
     border-top-right-radius: 8px;
     border-top-left-radius: 8px;
 }
 
-#signin__form input:last-of-type {
+#registration-page__signin__form input:last-of-type {
     border-bottom-right-radius: 8px;
     border-bottom-left-radius: 8px;
 }
 
-#signin__form input[type="text"], #signin__form input[type="password"], #signin__form button[type="submit"] {
+#registration-page__signin__form input[type="text"], #registration-page__signin__form input[type="password"], #registration-page__signin__form button[type="submit"] {
     background: rgb(28, 30, 33);
     box-shadow: inset -100px -100px 0 rgb(28, 30, 33); /*Prevent yellow autofill color*/
     color: rgb(52, 56, 61);
 }
 
-#signin__form input[type="text"], #signin__form input[type="password"] {
+#registration-page__signin__form input[type="text"], #registration-page__signin__form input[type="password"] {
     position: relative;
     display: block;
     width: 280px;
@@ -80,11 +80,11 @@ p {
     font-weight: 700;
 }
 
-#signin__form input[type="text"]:focus, #signin__form input[type="password"]:focus {
+#registration-page__signin__form input[type="text"]:focus, #registration-page__signin__form input[type="password"]:focus {
     color: rgb(255, 255, 255);
 }
 
-#signin__form button[type="submit"] {
+#registration-page__signin__form button[type="submit"] {
     display: block;
     position: absolute;
     width: 52px;
@@ -103,13 +103,13 @@ p {
     text-align: center;
 }
 
-#signin__form button[type="submit"]:hover {
+#registration-page__signin__form button[type="submit"]:hover {
     color: rgb(0, 126, 165);
     text-shadow: 0 0 10px rgb(0, 126, 165);
     cursor: pointer;
 }
 
-#signin__form p {
+#registration-page__signin__form p {
     color: rgb(79, 85, 97);
     padding: 0 20px;
     font-weight: 700;
@@ -117,11 +117,11 @@ p {
     margin: 5px 0 0 0;
 }
 
-#signin__form p > a {
+#registration-page__signin__form p > a {
     color: rgb(111, 119, 135);
     text-decoration: none;
 }
 
-#signin__form p > a:hover {
+#registration-page__signin__form p > a:hover {
     border-bottom: 1px solid;
 }

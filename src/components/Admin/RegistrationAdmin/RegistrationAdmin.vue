@@ -1,12 +1,14 @@
 <template>
-        <div id="signin">
-            <form id="signin__form" @submit.prevent="logIn" autocomplete="off">
+    <div class="registration-page">
+        <div id="registration-page__signin">
+            <form id="registration-page__signin__form" @submit.prevent="logIn" autocomplete="off">
                 <input v-model="adminname" type="text" id="user" name="user" placeholder="username"/>
                 <input v-model="password" type="password" id="pass" name="pass" placeholder="password"/>
                 <button type="submit">&#xf0da;</button>
             </form>
             <p >{{errorAuth}}</p>
         </div>
+    </div>
 </template>
 
 

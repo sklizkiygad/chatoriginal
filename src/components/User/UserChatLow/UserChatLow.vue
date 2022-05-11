@@ -1,7 +1,6 @@
 <template>
     <div class="lowbe"
-         :style="{backgroundColor:chatColor}"
-         :class="chatPosition==='left' ? 'positionLeft':'positionRight'"
+         :style="{backgroundColor:mainColor}"
          @click="this.$emit('setLow')"
          >
         <p :style="{color:mainTextColor}">
@@ -19,20 +18,14 @@
 </template>
 
 <script>
+    import {mapState} from "vuex";
     export default {
-        props:{
-            chatColor:{
-                type:String,
-                default:'#7B68EE'
-            },
-            mainTextColor:{
-                type:String,
-                default:'#ffffff'
-            },
-            chatPosition:{
-                type:String,
-                default:'right'
-            }
+
+        computed:{
+            ...mapState({
+                mainColor:state=>state.styleForUser.mainColor,
+                mainTextColor:state=>state.styleForUser.mainTextColor,
+            })
         }
 
     }

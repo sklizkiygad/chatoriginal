@@ -90,20 +90,27 @@
             },
 
             addMessage(getMess){
-                console.log(getMess);
-                let fileArr=[];
-                let i=0;
-                if(getMess.file.length>0) {
-                   getMess.file.forEach((file) => {
-                        fileArr.push({
-                            id:i,
-                            name:file
-                        });
-                       i++;
-                    })
+
+                console.log(getMess.user_id);
+                console.log(this.userId);
+
+                if(getMess.user_id==this.userId)
+                {
+                    let fileArr=[];
+                    let i=0;
+                    if(getMess.file.length>0) {
+                        getMess.file.forEach((file) => {
+                            fileArr.push({
+                                id:i,
+                                name:file
+                            });
+                            i++;
+                        })
+                    }
+                    getMess.file=fileArr;
+                    this.dialogMsgs.push(getMess);
                 }
-                getMess.file=fileArr;
-               this.dialogMsgs.push(getMess);
+
             },
 
 

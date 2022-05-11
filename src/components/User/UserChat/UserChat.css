@@ -11,16 +11,18 @@
   flex-direction: column;
   justify-content: center;
   background-color: #ea526f;
-  position: fixed;
-  height: 60%;
+  /*position: fixed;*/
+  position: absolute;
+  /*height: 60%;*/
+  height: 100%;
   min-width: 350px;
-  width: 15%;
+  /*width: 15%;*/
+  width: 100%;
   right: 0;
   bottom: 0;
   border-radius: 15px 15px 0px 0px;
   min-height: 380px;
-  flex-direction: column;
-  min-width: 350px;
+
 }
 
 .positionRight{

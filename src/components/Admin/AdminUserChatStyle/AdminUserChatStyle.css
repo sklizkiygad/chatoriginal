@@ -1,0 +1,30 @@
+
+.admin-style-chat {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #ea526f;
+    position: fixed;
+    height: 60%;
+    min-width: 350px;
+    width: 15%;
+    right: 0;
+    bottom: 0;
+    border-radius: 15px 15px 0px 0px;
+    min-height: 380px;
+    z-index: 6;
+
+}
+
+.lowbeAdmin {
+    position: fixed !important;
+    width: 15% !important;
+    right: 0;
+    bottom: 0;
+    right: 0;
+    min-width: 350px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 5px;
+    z-index: 6;
+}
