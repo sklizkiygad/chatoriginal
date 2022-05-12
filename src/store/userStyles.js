@@ -18,7 +18,7 @@ export const userStyles={
             state.mainColor=color;
         },
         setmainTextColor(state,color){
-            state.ainTextColor=color;
+            state.mainTextColor=color;
         },
         setadminMsgBackCol(state,color){
             state.adminMsgBackCol=color;

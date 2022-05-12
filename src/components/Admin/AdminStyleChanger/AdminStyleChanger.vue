@@ -184,9 +184,26 @@
                 this.currentSiteId=event.target.value;
                 this.getSiteStyle();
             },
+            async getAllSettingsList(){
+                let auth={
+                    headers:{
+                        Authorization: process.env.VUE_APP_TOKEN
+                    }
+                };
+                await axios.get(`${this.myProxy}/settings/all`,auth).then((res)=>{
+                    console.log('Все настройки');
+                    for(let i=0;i<res.data.length;i++) {
+                        this.settingsList.push({
+                            setting_id:res.data[i].id,
+                            name:res.data[i].name,
+                            value:res.data[i].base_value
+                        })
+                    }
+                })
+                console.log(this.settingsList);
+            },
 
              async getSiteStyle(){
-
                  let styleReq = {
                      headers: {
                          Authorization: process.env.VUE_APP_TOKEN
@@ -215,6 +232,8 @@
                 })
              },
             async addNewSiteSettings(newSiteId){
+                await this.getAllSettingsList();
+
                 let nullArray=[
                 '#7B68EE',
                 '#ffffff',
@@ -298,6 +317,7 @@
 
         mounted() {
             this.getSites();
+            this.getAllSettingsList();
         },
     }
 </script>
