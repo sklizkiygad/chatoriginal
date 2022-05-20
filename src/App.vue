@@ -1,16 +1,17 @@
 <template>
-    <chat/>
-
+   <chat/>
 </template>
 
 <script>
     import Chat from "@/pages/Chat/Chat";
+    import AdminPanel from "@/pages/AdminPanel/AdminPanel";
 
 
     export default {
 
         components:{
-            Chat
+            Chat,
+            AdminPanel
         },
     }
 </script>
