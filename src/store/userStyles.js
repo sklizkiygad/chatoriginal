@@ -10,7 +10,8 @@ export const userStyles={
         mainBackColor:'#ffffff',
         currentSiteId:null,
         settingsList:[],
-        chatPosition:'right'
+        chatPosition:'right',
+        chatIconType:'default'
     }),
 
     mutations:{
@@ -38,6 +39,10 @@ export const userStyles={
         pushSettingList(state,sett){
             state.settingsList.push(sett);
         },
+        setchatIconType(state,sett){
+            state.chatIconType=sett;
+        },
+
 
     },
 
@@ -68,6 +73,8 @@ export const userStyles={
                                 commit('setusernameColor',state.settingsList[4].value);
                                 commit('setmainBackColor',state.settingsList[5].value);
                                 localStorage.setItem('chatPosition',state.settingsList[6].value);
+                                commit('setchatIconType',state.settingsList[7].value);
+                                localStorage.setItem('chatIconType',state.settingsList[7].value);
                             }
             }).catch((e)=>{
                 console.log(e);

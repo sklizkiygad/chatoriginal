@@ -16,3 +16,20 @@
     color: #FFFFFF;
     font-size: 100%;
 }
+
+.lowbe-round {
+    background-color: #ea526f;
+    position:absolute;
+    bottom: 0;
+    right: calc(50% - 40px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+    width: 80px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+.lowbe-round__icon{
+    text-align: center;
+}

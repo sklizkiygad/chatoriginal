@@ -28,3 +28,21 @@
     border-radius: 5px;
     z-index: 6;
 }
+
+.lowbe-round-admin {
+    background-color: #ea526f;
+    position:absolute;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+    width: 80px;
+    cursor: pointer;
+    border-radius: 50%;
+    margin: 1%;
+    z-index: 6;
+}
+.lowbe-round-admin__icon{
+    text-align: center;
+}

@@ -83,6 +83,20 @@
                 <input id="positionChatRight"  value="right" type="radio" v-model="chatPosition">
                 </div>
             </div>
+            <h4>Вид иконки:</h4>
+
+            <div class="style-changer__position-choose">
+                <div>
+                    <label for="circleType">Круглая</label>
+                    <input id="circleType"  value="circle" type="radio"  v-model="chatIconStyle">
+                </div>
+
+                <div>
+                    <label for="defaultType">Стандарт</label>
+                    <input id="defaultType"  value="default" type="radio" v-model="chatIconStyle">
+                </div>
+            </div>
+
             <button type="submit" v-if="currentSiteId!==null">Применить изменения</button>
         </form>
         <div class="style-changer__links">
@@ -99,6 +113,7 @@
             :chatPosition="chatPosition"
             :chatBackgroundColor="mainBackColor"
             :mainTextColor="mainTextColor"
+            :chatIconStyle="chatIconStyle"
     />
 </template>
 
@@ -122,6 +137,7 @@
               settingsList:[],
               siteUrl:'',
               siteName:'',
+              chatIconStyle:''
           }
         },
         components:{
@@ -139,6 +155,7 @@
                     this.usernameColor,
                     this.mainBackColor,
                     this.chatPosition,
+                    this.chatIconStyle
                 ],
                     isOk=true;
                 for (let i=0;i<this.settingsList.length;i++)
@@ -184,7 +201,9 @@
                 this.currentSiteId=event.target.value;
                 this.getSiteStyle();
             },
+
             async getAllSettingsList(){
+                this.settingsList=[];
                 let auth={
                     headers:{
                         Authorization: process.env.VUE_APP_TOKEN
@@ -201,9 +220,11 @@
                     }
                 })
                 console.log(this.settingsList);
+
             },
 
              async getSiteStyle(){
+                this.settingsList=[];
                  let styleReq = {
                      headers: {
                          Authorization: process.env.VUE_APP_TOKEN
@@ -228,6 +249,7 @@
                     this.usernameColor=this.settingsList[4].value;
                     this.mainBackColor=this.settingsList[5].value;
                     this.chatPosition=this.settingsList[6].value;
+                    this.chatIconStyle=this.settingsList[7].value;
                }
                 })
              },
@@ -242,6 +264,7 @@
                 '#888888',
                 '#ffffff',
                 'right',
+                'default'
                 ],
                     isOk=true;
                 for(let i=0;i<nullArray.length;i++){

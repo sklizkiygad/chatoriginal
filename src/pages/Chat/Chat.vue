@@ -36,8 +36,9 @@
     import LogChat from "@/components/User/LogChat/LogChat";
     import UserChat from "@/components/User/UserChat/UserChat";
     import UserChatLow from "@/components/User/UserChatLow/UserChatLow";
-    import $store from "@/store";
     import {mapState,mapActions} from "vuex";
+    import axios from 'axios';
+
 
     export default {
 
@@ -91,10 +92,12 @@
         },
         mounted() {
             this.checkAuth();
+
         },
         created() {
             console.log(window.location.host);
             this.getSiteId(window.location.host);
+
 
         },
         computed:{
