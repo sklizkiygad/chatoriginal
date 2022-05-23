@@ -1,5 +1,5 @@
 <template>
-   <chat></chat>
+   <admin-panel></admin-panel>>
 </template>
 
 <script>
